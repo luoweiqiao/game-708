@@ -1106,7 +1106,7 @@ bool    CGameBaccaratTable::OnUserPlaceJetton(CGamePlayer* pPlayer, BYTE cbJetto
 			m_curr_bet_user.insert(pPlayer->GetUID());
         }
 	}else{
-	    LOG_DEBUG("the jetton more than limit - uid:%d", pPlayer->GetUID());
+	    //LOG_DEBUG("the jetton more than limit - uid:%d", pPlayer->GetUID());
 		bPlaceJettonSuccess = false;
 	}
 	if(bPlaceJettonSuccess)
@@ -3966,66 +3966,96 @@ int64   CGameBaccaratTable::GetUserMaxJetton(CGamePlayer* pPlayer, BYTE cbJetton
 
 	return (lMeMaxScore);
 }
+
+//uint8   CGameBaccaratTable::GetRobotJettonArea(CGamePlayer* pPlayer)
+//{
+//    //for(uint8 i=AREA_XIAN;i<AREA_MAX;++i){
+//    //    if(m_userJettonScore[i][pPlayer->GetUID()] > 0){
+//    //        return i;
+//    //    }
+//    //}
+//
+//    //if(g_RandGen.RandRatio(80,100)){
+//    //    if(g_RandGen.RandRatio(15,100)){
+//    //        return AREA_XIAN;
+//    //    }else{
+//    //        return g_RandGen.RandRange(AREA_XIAN, AREA_ZHUANG_DUI);
+//    //    }
+//    //}
+//	uint8 area = AREA_MAX;
+//	int32 iAreaRatio = g_RandGen.RandRange(AREA_XIAN, AREA_BIG);
+//	if (m_cbJettonArea == AREA_MAX)
+//	{
+//		if (g_RandGen.RandRatio(50, 100))
+//		{
+//			m_cbJettonArea = AREA_ZHUANG;
+//		}
+//		else
+//		{
+//			m_cbJettonArea = AREA_XIAN;
+//		}
+//	}
+//	else
+//	{
+//		if (g_RandGen.RandRatio(60, 100))
+//		{
+//			area = m_cbJettonArea;
+//		}
+//		else if (g_RandGen.RandRatio(30, 100))
+//		{
+//			if (m_cbJettonArea == AREA_ZHUANG)
+//			{
+//				area = AREA_XIAN;
+//			}
+//			else
+//			{
+//				area = AREA_ZHUANG;
+//			}
+//		}
+//		else
+//		{
+//			area = iAreaRatio;
+//		}
+//	}
+//
+//	if (area == AREA_MAX) {
+//		area = g_RandGen.RandRange(AREA_XIAN, AREA_BIG);
+//	}
+//
+//	//LOG_DEBUG("uid:%d,lAllScore:%lld,xian:%lld,zhuang:%lld,area:%d", pPlayer->GetUID(),lAllScore, m_allJettonScore[AREA_XIAN], m_allJettonScore[AREA_ZHUANG], area);
+//
+//	return area;
+//
+//
+//}
+
+//机器人下注区域，按配置比例选择区域
+//[30,5,30,5,5,5,10,10]---[XIAN,PING,ZHUANG,XIAN_DUI,ZHUANG_DUI,SUPSIX,SMALL,BIG]  
 uint8   CGameBaccaratTable::GetRobotJettonArea(CGamePlayer* pPlayer)
 {
-    //for(uint8 i=AREA_XIAN;i<AREA_MAX;++i){
-    //    if(m_userJettonScore[i][pPlayer->GetUID()] > 0){
-    //        return i;
-    //    }
-    //}
-
-    //if(g_RandGen.RandRatio(80,100)){
-    //    if(g_RandGen.RandRatio(15,100)){
-    //        return AREA_XIAN;
-    //    }else{
-    //        return g_RandGen.RandRange(AREA_XIAN, AREA_ZHUANG_DUI);
-    //    }
-    //}
+	uint8 per_area[AREA_MAX] = { 30, 5, 30, 5, 5, 5, 10, 10 };
 	uint8 area = AREA_MAX;
-	int32 iAreaRatio = g_RandGen.RandRange(AREA_XIAN, AREA_BIG);
-	if (m_cbJettonArea == AREA_MAX)
+	int32 iAreaRatio = g_RandGen.RandRange(0, PRO_DENO_100);
+	for (uint8 i = 0; i < AREA_MAX; i++)
 	{
-		if (g_RandGen.RandRatio(50, 100))
+		if (iAreaRatio < per_area[i])
 		{
-			m_cbJettonArea = AREA_ZHUANG;
+			area = i;
+			break;
 		}
 		else
 		{
-			m_cbJettonArea = AREA_XIAN;
+			iAreaRatio -= per_area[i];
 		}
 	}
-	else
+	
+	if (area == AREA_MAX) 
 	{
-		if (g_RandGen.RandRatio(60, 100))
-		{
-			area = m_cbJettonArea;
-		}
-		else if (g_RandGen.RandRatio(30, 100))
-		{
-			if (m_cbJettonArea == AREA_ZHUANG)
-			{
-				area = AREA_XIAN;
-			}
-			else
-			{
-				area = AREA_ZHUANG;
-			}
-		}
-		else
-		{
-			area = iAreaRatio;
-		}
-	}
-
-	if (area == AREA_MAX) {
-		area = g_RandGen.RandRange(AREA_XIAN, AREA_BIG);
+		area = AREA_XIAN;
 	}
 
 	//LOG_DEBUG("uid:%d,lAllScore:%lld,xian:%lld,zhuang:%lld,area:%d", pPlayer->GetUID(),lAllScore, m_allJettonScore[AREA_XIAN], m_allJettonScore[AREA_ZHUANG], area);
-
 	return area;
-
-
 }
 
 //庄家站起
@@ -4616,7 +4646,15 @@ int64 CGameBaccaratTable::GetRobotJettonScore(CGamePlayer* pPlayer, uint8 area)
 		}
 		else
 		{
-			lUserRealJetton = 50000;
+			//增加对于下注区域的判断
+			if (area == AREA_PING || area == AREA_XIAN_DUI || area == AREA_ZHUANG_DUI || area == AREA_SUPSIX)
+			{
+				lUserRealJetton = 5000;
+			}
+			else
+			{
+				lUserRealJetton = 50000;
+			}			
 		}
 	}
 	else if (lUserCurJetton >= 200000 && lUserCurJetton < 2000000)
@@ -4635,11 +4673,27 @@ int64 CGameBaccaratTable::GetRobotJettonScore(CGamePlayer* pPlayer, uint8 area)
 		}
 		else if (g_RandGen.RandRatio(800, PRO_DENO_10000))
 		{
-			lUserRealJetton = 50000;
+			//增加对于下注区域的判断
+			if (area == AREA_PING || area == AREA_XIAN_DUI || area == AREA_ZHUANG_DUI || area == AREA_SUPSIX)
+			{
+				lUserRealJetton = 5000;
+			}
+			else
+			{
+				lUserRealJetton = 50000;
+			}			
 		}
 		else
 		{
-			lUserRealJetton = 100000;
+			//增加对于下注区域的判断
+			if (area == AREA_PING || area == AREA_XIAN_DUI || area == AREA_ZHUANG_DUI || area == AREA_SUPSIX)
+			{
+				lUserRealJetton = 10000;
+			}
+			else
+			{
+				lUserRealJetton = 100000;
+			}
 		}
 	}
 	else if (lUserCurJetton >= 2000000)
@@ -4654,17 +4708,28 @@ int64 CGameBaccaratTable::GetRobotJettonScore(CGamePlayer* pPlayer, uint8 area)
 		}
 		else if (g_RandGen.RandRatio(2000, PRO_DENO_10000))
 		{
-			lUserRealJetton = 50000;
+			//增加对于下注区域的判断
+			if (area == AREA_PING || area == AREA_XIAN_DUI || area == AREA_ZHUANG_DUI || area == AREA_SUPSIX)
+			{
+				lUserRealJetton = 5000;
+			}
+			else
+			{
+				lUserRealJetton = 50000;
+			}
 		}
 		else// if (g_RandGen.RandRatio(300, PRO_DENO_10000))
-		{
-			lUserRealJetton = 100000;
-		}
-		//else
-		//{
-		//	//lUserRealJetton = 500000;
-		//	lUserRealJetton = 1000;
-		//}
+		{			
+			//增加对于下注区域的判断
+			if (area == AREA_PING || area == AREA_XIAN_DUI || area == AREA_ZHUANG_DUI || area == AREA_SUPSIX)
+			{
+				lUserRealJetton = 10000;
+			}
+			else
+			{
+				lUserRealJetton = 100000;
+			}
+		}		
 	}
 	else
 	{
@@ -4700,7 +4765,6 @@ int64 CGameBaccaratTable::GetRobotJettonScore(CGamePlayer* pPlayer, uint8 area)
 	}
 	return lUserRealJetton;
 }
-
 
 //void CGameBaccaratTable::OnRobotPlaceJetton()
 //{
@@ -5217,6 +5281,18 @@ bool CGameBaccaratTable::OnRobotJetton()
 				continue;
 			}
 
+			//增加对于下注区域筹码限制	
+			if (cbJettonArea == AREA_PING || cbJettonArea == AREA_XIAN_DUI || cbJettonArea == AREA_ZHUANG_DUI || cbJettonArea == AREA_SUPSIX)
+			{
+				if (lUserRealJetton == 50000)
+				{
+					lUserRealJetton = 5000;
+				}
+				if (lUserRealJetton == 100000)
+				{
+					lUserRealJetton = 10000;
+				}
+			}
 			robotPlaceJetton.area = cbJettonArea;
 			robotPlaceJetton.jetton = lUserRealJetton;
 			robotPlaceJetton.bflag = false;
