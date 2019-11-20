@@ -3698,9 +3698,6 @@ void  CGamePaijiuTable::SendPlayLog(CGamePlayer* pPlayer)
 	}
 }
 
-
-
-
 bool    CGamePaijiuTable::IsInTableRobot(uint32 uid, CGamePlayer * pPlayer)
 {
 	for (uint32 i = 0; i<GAME_PLAYER; ++i)
@@ -3723,7 +3720,6 @@ bool    CGamePaijiuTable::IsInTableRobot(uint32 uid, CGamePlayer * pPlayer)
 	return false;
 }
 
-
 bool CGamePaijiuTable::OnChairRobotJetton()
 {
 	if (m_bIsChairRobotAlreadyJetton)
@@ -3740,7 +3736,21 @@ bool CGamePaijiuTable::OnChairRobotJetton()
 			continue;
 		}
 		int iJettonCount = g_RandGen.RandRange(5, 9);
-		uint8 cbJettonArea = g_RandGen.RandRange(ID_HENG_L, ID_HENG_R);
+		//uint8 cbJettonArea = ID_SHUN_MEN;
+
+		//调整机器人下注区域(按比例选择)---顺门+对门+倒门占80%，其它门占20%
+		uint8 rate = g_RandGen.RandRange(1, PRO_DENO_100);
+		uint8 cbJettonArea = ID_SHUN_MEN;	//默认值
+		if (rate <= 80)
+		{
+			uint8 tmp = g_RandGen.RandRange(1, 3);
+			cbJettonArea = ID_SHUN_MEN + (tmp - 1) * 2;
+		}
+		else
+		{
+			uint8 tmp = g_RandGen.RandRange(1, 4);
+			cbJettonArea = ID_HENG_L + (tmp - 1) * 2;
+		}
 		int64 lUserRealJetton = GetRobotJettonScore(pPlayer, cbJettonArea);
 		if (lUserRealJetton == 0)
 		{
@@ -3771,7 +3781,20 @@ bool CGamePaijiuTable::OnChairRobotJetton()
 
 			if (bIsContinuouslyJetton == false)
 			{
-				cbJettonArea = g_RandGen.RandRange(ID_HENG_L, ID_HENG_R);
+				//cbJettonArea = g_RandGen.RandRange(ID_HENG_L, ID_HENG_R);
+				//调整机器人下注区域(按比例选择)---顺门+对门+倒门占80%，其它门占20%
+				uint8 rate = g_RandGen.RandRange(1, PRO_DENO_100);
+				cbJettonArea = ID_SHUN_MEN;	//默认值
+				if (rate <= 80)
+				{
+					uint8 tmp = g_RandGen.RandRange(1, 3);
+					cbJettonArea = ID_SHUN_MEN + (tmp - 1) * 2;
+				}
+				else
+				{
+					uint8 tmp = g_RandGen.RandRange(1, 4);
+					cbJettonArea = ID_HENG_L + (tmp - 1) * 2;
+				}
 
 				lUserRealJetton = GetRobotJettonScore(pPlayer, cbJettonArea);
 				if (lOldRealJetton == -1)
@@ -3838,6 +3861,8 @@ bool CGamePaijiuTable::OnChairRobotJetton()
 			robotPlaceJetton.jetton = lUserRealJetton;
 			robotPlaceJetton.bflag = false;
 			m_chairRobotPlaceJetton.push_back(robotPlaceJetton);
+
+			//LOG_DEBUG("AAAA roomid:%d,tableid:%d,cbJettonArea:%d lUserRealJetton:%d", GetRoomID(), GetTableID(), cbJettonArea, lUserRealJetton);
 		}
 	}
 	LOG_DEBUG("chair_robot_jetton - roomid:%d,tableid:%d,m_chairRobotPlaceJetton.size:%d", GetRoomID(), GetTableID(), m_chairRobotPlaceJetton.size());
@@ -3935,7 +3960,21 @@ bool CGamePaijiuTable::OnRobotJetton()
 			continue;
 		}
 		int iJettonCount = g_RandGen.RandRange(1, 6);
-		uint8 cbJettonArea = g_RandGen.RandRange(ID_HENG_L, ID_HENG_R);
+
+		//调整机器人下注区域(按比例选择)---顺门+对门+倒门占80%，其它门占20%
+		uint8 rate = g_RandGen.RandRange(1, PRO_DENO_100);
+		uint8 cbJettonArea = ID_SHUN_MEN;	//默认值
+		if (rate <= 80)
+		{
+			uint8 tmp = g_RandGen.RandRange(1, 3);
+			cbJettonArea = ID_SHUN_MEN + (tmp-1)*2;
+		}
+		else
+		{
+			uint8 tmp = g_RandGen.RandRange(1, 4);
+			cbJettonArea = ID_HENG_L + (tmp - 1) * 2;
+		}
+		//uint8 cbJettonArea = g_RandGen.RandRange(ID_HENG_L, ID_HENG_R);
 		int64 lUserRealJetton = GetRobotJettonScore(pPlayer, cbJettonArea);
 		if (lUserRealJetton == 0)
 		{
@@ -3961,7 +4000,20 @@ bool CGamePaijiuTable::OnRobotJetton()
 		{
 			if (bIsContinuouslyJetton == false)
 			{
-				cbJettonArea = g_RandGen.RandRange(ID_HENG_L, ID_HENG_R);
+				//调整机器人下注区域(按比例选择)---顺门+对门+倒门占80%，其它门占20%
+				uint8 rate = g_RandGen.RandRange(1, PRO_DENO_100);
+				cbJettonArea = ID_SHUN_MEN;	//默认值
+				if (rate <= 80)
+				{
+					uint8 tmp = g_RandGen.RandRange(1, 3);
+					cbJettonArea = ID_SHUN_MEN + (tmp - 1) * 2;
+				}
+				else
+				{
+					uint8 tmp = g_RandGen.RandRange(1, 4);
+					cbJettonArea = ID_HENG_L + (tmp - 1) * 2;
+				}
+				//cbJettonArea = g_RandGen.RandRange(ID_HENG_L, ID_HENG_R);
 
 				lUserRealJetton = GetRobotJettonScore(pPlayer, cbJettonArea);
 				if (lOldRealJetton == -1)
@@ -4024,6 +4076,8 @@ bool CGamePaijiuTable::OnRobotJetton()
 			robotPlaceJetton.jetton = lUserRealJetton;
 			robotPlaceJetton.bflag = false;
 			m_RobotPlaceJetton.push_back(robotPlaceJetton);
+
+			//LOG_DEBUG("AAAA roomid:%d,tableid:%d,cbJettonArea:%d lUserRealJetton:%d", GetRoomID(), GetTableID(), cbJettonArea, lUserRealJetton);
 		}
 	}
 
