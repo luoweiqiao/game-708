@@ -248,8 +248,8 @@ void	CPlayer::DailyCleanup(int32 iOfflineDay)
     CDBMysqlMgr::Instance().AddPlayerLoginTimeInfo(GetUID(),1,0);
 }
 void    CPlayer::SignIn()
-{
-	m_baseInfo.clogin++;
+{	
+	m_baseInfo.clogin++;	
 	//m_baseInfo.clogin = MIN(m_baseInfo.clogin,6);
 }
 //--- 每周清理
@@ -680,18 +680,23 @@ bool    CPlayer::SyncChangeAccountValue(uint16 operType,uint16 subType,int64 dia
 void 	CPlayer::SaveLoginInfo()
 {
 	LOG_DEBUG("保存登陆login信息:%d",GetUID());
-	CDBMysqlMgr::Instance().UpdatePlayerLoginInfo(GetUID(),m_baseInfo.offlinetime,m_baseInfo.clogin,m_baseInfo.weekLogin,m_baseInfo.reward,m_baseInfo.bankrupt,m_baseInfo.dayGameCount);
+	CDBMysqlMgr::Instance().UpdatePlayerLoginInfo(GetUID(),m_baseInfo.offlinetime,m_baseInfo.clogin,m_baseInfo.weekLogin,m_baseInfo.reward,m_baseInfo.bankrupt,m_baseInfo.dayGameCount, m_baseInfo.sign_time);
 }
 // 领取破产补助
-bool 	CPlayer::GetBankruptHelp()
+uint32 	CPlayer::GetBankruptHelp()
 {
 	LOG_DEBUG("领取破产保护:%d",GetUID());
     uint8 coinType = CDataCfgMgr::Instance().GetBankruptType();
     
-	if(GetAccountValue(coinType) + GetAccountValue(emACC_VALUE_SAFECOIN) > CDataCfgMgr::Instance().GetBankruptBase() ||  GetBankrupt() >= CDataCfgMgr::Instance().GetBankruptCount())
+	if (GetBankrupt() >= CDataCfgMgr::Instance().GetBankruptCount())
 	{
-		LOG_DEBUG("没到破产补助的条件:%d-%d",GetAccountValue(coinType),GetBankrupt());
-		return false;
+		LOG_DEBUG("破产次数已完成:%d>=%d", GetBankrupt(), CDataCfgMgr::Instance().GetBankruptCount());
+		return 0;
+	}
+	if(GetAccountValue(coinType) + GetAccountValue(emACC_VALUE_SAFECOIN) > CDataCfgMgr::Instance().GetBankruptBase())
+	{
+		LOG_DEBUG("没到破产补助的条件:%d-%d", GetAccountValue(coinType) + GetAccountValue(emACC_VALUE_SAFECOIN), CDataCfgMgr::Instance().GetBankruptBase());
+		return 2;
 	}
 	else
 	{
@@ -708,7 +713,7 @@ bool 	CPlayer::GetBankruptHelp()
 		UpdateAccValue2Client();
 		CDBMysqlMgr::Instance().AddBankruptValue(GetUID());
 		SaveLoginInfo();
-		return true;
+		return 1;
 	}
 }
 uint32  CPlayer::GetSpeakCDTime()
@@ -782,7 +787,7 @@ bool	CPlayer::LeaveEveryColorGameSvr(uint16 svrID)
 }
 
 
-bool    CPlayer::PhpAtomChangeAccountValue(uint16 operType, uint16 subType, int64 diamond, int64 coin, int64 ingot, int64 score, int32 cvalue, int64 safecoin)
+bool    CPlayer::PhpAtomChangeAccountValue(uint16 operType, uint16 subType, int64 diamond, int64 coin, int64 ingot, int64 score, int32 cvalue, int64 safecoin, string chessid)
 {
 	LOG_DEBUG("sta - uid:%d,operType:%d,coin:%lld,cur_coin:%lld", GetUID(), operType, coin, GetAccountValue(emACC_VALUE_COIN));
 
@@ -796,7 +801,7 @@ bool    CPlayer::PhpAtomChangeAccountValue(uint16 operType, uint16 subType, int6
 	{
 		return false;
 	}
-	string chessid;
+	//string chessid;
 	diamond = ChangeAccountValue(emACC_VALUE_DIAMOND, diamond);
 	if (diamond != 0) {
 		CCenterLogMgr::Instance().AccountTransction(GetUID(), emACC_VALUE_DIAMOND, operType, subType, diamond, GetAccountValue(emACC_VALUE_DIAMOND) - diamond, GetAccountValue(emACC_VALUE_DIAMOND), chessid);

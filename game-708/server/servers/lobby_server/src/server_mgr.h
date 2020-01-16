@@ -129,6 +129,9 @@ public:
 
 	void ResetLuckyCfg(net::msg_reset_lucky_cfg * pmsg);
 
+	// 设置玩家登录时间
+	void SetPlayerLoginTime(uint32 uid);
+
 protected:
 	void   CheckRepairServer();
 
@@ -142,6 +145,13 @@ private:
 	vector<uint16>	m_stopSvrs;
 	CCooling		m_coolBroad;
 
+	// 非机器人登陆耗时统计相关
+	uint64 m_loginAllTime  = 0; // 登陆耗时总时间(毫秒)
+	uint64 m_loginAllCount = 0; // 登陆总次数
+	int64  m_maxLoginTime  = 0; // 最大延时
+	int64  m_minLoginTime  = 0; // 最小延时
+	map<uint32, uint64> m_mpPlayerLoginTime; // 玩家id -> 登录时间（毫秒）
+	// 登陆耗时统计相关 end
 };
 
 

@@ -15,7 +15,7 @@ using namespace svrlib;
 
 namespace
 {
-	static const string gametables[net::GAME_CATE_MAX_TYPE] = { "","game_land","game_showhand","game_bainiu","game_texas","game_zajinhua","game_niuniu","game_baccarat","game_sangong","game_paijiu","game_everycolor","game_dice","game_two_people_majiang","game_slot", "game_war","game_fight", "game_robniu", "game_fishing", "game_twoeight" };
+	static const string gametables[net::GAME_CATE_MAX_TYPE] = { "","game_land","game_showhand","game_bainiu","game_texas","game_zajinhua","game_niuniu","game_baccarat","game_sangong","game_paijiu","game_everycolor","game_dice","game_two_people_majiang","game_slot", "game_war","game_fight", "game_robniu", "game_fishing", "game_twoeight", "game_carcity" };
 };
 void CDBTaskImple::writeLog(string logStr)
 {
@@ -201,11 +201,11 @@ void    CDBMysqlMgr::ClearPlayerOnlineInfo(uint32 svrid)
 }
 
 // 更新连续登陆奖励
-void    CDBMysqlMgr::UpdatePlayerLoginInfo(uint32 uid,uint32 offlinetime,uint32 clogin,uint32 weeklogin,uint32 reward,uint32 bankrupt,uint32 dgameCount)
+void    CDBMysqlMgr::UpdatePlayerLoginInfo(uint32 uid,uint32 offlinetime,uint32 clogin,uint32 weeklogin,uint32 reward,uint32 bankrupt,uint32 dgameCount, uint32 signTime)
 {
     ZeroSqlBuff();
-    sprintf(m_szSql,"UPDATE user%d SET offlinetime=%d,clogin=%d,weeklogin=%d,reward=%d,bankrupt=%d,dgcount=%d WHERE uid=%u;",\
-            CCommonLogic::GetDataTableNum(uid),offlinetime,clogin,weeklogin,reward,bankrupt,dgameCount,uid);
+    sprintf(m_szSql,"UPDATE user%d SET offlinetime=%d,clogin=%d,weeklogin=%d,reward=%d,bankrupt=%d,dgcount=%d,sign_time=%d WHERE uid=%u;",\
+            CCommonLogic::GetDataTableNum(uid),offlinetime,clogin,weeklogin,reward,bankrupt,dgameCount,signTime,uid);
     SendCommonLog(DB_INDEX_TYPE_ACC);
 }
 

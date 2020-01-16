@@ -442,8 +442,8 @@ int CGameFishingTable::OnGameMessage(CGamePlayer* pPlayer,uint16 cmdID, const ui
 			//更新玩家金币值
 			m_lTableScore[req_msg.seat_id()] -= req_msg.bullet_bot();
 			m_lTableBulletID[req_msg.seat_id()] = req_msg.bullet_id();
-			LOG_DEBUG("shooting seat_id:%d bullet_id:%d bullet_direct:%d bullet_bot:%d table_score:%lld fish_no:%d", 
-				req_msg.seat_id(), req_msg.bullet_id(), req_msg.bullet_direct(), req_msg.bullet_bot(), m_lTableScore[req_msg.seat_id()], req_msg.fish_no());
+			LOG_DEBUG("shooting seat_id:%d bullet_id:%d bullet_direct:%d bullet_bot:%d table_score:%lld fish_no:%d curr_score:%d", 
+				req_msg.seat_id(), req_msg.bullet_id(), req_msg.bullet_direct(), req_msg.bullet_bot(), m_lTableScore[req_msg.seat_id()], req_msg.fish_no(), curr_score);
 
 			//统计玩家子弹分类
 			map<uint32, map<uint32, uint32>>::iterator iter_seat = m_bullet_classification.find(req_msg.seat_id());

@@ -231,6 +231,7 @@ protected:
 protected:
 	CFightLogic						m_GameLogic;							//游戏逻辑
     
+	vector<uint32>					m_chip_range;							//当前房间的筹码
 
 	fightGameRecord              	m_record;
 	vector<fightGameRecord>			m_vecRecord;	                        //游戏记录

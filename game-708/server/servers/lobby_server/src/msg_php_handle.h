@@ -124,7 +124,8 @@ protected:
 	// php修改专享闪付充值显示信息
 	int handle_php_notify_exclusive_flash_recharge(NetworkObject *pNetObj, CBufferStream &stream);
 
-    void SendPHPMsg(NetworkObject* pNetObj,string jmsg,uint16 cmd);
+	void SendPHPMsg(NetworkObject* pNetObj,string jmsg,uint16 cmd);
+
 protected:
 
 

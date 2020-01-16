@@ -129,6 +129,32 @@ message msg_zajinhua_show_card_rep
 
 }
 
+// 控端发牌
+message msg_zajinhua_send_master_card_rep
+{
+	repeated uint32	card_types		= 1;
+	repeated uint32 chairid			= 2;
+	repeated uint32 isrobot			= 3;
+	repeated uint32 cards			= 4;
+	optional uint32 time_leave 		= 5; //剩余时间
+	repeated uint32 remain_cards	= 6; //剩余扑克
+}
+
+// 控端做牌
+message msg_zajinhua_recv_master_card_req
+{
+	repeated uint32 chairid = 1;
+	repeated uint32 cards = 2;
+}
+
+// 控端做牌结果
+message msg_zajinhua_recv_master_card_rep
+{
+	optional uint32 result  		= 1;
+	repeated uint32 chairid			= 2;
+	repeated uint32 remain_cards	= 3; //剩余扑克
+}
+
 //-----------------扎金花游戏消息----------------------------------------------------------------
 
 

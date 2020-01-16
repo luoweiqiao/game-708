@@ -68,7 +68,7 @@ public:
     void    ClearPlayerOnlineInfo(uint32 svrid);
     
     // 更新连续登陆奖励
-    void    UpdatePlayerLoginInfo(uint32 uid,uint32 offlinetime, uint32 clogin,uint32 weeklogin,uint32 reward,uint32 bankrupt,uint32 dgameCount);
+    void    UpdatePlayerLoginInfo(uint32 uid,uint32 offlinetime, uint32 clogin,uint32 weeklogin,uint32 reward,uint32 bankrupt,uint32 dgameCount, uint32 signTime);
     void    UpdatePlayerLoginTime(uint32 uid,uint32 logintime,string loginip);
     void    AddPlayerLoginTimeInfo(uint32 uid,uint32 days,uint32 playTime);
 	void    UpdatePlayerClogin();

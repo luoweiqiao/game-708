@@ -334,7 +334,7 @@ protected:
 protected:
 	CBaccaratLogic					m_GameLogic;							//游戏逻辑
     uint32                          m_BankerTimeLimit;                      //庄家次数
-
+	vector<uint32>					m_chip_range;							//当前房间的筹码
 
     uint32                          m_robotApplySize;                       //机器人申请人数
     uint32                          m_robotChairSize;                       //机器人座位数

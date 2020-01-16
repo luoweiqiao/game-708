@@ -88,6 +88,8 @@ public:
     int64    CalcPlayerInfo(uint16 chairID,int64 winScore);
     // 重置游戏数据
     void    ResetGameData();
+	// 发送超权用户的牌
+	bool   OnSendMasterCard();
 
 private:
 	// 将资金不满足条件的玩家踢出 add by har
@@ -186,6 +188,8 @@ protected:
 	uint16 GetNextUser(WORD chairID);
 
 	uint16 GetFrontUser(WORD chairID);
+
+	bool OnMasterUserOper(CGamePlayer* pPlayer, vector<BYTE> vecChairID, vector<BYTE> vecCardData);
 
     //机器人操作
 protected:
@@ -346,6 +350,8 @@ protected:
 
 	// 散牌	对子	顺子	同花	同花顺	豹子 6种牌型概率
 	int								m_iArrNRWCardPro[Pro_Index_MAX];	//新注册玩家福利牌型概率
+
+	bool							m_bIsMasterUserOper;
 	
 };
 

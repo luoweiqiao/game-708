@@ -110,31 +110,26 @@ bool    CGameNiuniuTable::CanEnterTable(CGamePlayer* pPlayer)
 	{
 		LOG_DEBUG("uid:%d,roomid:%d,tableid:%d,curScore:%lld,GetEnterMin:%lld,GetChairPlayerNum:%d,seatNum:%d",
 			pPlayer->GetUID(), GetRoomID(), GetTableID(), GetPlayerCurScore(pPlayer), GetEnterMin(), GetChairPlayerNum(), m_conf.seatNum);
-
         return false;
     }
-
-
 
 	bool bIsNoviceWelfare = EnterNoviceWelfare(pPlayer);
 	bool bIsKilledScore = false;// EnterAutoKillScore(pPlayer);
 	uint32 freeCount = GetFreeChairNum();
 
-
 	LOG_DEBUG("uid:%d,roomid:%d,tableid:%d,IsRobot:%d,freeCount:%d,bIsNoviceWelfare:%d,bIsKilledScore:%d",
 		pPlayer->GetUID(), GetRoomID(), GetTableID(), pPlayer->IsRobot(), freeCount, bIsNoviceWelfare, bIsKilledScore);
 
-	
-	//if (freeCount <= 2 && pPlayer->IsRobot())
-	//{// 最多有三个机器人一起玩
-	//	return false;
-	//}
 	if (bIsNoviceWelfare == true || bIsKilledScore == true)
 	{
+		LOG_DEBUG("bIsNoviceWelfare is true or bIsKilledScore is true. uid:%d,roomid:%d,tableid:%d",
+			pPlayer->GetUID(), GetRoomID(), GetTableID());
 		return false;
 	}
 	if (CanEnterCtrledUserTable(pPlayer) == false)
 	{
+		LOG_DEBUG("CanEnterCtrledUserTable is false. uid:%d,roomid:%d,tableid:%d",
+			pPlayer->GetUID(), GetRoomID(), GetTableID());
 		return false;
 	}
     return true;
@@ -162,11 +157,10 @@ bool    CGameNiuniuTable::CanLeaveTable(CGamePlayer* pPlayer)
                 break;
             }
         }
-    }
-	
-    
+    }    
     return true;
 }
+
 void    CGameNiuniuTable::GetTableFaceInfo(net::table_face_info* pInfo)
 {
     net::niuniu_table_info* pniuniu = pInfo->mutable_niuniu();
@@ -190,7 +184,6 @@ void    CGameNiuniuTable::GetTableFaceInfo(net::table_face_info* pInfo)
 	pniuniu->set_can_banker(m_isNeedBanker ? 1:0);
 	pniuniu->set_apply_banker_time(s_ApplyBrankerTime);
 	pniuniu->set_show_card_time(s_ChangeCardTime);
-
 }
 
 //配置桌子
@@ -232,7 +225,7 @@ bool CGameNiuniuTable::ReAnalysisParam()
 	string param = m_pHostRoom->GetCfgParam();
 	Json::Reader reader;
 	Json::Value  jvalue;
-	LOG_ERROR("reader_start - roomid:%d,tableid:%d,param:%s", GetRoomID(), GetTableID(), param.c_str());
+	LOG_DEBUG("reader_start - roomid:%d,tableid:%d,param:%s", GetRoomID(), GetTableID(), param.c_str());
 	if (!reader.parse(param, jvalue))
 	{
 		LOG_ERROR("reader json parse error - roomid:%d,tableid:%d,param:%s", GetRoomID(), GetTableID(), param.c_str());
@@ -240,12 +233,7 @@ bool CGameNiuniuTable::ReAnalysisParam()
 	}
 	string strJettonMultiple;
 	for (int i = 0; i < JETTON_MULTIPLE_COUNT; i++)
-	{
-		//string strPro = CStringUtility::FormatToString("mu%d", i);
-		//if (jvalue.isMember(strPro.c_str()) && jvalue[strPro.c_str()].isIntegral())
-		//{
-		//	m_lJettonMultiple[i] = jvalue[strPro.c_str()].asInt64();
-		//}
+	{		
 		strJettonMultiple += CStringUtility::FormatToString("i:%d-m:%d ", i, m_lJettonMultiple[i]);
 	}
 
@@ -287,9 +275,8 @@ bool CGameNiuniuTable::ReAnalysisParam()
 		m_robotWinPro = jvalue["rwp"].asInt();
 	}
 
-	LOG_ERROR("json_success - roomid:%d,tableid:%d,m_robotWinPro:%d,strJettonMultiple:%s,strApplyBankerPro:%s,strRobotJettonPro:%s,strArrDispatchCardPro:%s",
+	LOG_DEBUG("json_success - roomid:%d,tableid:%d,m_robotWinPro:%d,strJettonMultiple:%s,strApplyBankerPro:%s,strRobotJettonPro:%s,strArrDispatchCardPro:%s",
 		GetRoomID(), GetTableID(), m_robotWinPro, strJettonMultiple.c_str(), strApplyBankerPro.c_str(), strRobotJettonPro.c_str(),strArrDispatchCardPro.c_str());
-
 	return true;
 }
 
@@ -302,7 +289,6 @@ int     CGameNiuniuTable::GetProCardType()
 		iArrDispatchCardPro[i] = m_iArrDispatchCardPro[i];
 		iSumPro += m_iArrDispatchCardPro[i];
 	}
-	
 	
 	int iProIndex = 1;
 	int iRandNum = 0;
@@ -406,6 +392,7 @@ void    CGameNiuniuTable::ShutDown()
 {
 
 }
+
 //复位桌子
 void    CGameNiuniuTable::ResetTable()
 {
@@ -415,6 +402,7 @@ void    CGameNiuniuTable::ResetTable()
     ResetPlayerReady();
     SendSeatInfoToClient();
 }
+
 void    CGameNiuniuTable::OnTimeTick()
 {
 	OnTableTick();
@@ -426,7 +414,6 @@ void    CGameNiuniuTable::OnTimeTick()
         case TABLE_STATE_APBNIU_FREE:
             {
 				//LOG_DEBUG("roomid:%d,tableid:%d,status:%d",GetRoomID(), GetTableID(), GetGameState());
-
 				if (IsCanStartGame())
 				{
 					SetGameState(TABLE_STATE_APBNIU_READY_START);
@@ -440,27 +427,18 @@ void    CGameNiuniuTable::OnTimeTick()
 				//LOG_DEBUG("roomid:%d,tableid:%d,status:%d", GetRoomID(), GetTableID(), GetGameState());
 				CheckPlayerScoreLessLeave();
 				OnGameStart();
-			}break;
-		//case TABLE_STATE_APBNIU_GAME_START:
-		//	{
-		//		SetGameState(TABLE_STATE_APBNIU_FOUR_SHOW_CARD);
-		//		m_coolLogic.beginCooling(s_ShowCardTime * (GetPlayGameCount() - 1) + 900);
-		//		SendFourCardToClient();
-		//	}break;
+			}break;		
         case TABLE_STATE_APBNIU_GAME_START:
             {
 				//LOG_DEBUG("roomid:%d,tableid:%d,status:%d", GetRoomID(), GetTableID(), GetGameState());
-
 				SetGameState(TABLE_STATE_APBNIU_APPLY_BRANKER);
 				m_coolLogic.beginCooling(s_ApplyBrankerTime);
 				//m_coolRobot.beginCooling(g_RandGen.RandRange(500, 1000));
 				OnRobotReadyApplyBanker();
-
             }break;
 		case TABLE_STATE_APBNIU_APPLY_BRANKER:
 			{
 				//LOG_DEBUG("roomid:%d,tableid:%d,status:%d", GetRoomID(), GetTableID(), GetGameState());
-
 				SetGameState(TABLE_STATE_APBNIU_MAKE_BRANKER);
 				m_vecRobotApplyBanker.clear();
 				OnTimeOutApplyBanker();
@@ -469,34 +447,20 @@ void    CGameNiuniuTable::OnTimeTick()
 		case TABLE_STATE_APBNIU_MAKE_BRANKER:
 			{
 				SetGameState(TABLE_STATE_APBNIU_PLACE_JETTON);
-				//m_coolLogic.beginCooling(s_AddScoreTime + 500 * GetPlayGameCount());
-				//m_coolRobot.beginCooling(g_RandGen.RandRange(2000 + 500 * GetPlayGameCount(), 4500));
-				m_coolLogic.beginCooling(s_AddScoreTime);
-				//m_coolRobot.beginCooling(1000);
+				m_coolLogic.beginCooling(s_AddScoreTime);				
 				OnRobotReadyJetton();
 			}break;
         case TABLE_STATE_APBNIU_PLACE_JETTON:
             {   
-				//LOG_DEBUG("roomid:%d,tableid:%d,status:%d", GetRoomID(), GetTableID(), GetGameState());
-      
-				//分发扑克
-				//DispatchCard();
-				m_vecRobotJetton.clear();
-				//SetCardDataControl();
+				//LOG_DEBUG("roomid:%d,tableid:%d,status:%d", GetRoomID(), GetTableID(), GetGameState());				
+				m_vecRobotJetton.clear();				
 				SetGameState(TABLE_STATE_APBNIU_SEND_CARD);
 				m_coolLogic.beginCooling(s_ShowCardTime * (GetPlayGameCount() - 1) + 900);
 				SendCardToClient();
-            }break;
-		//case TABLE_STATE_APBNIU_LAST_SHOW_CARD:
-		//{
-		//		SetGameState(TABLE_STATE_APBNIU_CHANGE_CARD);
-		//		m_coolLogic.beginCooling(s_ChangeCardTime);
-		//		m_coolRobot.beginCooling(g_RandGen.RandRange(500, 1000));
-		//}break;
+            }break;		
 		case TABLE_STATE_APBNIU_CHANGE_CARD:
 			{
 				//LOG_DEBUG("roomid:%d,tableid:%d,status:%d", GetRoomID(), GetTableID(), GetGameState());
-
 				OnTimeOutChangeCard();
 				SetGameState(TABLE_STATE_APBNIU_GAME_END);
 				m_coolLogic.beginCooling(s_GameEndTime - ((GAME_PLAYER - GetPlayGameCount()) * 1000));
@@ -510,34 +474,18 @@ void    CGameNiuniuTable::OnTimeTick()
 				SetGameState(TABLE_STATE_APBNIU_FREE);
 				CheckNoOperPlayerLeave();
 				CheckPlayerScoreManyLeave();
-
-				m_coolLogic.beginCooling(s_FreeTime);
-				//m_coolRobot.beginCooling(s_FreeTime);				
-				//CheckPlayerScoreLessNotify();
+				m_coolLogic.beginCooling(s_FreeTime);				
 			}break;
         default:
             break;
         }
     }
-	CheckAddRobot();
-    if(GetGameState() == TABLE_STATE_APBNIU_FREE)
-	{
-        //OnRobotReady();
-		
-    }
 	else if (GetGameState() == TABLE_STATE_APBNIU_CHANGE_CARD)
 	{
 		OnRobotChangeCard();
 	}
-	//else if (GetGameState() == TABLE_STATE_APBNIU_APPLY_BRANKER)
-	//{
-	//	OnRobotApplyBanker();
-	//}
-	//else if(GetGameState() == TABLE_STATE_APBNIU_PLACE_JETTON)
-	//{
-	//	OnRobotOper();
-	//}
 
+	CheckAddRobot();
 }
 
 void CGameNiuniuTable::OnRobotReadyApplyBanker()
@@ -580,33 +528,29 @@ void CGameNiuniuTable::OnRobotReadyJetton()
 		}
 		if (m_lTableScore[i] == 0)
 		{
-			OnRobotRealJettonScore(i);
-			//OnRobotJettonScore(i);
-			//break;
+			OnRobotRealJettonScore(i);			
 		}
 	}
 }
 
 void CGameNiuniuTable::OnRobotTick()
 {
-	//LOG_DEBUG("roomid:%d,tableid:%d,status:%d",
-	//	GetRoomID(), GetTableID(), GetGameState());
+	//LOG_DEBUG("roomid:%d,tableid:%d,status:%d",//	GetRoomID(), GetTableID(), GetGameState());
 
 	if (m_coolLogic.isTimeOut())
 	{
 		uint8 tableState = GetGameState();
 		switch (tableState)
 		{
-		case TABLE_STATE_APBNIU_SEND_CARD:
-		{
-			SetGameState(TABLE_STATE_APBNIU_CHANGE_CARD);
-			m_coolLogic.beginCooling(s_ChangeCardTime);
-			//m_coolRobot.beginCooling(g_RandGen.RandRange(500, 1000));
-		}break;
-		default:
-		{
-			break;
-		}
+			case TABLE_STATE_APBNIU_SEND_CARD:
+			{
+				SetGameState(TABLE_STATE_APBNIU_CHANGE_CARD);
+				m_coolLogic.beginCooling(s_ChangeCardTime);			
+			}break;
+			default:
+			{
+				break;
+			}
 		}
 	}
 	if (GetGameState() == TABLE_STATE_APBNIU_APPLY_BRANKER)
@@ -617,7 +561,6 @@ void CGameNiuniuTable::OnRobotTick()
 	{
 		OnRobotInJetton();
 	}
-
 }
 
 // 游戏消息
@@ -628,8 +571,7 @@ int     CGameNiuniuTable::OnGameMessage(CGamePlayer* pPlayer,uint16 cmdID, const
 
 	if (pPlayer == NULL)
 	{
-		LOG_DEBUG("table recv - roomid:%d,tableid:%d,chairID:%d,status:%d,pPlayer:%p,cmdID:%d",
-			GetRoomID(), GetTableID(), chairID, GetGameState(), pPlayer, cmdID);
+		LOG_DEBUG("table recv - roomid:%d,tableid:%d,chairID:%d,status:%d,cmdID:%d", GetRoomID(), GetTableID(), chairID, GetGameState(), cmdID);
 		return 0;
 	}
 	LOG_DEBUG("table recv - roomid:%d,tableid:%d,chairID:%d,status:%d,uid:%d,cmdID:%d",
@@ -875,8 +817,6 @@ bool    CGameNiuniuTable::OnGameStart()
     
     //服务费
     DeductStartFee(true);
-
-	
 	
 	SetGameState(TABLE_STATE_APBNIU_GAME_START);
 	m_coolLogic.beginCooling(s_GameStartTime);
@@ -884,11 +824,17 @@ bool    CGameNiuniuTable::OnGameStart()
 	ProbabilityDispatchPokerCard();
 
 	SetCardDataControl();
+
+	LOG_DEBUG("XXXXX roomid:%d,tableid:%d", GetRoomID(), GetTableID());
+
 	for (uint16 i = 0; i < GAME_PLAYER; ++i)
 		if (m_cbPlayStatus[i] == TRUE)
 			m_cbTableCardType[i] = m_gameLogic.GetCardType(m_cbHandCardData[i], NIUNIU_CARD_NUM);
 	OnSendMasterCard();
     //SetRobotThinkTime();
+
+	LOG_DEBUG("XXXXX roomid:%d,tableid:%d", GetRoomID(), GetTableID());
+
     return true;
 }
 
@@ -1115,6 +1061,7 @@ bool    CGameNiuniuTable::OnGameEnd(uint16 chairID,uint8 reason)
 	}
 	return false;
 }
+
 //用户同意
 bool    CGameNiuniuTable::OnActionUserOnReady(WORD wChairID,CGamePlayer* pPlayer)
 {
@@ -1123,6 +1070,7 @@ bool    CGameNiuniuTable::OnActionUserOnReady(WORD wChairID,CGamePlayer* pPlayer
     }
     return true;
 }
+
 //玩家进入或离开
 void    CGameNiuniuTable::OnPlayerJoin(bool isJoin,uint16 chairID,CGamePlayer* pPlayer)
 {
@@ -1141,6 +1089,7 @@ void    CGameNiuniuTable::OnPlayerJoin(bool isJoin,uint16 chairID,CGamePlayer* p
 		m_szNoOperTrun[chairID] = 0;
     }
 }
+
 // 发送场景信息(断线重连)
 void    CGameNiuniuTable::SendGameScene(CGamePlayer* pPlayer)
 {
@@ -1228,6 +1177,7 @@ void    CGameNiuniuTable::SendGameScene(CGamePlayer* pPlayer)
 		}break;
 	}
 }
+
 int64    CGameNiuniuTable::CalcPlayerInfo(uint16 chairID,int64 winScore)
 {
 	if (winScore == 0 || chairID >= GAME_PLAYER)
@@ -1242,6 +1192,7 @@ int64    CGameNiuniuTable::CalcPlayerInfo(uint16 chairID,int64 winScore)
 
 	return fee;
 }
+
 // 重置游戏数据
 void    CGameNiuniuTable::ResetGameData()
 {
@@ -1288,12 +1239,12 @@ void    CGameNiuniuTable::WriteOutCardLog(uint16 chairID,uint8 cardData[],uint8 
     }
     m_operLog["card"].append(logValue);
 }
+
 // 写入庄家位log
 void    CGameNiuniuTable::WriteBankerLog(uint16 chairID)
 {
     m_operLog["banker"] = chairID;
-	m_operLog["bscore"] = GetBaseScore();
-	
+	m_operLog["bscore"] = GetBaseScore();	
 }
 
 void    CGameNiuniuTable::WriteGameInfo()
@@ -1329,12 +1280,10 @@ bool    CGameNiuniuTable::IsCanStartGame()
 			uPlayerCount++;
         }
     }
-
 	if (uPlayerCount >= 2)
 	{
 		return true;
 	}
-
     return false;
 }
 
@@ -1355,6 +1304,7 @@ bool    CGameNiuniuTable::CheckJetton(uint16 chairID,int64 score)
     }
     return true;
 }
+
 // 获得机器人的铁壁
 int64   CGameNiuniuTable::GetRobotJetton(uint16 chairID)
 {
@@ -1364,9 +1314,9 @@ int64   CGameNiuniuTable::GetRobotJetton(uint16 chairID)
         return m_lTurnMaxScore[chairID]/4;
     if(g_RandGen.RandRatio(30,100))
         return m_lTurnMaxScore[chairID]/2;
-
     return m_lTurnMaxScore[chairID];
 }
+
 uint16  CGameNiuniuTable::GetPlayNum()
 {
     //人数统计
@@ -1378,6 +1328,7 @@ uint16  CGameNiuniuTable::GetPlayNum()
     }
     return wPlayerCount;
 }
+
 void    CGameNiuniuTable::InitBanker()
 {
     net::msg_niuniu_banker_result_rep msg;
@@ -1520,22 +1471,7 @@ void    CGameNiuniuTable::InitBanker()
 		}
 		msg.add_time_leave(iArrEndTime[i]);
 	}
-	
-	//strMakeBrankerTime += CStringUtility::FormatToString(" 1_iArrDiffTime:");
-	//for (int i = 0; i < GAME_PLAYER; i++)
-	//{
-	//	strMakeBrankerTime += CStringUtility::FormatToString("%d ", iArrDiffTime[i]);
-	//}
-	//strMakeBrankerTime += CStringUtility::FormatToString(" 2_iArrDiffCount:");
-	//for (int i = 0; i < GAME_PLAYER; i++)
-	//{
-	//	strMakeBrankerTime += CStringUtility::FormatToString("%d ", iArrDiffCount[i]);
-	//}
-	//strMakeBrankerTime += CStringUtility::FormatToString(" 3_iArrTrunTime:");
-	//for (int i = 0; i < GAME_PLAYER; i++)
-	//{
-	//	strMakeBrankerTime += CStringUtility::FormatToString("%d ", iArrTrunTime[i]);
-	//}
+		
 	strMakeBrankerTime += CStringUtility::FormatToString(" 4_iArrEndTime:");
 	for (int i = 0; i < GAME_PLAYER; i++)
 	{
@@ -1553,8 +1489,10 @@ void    CGameNiuniuTable::InitBanker()
 
     WriteBankerLog(m_wBankerUser);
 }
+
 void    CGameNiuniuTable::SendCardToClient()
 {
+	LOG_DEBUG("SendCardToClient - roomid:%d,tableid:%d", GetRoomID(), GetTableID());
 	for (uint16 i = 0; i < GAME_PLAYER; ++i)
 	{
 		if (i != m_wBankerUser && m_cbPlayStatus[i] == TRUE && m_lTableScore[i] == 0)
@@ -1576,13 +1514,13 @@ void    CGameNiuniuTable::SendCardToClient()
 			m_szNoOperCount[i]++;			
 
 			LOG_DEBUG("time_out - roomid:%d,tableid:%d,i:%d,status:%d,uid:%d,isrobot:%d,m_szNoOperCount:%d,",
-				GetRoomID(), GetTableID(), i, GetGameState(), GetPlayerID(i), bIsRobot, m_szNoOperCount[i]);
-			
+				GetRoomID(), GetTableID(), i, GetGameState(), GetPlayerID(i), bIsRobot, m_szNoOperCount[i]);			
 		}
 	}
 
 	// add by har
-	if (m_isNeedCheckStock) {
+	if (m_isNeedCheckStock) 
+	{
 		m_isNeedCheckStock = false;
 		bool isHasCtrl = false; // 是否存在点控
 		map<uint32, tagUserControlCfg> mpCfgInfo;
@@ -1761,13 +1699,10 @@ int64   CGameNiuniuTable::CalculateScore(int64 szWinScore[GAME_PLAYER], bool isC
 			lCaclRealWinScore[i] = lReadyWinScore[i];
 		}
 	}
-
-
+	
 	int64 lRealWinScore[GAME_PLAYER] = { 0 };
 	bool bIsBrankerScoreFix = false;
-	bool bOperedChairID[GAME_PLAYER] = { 0 };
-	
-	
+	bool bOperedChairID[GAME_PLAYER] = { 0 };	
 
 	if (lBrankerReadyWinScore > lBrankerCurScore)
 	{// 庄家赢太多 输的闲家按照倍数输给庄家筹码 lBrankerReadyWinScore
@@ -1967,6 +1902,7 @@ int64   CGameNiuniuTable::CalculateScore(int64 szWinScore[GAME_PLAYER], bool isC
 		GetRoomID(), GetTableID(), playerAllWinScore, m_wBankerUser, strAllPlayerUidScore.c_str());
 	return playerAllWinScore;
 }
+
 // 检测提前结束
 void    CGameNiuniuTable::CheckOverTime()
 {
@@ -2023,6 +1959,7 @@ EXIT_CHECK_TIME:
         m_coolLogic.clearCool();
     }
 }
+
 // 检查挂机玩家踢出
 void   CGameNiuniuTable::CheckNoOperPlayerLeave()
 {
@@ -2063,10 +2000,8 @@ void   CGameNiuniuTable::CheckNoOperPlayerLeave()
 						m_szNoOperTrun[i] = 0;
 					}
 				}
-
 				LOG_DEBUG("roomid:%d,tableid:%d,i:%d,uid:%d,szNoOperCount:%d,bCanLeaveTable:%d,bLeaveTable:%d,bCanLeaveRoom:%d,bLeaveRoom:%d",
 					GetRoomID(), GetTableID(), i, uid, m_szNoOperCount[i], bCanLeaveTable, bLeaveTable, bCanLeaveRoom, bLeaveRoom);
-
 			}
         }
     }
@@ -2094,7 +2029,6 @@ void   CGameNiuniuTable::CheckPlayerScoreLessNotify()
 				pPlayer->SendMsgToClient(&rep, net::S2C_MSG_NIUNIU_SCORE_LESS);
 				LOG_DEBUG("roomid:%d,tableid:%d,i:%d,uid:%d,lCurScore:%lld,lMinScore:%lld",
 					GetRoomID(), GetTableID(), i, uid, lCurScore, lMinScore);
-
 			}
 		}
 	}
@@ -2252,92 +2186,6 @@ bool CGameNiuniuTable::ProgressControlPalyer()
 // 做牌发牌
 void   CGameNiuniuTable::DispatchCard()
 {
-
-
-	//m_gameLogic.RandCardList(m_cbHandCardData[0],sizeof(m_cbHandCardData)/sizeof(m_cbHandCardData[0][0]));
-
-	//string strAllPlayerUid;
-	//string strAllPlayerStatus;
-	//for (WORD i = 0; i<GAME_PLAYER; i++)
-	//{
-	//	CGamePlayer *pPlayer = GetPlayer(i);
-	//	if (pPlayer != NULL)
-	//	{
-	//		strAllPlayerUid += CStringUtility::FormatToString("i:%d,uid:%d ", i, pPlayer->GetUID());
-	//	}
-	//	if (m_cbPlayStatus[i] == TRUE)
-	//	{
-	//		strAllPlayerStatus += CStringUtility::FormatToString("i:%d,cd:0x%02X_0x%02X_0x%02X_0x%02X_0x%02X ",
-	//			i, m_cbHandCardData[i][0], m_cbHandCardData[i][1], m_cbHandCardData[i][2], m_cbHandCardData[i][3], m_cbHandCardData[i][4]);
-	//	}
-	//}
-
-	//LOG_DEBUG("rand - roomid:%d,tableid:%d,uids:%s,status:%s", GetRoomID(), GetTableID(), strAllPlayerUid.c_str(), strAllPlayerStatus.c_str());
-
-
-	//if (m_bIsMasterUserOper == false)
-	//{
-	//	m_bIsProgressControlPalyer = ProgressControlPalyer();
-	//}
-
-	//if (m_bIsMasterUserOper == false && m_bIsProgressControlPalyer == false)
-	//{
-	//	m_bIsNoviceWelfareCtrl = NoviceWelfareCtrlWinScore();
-	//}
-
-	//strAllPlayerUid.clear();
-	//strAllPlayerStatus.clear();
-
-
-	//for (WORD i = 0; i<GAME_PLAYER; i++)
-	//{
-	//	CGamePlayer *pPlayer = GetPlayer(i);
-	//	if (pPlayer != NULL)
-	//	{
-	//		strAllPlayerUid += CStringUtility::FormatToString("i:%d,uid:%d ", i, pPlayer->GetUID());
-	//	}
-	//	if (m_cbPlayStatus[i] == TRUE)
-	//	{
-	//		strAllPlayerStatus += CStringUtility::FormatToString("i:%d,cd:0x%02X_0x%02X_0x%02X_0x%02X_0x%02X ",
-	//			i, m_cbHandCardData[i][0], m_cbHandCardData[i][1], m_cbHandCardData[i][2], m_cbHandCardData[i][3], m_cbHandCardData[i][4]);
-	//	}
-	//}
-
-	//LOG_DEBUG("prob - roomid:%d,tableid:%d,m_bIsMasterUserOper:%d,ControlPalyer:%d,NoviceWelfareCtrl:%d,uids:%s,status:%s",
-	//	GetRoomID(), GetTableID(), m_bIsMasterUserOper,m_bIsProgressControlPalyer,m_bIsNoviceWelfareCtrl, strAllPlayerUid.c_str(), strAllPlayerStatus.c_str());
-
-
-    // test
- //   if(false)
-	//{
- //       BYTE temp1[] = {0x0D, 0x1D, 0x2D, 0x3D, 0x01};// 炸弹
- //       BYTE temp2[] = {0x01, 0x02, 0x12, 0x04, 0x11};//
- //       BYTE temp3[] = {0x0B, 0x1B, 0x2B, 0x2C, 0x0C};
-
- //       uint8 testType = g_RandGen.RandUInt() % 3;
- //       if (testType == 0)
-	//	{
- //           for (uint16 i = 0; i < GAME_PLAYER; ++i)
-	//		{
- //               memcpy(&m_cbHandCardData[i][0], temp1, sizeof(m_cbHandCardData[i]));
- //           }
- //       }
- //       if (testType == 1)
-	//	{
- //           for (uint16 i = 0; i < GAME_PLAYER; ++i)
-	//		{
- //               memcpy(&m_cbHandCardData[i][0], temp2, sizeof(m_cbHandCardData[i]));
- //           }
- //       }
- //       if (testType == 2)
-	//	{
- //           for (uint16 i = 0; i < GAME_PLAYER; ++i)
-	//		{
- //               memcpy(&m_cbHandCardData[i][0], temp3, sizeof(m_cbHandCardData[i]));
- //           }
- //       }
- //   }
-
 }
 
 //游戏状态
@@ -2350,6 +2198,7 @@ bool    CGameNiuniuTable::IsUserPlaying(WORD wChairID)
 	ASSERT(wChairID<GAME_PLAYER);
 	return (m_cbPlayStatus[wChairID]==TRUE)?true:false;    
 }
+
 //加注事件
 bool    CGameNiuniuTable::OnUserAddScore(WORD wChairID, int64 lScore)
 {
@@ -2388,10 +2237,10 @@ bool    CGameNiuniuTable::OnUserAddScore(WORD wChairID, int64 lScore)
     CheckOverTime();
 	return true;
 }
+
 //申请庄家
 bool    CGameNiuniuTable::OnUserApplyBanker(WORD wChairID,int32 score)
 {
-
 	LOG_DEBUG("roomid:%d,tableid:%d,chairID:%d,status:%d,uid:%d,score:%d,m_szApplyBanker:%d,",
 		GetRoomID(), GetTableID(), wChairID, GetGameState(), GetPlayerID(wChairID), score, m_szApplyBanker[wChairID]);
 
@@ -2423,6 +2272,7 @@ bool    CGameNiuniuTable::OnUserApplyBanker(WORD wChairID,int32 score)
     //CheckOverTime();
     return true;
 }
+
 //摆牌
 bool    CGameNiuniuTable::OnUserChangeCard(WORD wChairID,BYTE cards[])
 {
@@ -2668,13 +2518,8 @@ bool    CGameNiuniuTable::OnMasterUserOper(CGamePlayer* pPlayer, vector<BYTE> ve
 
 	LOG_DEBUG("end - roomid:%d,tableid:%d,chairID:%d,status:%d,uid:%d,vecChairID.size:%d,vecCardData.size:%d,bIsSuccessState:%d,bIsMasterUser:%d,bIsCardCountSuccess:%d,bIsCardDataRepeat:%d,bIsCardDataConflict:%d,strChairID:%s,strCardData:%s,strHandCard:%s",
 		GetRoomID(), GetTableID(), chairID, GetGameState(), GetPlayerID(chairID), vecChairID.size(), vecCardData.size(), bIsSuccessState, bIsMasterUser, bIsCardCountSuccess, bIsCardDataRepeat, bIsCardDataConflict, strChairID.c_str(), strCardData.c_str(), strHandCard.c_str());
-
-	//LOG_DEBUG("end - roomid:%d,tableid:%d,chairID:%d,status:%d,uid:%d,vecChairID.size:%d,vecCardData.size:%d,bIsGameStateTrue:%d,bIsSuccessState:%d,bIsMasterUser:%d,bIsAllRobot:%d,bIsCardCountSuccess:%d,bIsCardDataRepeat:%d,bIsCardDataConflict:%d,strChairID:%s,strCardData:%s,strHandCard:%s",
-	//	GetRoomID(), GetTableID(), chairID, GetGameState(), GetPlayerID(chairID), vecChairID.size(), vecCardData.size(), bIsGameStateTrue, bIsSuccessState, bIsMasterUser, bIsAllRobot, bIsCardCountSuccess, bIsCardDataRepeat, bIsCardDataConflict, strChairID.c_str(), strCardData.c_str(), strHandCard.c_str());
-
 	return true;
 }
-
 
 //发送摆牌
 void    CGameNiuniuTable::SendChangeCard(WORD wChairID,CGamePlayer* pPlayer)
@@ -2696,6 +2541,7 @@ void    CGameNiuniuTable::SendChangeCard(WORD wChairID,CGamePlayer* pPlayer)
         pPlayer->SendMsgToClient(&msg,net::S2C_MSG_NIUNIU_CHANGE_CARD_REP);
     }
 }
+
 int32   CGameNiuniuTable::GetChangeCardNum()
 {
     int32 num = 0;
@@ -2705,9 +2551,9 @@ int32   CGameNiuniuTable::GetChangeCardNum()
     }
     return num;
 }
+
 bool    CGameNiuniuTable::OnRobotInJetton()
 {
-
 	int64 uRemainTime = m_coolLogic.getCoolTick();
 	int64 passtick = m_coolLogic.getPassTick();
 
@@ -2721,7 +2567,6 @@ bool    CGameNiuniuTable::OnRobotInJetton()
 			item.bflag = true;
 			LOG_DEBUG("roomid:%d,tableid:%d,chairID:%d,uid:%d,bret:%d,passtick:%lld,jettonScore:%d,",
 				GetRoomID(), GetTableID(), item.chairID, GetPlayerID(item.chairID), bret, passtick, item.count);
-
 		}
 	}
     return true;
@@ -2735,13 +2580,9 @@ void CGameNiuniuTable::OnRobotJettonScore(uint16 chairID)
 	}
 
 	int64 lRobotJettonScore = GetRobotInJettonMultiple(chairID);
-
 	bool bret = OnUserAddScore(chairID, lRobotJettonScore);
-
-
 	LOG_DEBUG("roomid:%d,tableid:%d,chairID:%d,uid:%d,bret:%d,lRobotJettonScore:%lld",
 		GetRoomID(), GetTableID(), chairID, GetPlayerID(chairID), bret, lRobotJettonScore);
-
 }
 
 void CGameNiuniuTable::OnRobotRealJettonScore(uint16 chairID)
@@ -2759,7 +2600,6 @@ void CGameNiuniuTable::OnRobotRealJettonScore(uint16 chairID)
 	OperItem.bflag = false;
 	OperItem.count = lRobotJettonScore;
 
-
 	int64 uRemainTime = m_coolLogic.getCoolTick();
 	int64 passtick = m_coolLogic.getPassTick();
 	int64 uMaxDelayTime = s_ApplyBrankerTime;
@@ -2773,7 +2613,6 @@ void CGameNiuniuTable::OnRobotRealJettonScore(uint16 chairID)
 	m_vecRobotJetton.emplace_back(OperItem);
 
 	LOG_DEBUG("roomid:%d,tableid:%d,chairID:%d,uid:%d,robotTime:%d",GetRoomID(), GetTableID(), chairID, GetPlayerID(chairID), robotTime);
-
 }
 
 bool CGameNiuniuTable::OnTimeOutChangeCard()
@@ -2840,15 +2679,11 @@ bool CGameNiuniuTable::OnTimeOutApplyBanker()
 
 bool    CGameNiuniuTable::OnRobotInApplyBanker()
 {
-
 	int64 uRemainTime = m_coolLogic.getCoolTick();
 	int64 passtick = m_coolLogic.getPassTick();
 
 	for (auto & item : m_vecRobotApplyBanker)
 	{
-		//LOG_DEBUG("1 roomid:%d,tableid:%d,chairID:%d,uid:%d,bret:%d,passtick:%lld,ApplyScore:%d,",
-		//	GetRoomID(), GetTableID(), item.chairID, GetPlayerID(item.chairID), 1, passtick, item.count);
-
 		if (passtick>= item.time && item.bflag == false)
 		{
 			item.count = GetRobotInApplyMultiple(item.chairID);
@@ -2856,10 +2691,8 @@ bool    CGameNiuniuTable::OnRobotInApplyBanker()
 			item.bflag = true;
 			LOG_DEBUG("roomid:%d,tableid:%d,chairID:%d,uid:%d,bret:%d,passtick:%lld,ApplyScore:%d,",
 				GetRoomID(), GetTableID(), item.chairID, GetPlayerID(item.chairID), bret, passtick, item.count);
-
 		}
 	}
-
     return true;
 }
 
@@ -3015,10 +2848,8 @@ int64 CGameNiuniuTable::GetRobotInApplyMultiple(uint16 chairID)
 		strRemainItem += CStringUtility::FormatToString("iProIndex2:%d ", iProIndex);
 		count = s_iArrApplyMultiple[iProIndex];
 	}
-
 	LOG_DEBUG("roomid:%d,tableid:%d,chairID:%d,uid:%d,count:%d,maxItem_first:%d,second:%d,vecRemainItem.size:%d,strRemainItem:%s",
 		GetRoomID(), GetTableID(), chairID, GetPlayerID(chairID), count, maxItem.first, maxItem.second, vecRemainItem.size(), strRemainItem.c_str());
-
 	return count;
 }
 
@@ -3113,7 +2944,6 @@ void CGameNiuniuTable::OnRobotRealApplyBankerScore(uint16 chairID)
 	LOG_DEBUG("roomid:%d,tableid:%d,chairID:%d,uid:%d,robotTime:%lld",GetRoomID(), GetTableID(), chairID, GetPlayerID(chairID), robotTime);
 }
 
-
 bool    CGameNiuniuTable::OnRobotReady()
 {
     if(m_coolLogic.getCoolTick() < 1000)
@@ -3139,12 +2969,9 @@ bool    CGameNiuniuTable::OnRobotReady()
     }
     return true;
 }
+
 bool    CGameNiuniuTable::OnRobotChangeCard()
-{
-	//if (!m_coolRobot.isTimeOut())
-	//{
-	//	return false;
-	//}
+{	
     for(uint32 i=0;i<m_vecPlayers.size();++i)
     {
         CGamePlayer* pPlayer = m_vecPlayers[i].pPlayer;
@@ -3189,55 +3016,9 @@ void    CGameNiuniuTable::CheckAddRobot()
 			m_coolRobot.beginCooling(g_RandGen.RandRange(3000, 5000));
 			return;
 		}
-	}
-
-	//if (m_pHostRoom->GetRobotCfg() == 0)
-	//{
-	//	return;
-	//}
- //   for(uint32 i=0;i<m_vecPlayers.size();++i)
-	//{
- //       CGamePlayer* pPlayer = m_vecPlayers[i].pPlayer;
- //       if(pPlayer != NULL && pPlayer->IsRobot())
- //       {
- //           if(m_vecPlayers[i].readyState == 0)
-	//		{
- //               PlayerReady(pPlayer);
- //               m_coolRobot.beginCooling(g_RandGen.RandRange(1000,2000));
- //               //return;
- //           }
-	//		//else
-	//		//{
- //   //            if((getSysTime() - m_vecPlayers[i].readyTime) > 150)
-	//			//{
- //   //                LeaveTable(pPlayer);
- //   //                //LOG_DEBUG("time out ready and leave:%d",pPlayer->GetUID());
- //   //                m_coolRobot.beginCooling(g_RandGen.RandRange(2000,4000));
- //   //                return;
- //   //            }
- //           //}
- //       }
- //   }
-	//int iRobotCount = g_RandGen.RandRange(1, 3);
-  //  if(GetChairPlayerNum() >= 1 && GetChairPlayerNum() <= 2)
-  //  {
-  //      for(uint32 i=0;i<m_vecPlayers.size();++i)
-		//{
-  //          CGamePlayer* pPlayer = m_vecPlayers[i].pPlayer;
-  //          if(pPlayer != NULL && !pPlayer->IsRobot())
-  //          {
-		//		for (int j = 0; j < iRobotCount; j++)
-		//		{
-		//			CRobotMgr::Instance().RequestOneRobot(this);
-		//		}
-		//		m_coolRobot.beginCooling(g_RandGen.RandRange(3000, 5000));
-		//		return;
-  //          }
-  //      }
-  //  }
-
-    //SetRobotThinkTime();
+	}	
 }
+
 void    CGameNiuniuTable::SetRobotThinkTime()
 {
     if(GetGameState() == TABLE_STATE_APBNIU_FREE) 
@@ -3279,7 +3060,6 @@ bool CGameNiuniuTable::HaveOverWelfareMaxJettonScore(int64 newmaxjetton)
 	return false;
 }
 
-
 CGamePlayer* CGameNiuniuTable::HaveWelfareNovicePlayer()
 {
 	int count = 0;
@@ -3316,7 +3096,6 @@ CGamePlayer* CGameNiuniuTable::HaveWelfareNovicePlayer()
 	return NULL;
 }
 
-
 // 结算分数
 int64   CGameNiuniuTable::GetNoviceWinScore(uint32 noviceuid)
 {
@@ -3341,37 +3120,9 @@ int64   CGameNiuniuTable::GetNoviceWinScore(uint32 noviceuid)
 		}
 		int64 lLostWinScore = lLostWinFlag * GetBaseScore() * GetPlayerAddScore(i) * GetPlayerRobMultiple(i) * winMultiple[i];
 		lWinScore[i] += lLostWinScore;
-		lWinScore[m_wBankerUser] -= lLostWinScore;
-		//if (bWin)
-		//{
-		//	lWinScore[i] += lLostWinScore;
-		//	lWinScore[m_wBankerUser] -= lLostWinScore;
-		//	lWinScore[i] += m_lTableScore[i] * winMultiple[i];
-		//	lWinScore[m_wBankerUser] -= m_lTableScore[i] * winMultiple[i];
-		//}
-		//else
-		//{
-		//	lWinScore[i] -= m_lTableScore[i] * winMultiple[i];
-		//	lWinScore[m_wBankerUser] += m_lTableScore[i] * winMultiple[i];
-		//}
+		lWinScore[m_wBankerUser] -= lLostWinScore;		
 	}
-
-	/*
-	string strScore;
-	string strUid;
-	for (uint16 i = 0; i < GAME_PLAYER; ++i)
-	{
-		strScore += CStringUtility::FormatToString("i:%d'm:%d'j:%lld's:%lld ", i, winMultiple[i], m_lTableScore[i], lWinScore[i]);
-
-		CGamePlayer * pGamePlayer = GetPlayer(i);
-		if (pGamePlayer!=NULL)
-		{
-			strUid += CStringUtility::FormatToString("i:%d'uid:%d ", i, pGamePlayer->GetUID());
-		}
-	}
-
-	LOG_DEBUG("roomid:%d,tableid:%d,noviceuid:%d,strUid-%s,strScore-%s,",GetRoomID(),GetTableID(), noviceuid, strUid.c_str(), strScore.c_str());
-	*/
+		
 	for (uint16 i = 0; i < GAME_PLAYER; ++i)
 	{
 		CGamePlayer * pGamePlayer = GetPlayer(i);
@@ -3383,6 +3134,7 @@ int64   CGameNiuniuTable::GetNoviceWinScore(uint32 noviceuid)
 	}
 	return lNoviceWinScore;
 }
+
 // 机器人当庄赢金币
 bool CGameNiuniuTable::SetRobotBrankerCanWinScore()
 {
@@ -3390,7 +3142,6 @@ bool CGameNiuniuTable::SetRobotBrankerCanWinScore()
 	{
 		LOG_DEBUG("winscore_card_type_error - roomid:%d,tableid:%d,m_wBankerUser:%d",
 			GetRoomID(), GetTableID(), m_wBankerUser);
-
 		return false;
 	}
 
@@ -3405,7 +3156,6 @@ bool CGameNiuniuTable::SetRobotBrankerCanWinScore()
 		// 机器人不是庄家退出
 		LOG_DEBUG("winscore_card_type_error - roomid:%d,tableid:%d,m_wBankerUser:%d,uid:%d,pBrankerPlayer:%p",
 			GetRoomID(), GetTableID(), m_wBankerUser, GetPlayerID(m_wBankerUser), pBrankerPlayer);
-
 		return false;
 	}
 
@@ -3631,6 +3381,7 @@ bool CGameNiuniuTable::SetRobotBrankerCanWinScore()
 	// 剩余的牌不能凑出机器人能赢金币的手牌，重新换个手牌
 	return false;
 }
+
 // 真实玩家当庄输金币
 bool CGameNiuniuTable::SetPlayerBrankerLostScore()
 {
@@ -3709,10 +3460,8 @@ bool CGameNiuniuTable::SetPlayerBrankerLostScore()
 	if (bIsPlayerBrankerMinCardType == true)
 	{
 		// 真实玩家庄家最小则机器人肯定赢金币
-
 		LOG_DEBUG("ismin_player_card_type - roomid:%d,tableid:%d,m_wBankerUser:%d,uid:%d",
 			GetRoomID(), GetTableID(), m_wBankerUser, GetPlayerID(m_wBankerUser));
-
 		return true;
 	}
 	
@@ -3902,8 +3651,8 @@ bool CGameNiuniuTable::SetPlayerBrankerLostScore()
 
 	// 剩余的牌不能凑出机器人能赢金币的手牌，重新换个手牌
 	return false;
-
 }
+
 // 如果机器人当庄，降真实玩家牌型
 bool CGameNiuniuTable::OnRobotBrankerSubPlayerCardType()
 {
@@ -4043,17 +3792,12 @@ bool CGameNiuniuTable::OnRobotBrankerSubPlayerCardType()
 	{
 		strSubPlayerCardType += CStringUtility::FormatToString("chairid_%d,cardtype_%d ", cbChairID, cbCardType);
 	}
-	//std::string strPlayerCardType;
-	//for (int iPlayerIndex = 0; iPlayerIndex < GAME_PLAYER; ++iPlayerIndex)
-	//{
-	//	strPlayerCardType += CStringUtility::FormatToString("%d ", cbPlayerCardType[iPlayerIndex]);
-	//}
+	
 	LOG_DEBUG("roomid:%d,tableid:%d,m_wBankerUser:%d,uid:%d,vecPlayerChairID.size:%d,Success:%d,cbPlayerCardType:%s,strSubPlayerCardType:%s,strPlayerSubInfo:%s",
 		GetRoomID(), GetTableID(), m_wBankerUser, GetPlayerID(m_wBankerUser), vecPlayerChairID.size(), bIsSubSuccessPlayerCardType, strAllPlayerCardType.c_str(), strSubPlayerCardType.c_str(), strPlayerSubInfo.c_str());
 	
 	return bIsSubSuccessPlayerCardType;
 }
-
 
 // 如果真实玩家当庄，降真实玩家牌型
 bool CGameNiuniuTable::OnPlayerBrankerSubPlayerCardType()
@@ -4210,8 +3954,6 @@ bool CGameNiuniuTable::ProCtrlRobotWinScore(uint32 robotWinPro)
 			}
 		}
 	}
-
-
 	LOG_DEBUG("roomid:%d,tableid:%d,m_wBankerUser:%d,uid:%d,robotWinPro:%d,bIsRobotCanWin:%d,bIsAllRobotIn:%d,bIsAllPlayerIn:%d,bRobotIsRranker:%d,iLoopIndex:%d,bIsSubPlayerCardType:%d,bIsRobotWinScore:%d",
 		GetRoomID(), GetTableID(), m_wBankerUser, GetPlayerID(m_wBankerUser), robotWinPro, bIsRobotCanWin, bIsAllRobotIn, bIsAllPlayerIn, bRobotIsRranker, iLoopIndex, bIsSubPlayerCardType, bIsRobotWinScore);
 
@@ -4302,12 +4044,9 @@ bool CGameNiuniuTable::NoviceWelfareCtrlWinScore()
 			tagTempValue.frontIsHitWelfare = 0;
 			tagTempValue.jettonCount++;
 		}
-	}
-
-
-	//LOG_DEBUG("dos_wel_ctrl - roomid:%d,tableid:%d,isnewnowe:%d, newmaxjetton:%lld, newsmaxwin:%lld,lNoviceWinScore:%lld, IsNoviceWelfareCtrl:%d, noviceuid:%d,posrmb:%d, bIsOverJetton:%d, ChessWelfare:%d,welfarepro:%d,real_welfarepro:%d,lift_odds:%d,pPlayer:%p, fUseHitWelfare:%d,frontIsHitWelfare:%d,jettonCount:%d,bIsHitWelfarePro:%d",GetRoomID(), GetTableID(), isnewnowe, newmaxjetton, newsmaxwin, lNoviceWinScore, bIsNoviceWelfareCtrl, noviceuid, posrmb, bIsOverJetton, GetChessWelfare(), NewPlayerWelfareValue.welfarepro, real_welfarepro, NewPlayerWelfareValue.lift_odds, pPlayer, fUseHitWelfare, tagValue.frontIsHitWelfare, tagValue.jettonCount, bIsHitWelfarePro);
-
-
+	}	
+	LOG_DEBUG("dos_wel_ctrl - roomid:%d,tableid:%d,isnewnowe:%d, newmaxjetton:%lld, newsmaxwin:%lld,lNoviceWinScore:%lld, IsNoviceWelfareCtrl:%d, noviceuid:%d,posrmb:%d, bIsOverJetton:%d, ChessWelfare:%d,welfarepro:%d,real_welfarepro:%d,lift_odds:%d,fUseHitWelfare:%d,frontIsHitWelfare:%d,jettonCount:%d,bIsHitWelfarePro:%d",
+		GetRoomID(), GetTableID(), isnewnowe, newmaxjetton, newsmaxwin, lNoviceWinScore, bIsNoviceWelfareCtrl, noviceuid, posrmb, bIsOverJetton, GetChessWelfare(), NewPlayerWelfareValue.welfarepro, real_welfarepro, NewPlayerWelfareValue.lift_odds, fUseHitWelfare, tagValue.frontIsHitWelfare, tagValue.jettonCount, bIsHitWelfarePro);
 	return bIsNoviceWelfareCtrl;
 }
 
@@ -4351,91 +4090,9 @@ void CGameNiuniuTable::SetCardDataControl()
 	if (!m_bIsMasterUserOper && !m_bIsProgressControlPalyer && !bIsLuckyCtrl && !m_bIsNoviceWelfareCtrl && !bIsAWControl && !bIsRobotCanWin)
 		m_isNeedCheckStock = true; // add by har end
 
-	//if (m_bIsProgressControlPalyer || m_bIsNoviceWelfareCtrl || bIsAWControl || bIsRobotWinScore)
-	//{
-	//	OnSendMasterCard();
-	//}
-	
-
-	//LOG_DEBUG("roomid:%d,tableid:%d,m_bIsMasterUserOper:%d,ControlPalyer:%d,bIsLuckyCtrl:%d,NoviceWelfareCtrl:%d,bIsAWControl:%d",
-	//	GetRoomID(), GetTableID(), m_bIsMasterUserOper, m_bIsProgressControlPalyer, bIsLuckyCtrl, m_bIsNoviceWelfareCtrl, bIsAWControl);
-
-	return;
-	/*
-	bool bIsFalgControl = false;
-	bool bIsControlPlayerIsReady = false;
-
-	uint32 control_uid = m_tagControlPalyer.uid;
-	uint32 game_count = m_tagControlPalyer.count;
-	uint32 control_type = m_tagControlPalyer.type;
-	
-	if (control_uid != 0 && game_count>0 && control_type != GAME_CONTROL_CANCEL)
-	{
-		for (WORD i = 0; i<GAME_PLAYER; i++)
-		{
-			if (m_cbPlayStatus[i] == FALSE)
-			{
-				continue;
-			}
-			CGamePlayer *pPlayer = GetPlayer(i);
-			if (pPlayer == NULL)
-			{
-				continue;
-			}
-			if (control_uid == pPlayer->GetUID() && IsReady(pPlayer))
-			{
-				bIsControlPlayerIsReady = true;
-				break;
-			}
-		}
-	}
-
-	if (bIsControlPlayerIsReady && game_count>0 && control_type != GAME_CONTROL_CANCEL)
-	{
-		if (control_type == GAME_CONTROL_WIN)
-		{
-			bIsFalgControl = SetControlPalyerWin(control_uid);
-		}
-		if (control_type == GAME_CONTROL_LOST)
-		{
-			bIsFalgControl = SetControlPalyerLost(control_uid);
-		}
-		if (bIsFalgControl && m_tagControlPalyer.count>0)
-		{
-			//m_tagControlPalyer.count--;
-			//if (m_tagControlPalyer.count == 0)
-			//{
-			//	m_tagControlPalyer.Init();
-			//}
-			if (m_pHostRoom != NULL)
-			{
-				m_pHostRoom->SynControlPlayer(GetTableID(), m_tagControlPalyer.uid, -1, m_tagControlPalyer.type);
-			}
-		}
-	}
-
-	bool IsHaveAotoKillScore = false;// IsHaveAutoKillScorePlayer();
-	//if (IsHaveAotoKillScore)
-	//{
-	//	SetRobotWinCard();
-	//}
-
-
-	tagJackpotScore tmpJackpotScore;
-	if (m_pHostRoom != NULL)
-	{
-		tmpJackpotScore = m_pHostRoom->GetJackpotScoreInfo();
-	}
-	
-	if (!IsHaveAotoKillScore && !IsNoviceWelfareCtrl && !bIsControlPlayerIsReady)
-	{
-		SetRobotWinCard();
-	}
-	*/
-
-	//LOG_ERROR("reader_success - roomid:%d,TableID:%d,m_lMaxPollScore:%lld,m_lMinPollScore:%lld,m_lCurPollScore:%lld,m_uSysWinPro:%d,m_uSysLostPro:%d",
-	//	GetRoomID(), GetTableID(), tmpJackpotScore.lMaxPollScore, tmpJackpotScore.lMinPollScore, tmpJackpotScore.lCurPollScore, tmpJackpotScore.uSysWinPro, tmpJackpotScore.uSysLostPro);
-		
+	LOG_DEBUG("roomid:%d,tableid:%d,m_bIsMasterUserOper:%d,ControlPalyer:%d,bIsLuckyCtrl:%d,NoviceWelfareCtrl:%d,bIsAWControl:%d",
+		GetRoomID(), GetTableID(), m_bIsMasterUserOper, m_bIsProgressControlPalyer, bIsLuckyCtrl, m_bIsNoviceWelfareCtrl, bIsAWControl);
+	return;			
 }
 
 bool	CGameNiuniuTable::SetPlayerWinScore()
@@ -4659,14 +4316,12 @@ bool    CGameNiuniuTable::SetControlPalyerWin(uint32 control_uid)
 			memcpy(m_cbHandCardData[i], m_cbHandCardData[maxChairID], NIUNIU_CARD_NUM);
 			memcpy(m_cbHandCardData[maxChairID], tmp, NIUNIU_CARD_NUM);
 			LOG_DEBUG("changer card success - roomid:%d,tableid:%d,control_uid:%d,i%d,maxchairID:%d", GetRoomID(), GetTableID(), control_uid, i, maxChairID);
-
 			return true;
 		}
 	}
 	LOG_DEBUG("changer is no find - roomid:%d,tableid:%d,maxChairID:%d,control_uid:%d", m_pHostRoom->GetRoomID(), GetTableID(), maxChairID, control_uid);
 	return false;
 }
-
 
 bool    CGameNiuniuTable::SetControlPalyerLost(uint32 control_uid)
 {
@@ -4736,11 +4391,9 @@ bool    CGameNiuniuTable::SetRobotWinCard()
 		if (pPlayer->IsRobot() == true && i == m_wBankerUser)
 		{
 			SetControlPalyerWin(pPlayer->GetUID());
-
 			return true;
 		}
 	}
-
 
     uint16 maxChairID = INVALID_CHAIR;
     uint8  multiple   = 0;
@@ -4763,32 +4416,19 @@ bool    CGameNiuniuTable::SetRobotWinCard()
     }
     if(maxChairID == INVALID_CHAIR)
 	{
-        //LOG_DEBUG("最大牌座位id不存在");
-
-		LOG_DEBUG("error - roomid:%d,tableid:%d,chessid:%s,Banker:%d,uid:%d",
+        LOG_DEBUG("error - roomid:%d,tableid:%d,chessid:%s,Banker:%d,uid:%d",
 			GetRoomID(), GetTableID(), GetChessID().c_str(), m_wBankerUser, GetPlayerID(m_wBankerUser));
-
         return false;
     }
     CGamePlayer* pTar = GetPlayer(maxChairID);
     if(pTar != NULL && pTar->IsRobot())
 	{
-        //LOG_DEBUG("最大位是机器人:%d",maxChairID);
-
 		LOG_DEBUG("roomid:%d,tableid:%d,chessid:%s,Banker:%d,buid:%d,rchairID:%d,ruid:%d",
 			GetRoomID(), GetTableID(), GetChessID().c_str(), m_wBankerUser, GetPlayerID(m_wBankerUser), maxChairID, GetPlayerID(maxChairID));
-
         return true;
     }
 
-	//int pro = m_robotWinPro;// CApplication::Instance().call<int>("niuniurobotwin");
- //   bool bChange = g_RandGen.RandRatio(pro,PRO_DENO_10000);
- //   if(!bChange)
-	//{
- //       //LOG_DEBUG("换牌概率不触发:%d",pro);
- //       return;
- //   }
-    for(uint16 i=0;i<GAME_PLAYER;++i)
+	for(uint16 i=0;i<GAME_PLAYER;++i)
     {
 		if (m_cbPlayStatus[i] == FALSE || i == maxChairID)
 		{
@@ -4809,12 +4449,9 @@ bool    CGameNiuniuTable::SetRobotWinCard()
             return true;
         }
     }
-
 	LOG_DEBUG("error - roomid:%d,tableid:%d,chessid:%s,Banker:%d,uid:%d",
 		GetRoomID(), GetTableID(), GetChessID().c_str(), m_wBankerUser, GetPlayerID(m_wBankerUser));
-
-	return false;
-    //LOG_DEBUG("未找到换牌对象:%d",maxChairID);
+	return false;   
 }
 
 bool CGameNiuniuTable::ActiveWelfareCtrl()
@@ -5066,10 +4703,14 @@ bool    CGameNiuniuTable::SetLostForLuckyCtrl(uint32 control_uid)
 }
 
 // 设置库存输赢  add by har
-bool CGameNiuniuTable::SetStockWinLose() {
+bool CGameNiuniuTable::SetStockWinLose() 
+{
 	int64 stockChange = m_pHostRoom->IsStockChangeCard(this);
 	if (stockChange == 0)
+	{
+		LOG_ERROR("stockChange is zero roomid:%d,tableid:%d",GetRoomID(), GetTableID());
 		return false;
+	}
 
 	int64 szWinScore[GAME_PLAYER] = { 0 };
 	int64 playerAllWinScore = 0;
@@ -5077,7 +4718,8 @@ bool CGameNiuniuTable::SetStockWinLose() {
 	// 循环，直到找到满足条件的牌组合
 	while (true) {
 		playerAllWinScore = CalculateScore(szWinScore, false);
-		if (CheckStockChange(stockChange, playerAllWinScore, i)) {
+		if (CheckStockChange(stockChange, playerAllWinScore, i)) 
+		{
 			LOG_DEBUG("SetStockWinLose suc roomid:%d,tableid:%d,playerAllWinScore:%lld,stockChange:%lld,i:%d",
 				GetRoomID(), GetTableID(), playerAllWinScore, stockChange, i);
 			return true;

@@ -48,8 +48,13 @@ int CHandleClientMsg::OnRecvClientMsg(NetworkObject* pNetObj, const uint8* pkt_b
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_TAKE_SAFEBOX, handle_msg_take_safebox);// 保险箱存取操作
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_GIVE_SAFEBOX, handle_msg_give_safebox);// 保险箱赠送
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_GET_MISSION_PRIZE_REQ, handle_msg_get_mission_prize);
+
+	HANDLE_CLIENT_FUNC(net::C2S_MSG_GET_LOGIN_VIP_REWARD_INFO_REQ, handle_msg_get_login_vip_reward_info);
+	HANDLE_CLIENT_FUNC(net::C2S_MSG_GET_LOGIN_VIP_REWARD_TOTAL_REQ, handle_msg_get_login_vip_reward_total);
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_GET_LOGIN_REWARD_REQ, handle_msg_get_login_reward);
+	
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_GET_BANKRUPT_HELP, handle_msg_get_bankrupt_help);
+	HANDLE_CLIENT_FUNC(net::C2S_MSG_GET_BANKRUPT_INFO_REQ, handle_msg_get_bankrupt_info);
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_EXCHANGE_SCORE_REQ, handle_msg_exchange_score);
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_SPEAK_BROADCAST_REQ, handle_msg_speak_broadcast);
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_GET_HISTORY_SPEAK, handle_msg_get_history_speak);
@@ -468,7 +473,60 @@ int  CHandleClientMsg::handle_msg_get_mission_prize(NetworkObject* pNetObj, cons
 	pPlayer->GetMissionMgr().GetMissionPrize(msid);
 	return 0;
 }
-//获得登陆奖励
+
+// 根据VIP等级获取用户每天的登陆奖励
+int  CHandleClientMsg::handle_msg_get_login_vip_reward_info(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len)
+{
+	net::msg_get_login_vip_reward_info_req msg;
+	PARSE_MSG_FROM_ARRAY(msg);
+	CPlayer* pPlayer = GetPlayer(pNetObj);
+	if (pPlayer == NULL || !pPlayer->IsInLobby())
+		return 0;
+	net::msg_get_login_vip_reward_info_rep rep;
+	uint16 ret = RESULT_CODE_SUCCESS;
+	if (pPlayer->IsSetRewardBitFlag(net::REWARD_CLOGIN))
+	{		
+		LOG_DEBUG("奖励已经领取过了:uid:%d,flag:%d", pPlayer->GetUID(), net::REWARD_CLOGIN);
+		ret = net::RESULT_CODE_FAIL;
+	}	
+	uint32 award_coin = CDataCfgMgr::Instance().GetSignAwardSumInfo(pPlayer->GetVipLevel());
+	if (award_coin <= 0)
+	{
+		LOG_DEBUG("该VIP等级没有签到奖励 uid:%d vip_level:%d", pPlayer->GetUID(), pPlayer->GetVipLevel());
+		ret = net::RESULT_CODE_FAIL;
+	}	
+	rep.set_reward_flag(ret);
+	for (uint16 i = 1; i <= SIGN_MAX_DAYS; i++)
+	{
+		uint32 coin = CDataCfgMgr::Instance().GetSignAwardInfo(pPlayer->GetVipLevel(), i);
+		rep.add_reward_coin(coin);
+		LOG_DEBUG("vip user get login reward uid:%d vip:%d day:%d coin:%d", pPlayer->GetUID(), pPlayer->GetVipLevel(), i, coin);
+	}
+	pPlayer->SendMsgToClient(&rep, net::S2C_MSG_GET_LOGIN_VIP_REWARD_INFO_REP);	
+	return 0;
+}
+
+// 获取所有VIP等级对应的签到奖励总额
+int  CHandleClientMsg::handle_msg_get_login_vip_reward_total(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len)
+{
+	net::msg_get_login_vip_reward_total_req msg;
+	PARSE_MSG_FROM_ARRAY(msg);
+	CPlayer* pPlayer = GetPlayer(pNetObj);
+	if (pPlayer == NULL || !pPlayer->IsInLobby())
+		return 0;
+	
+	net::msg_get_login_vip_reward_total_rep rep;
+	for (uint16 i = 1; i <= MAX_VIP_LEVEL; i++)
+	{
+		uint32 coin = CDataCfgMgr::Instance().GetSignAwardSumInfo(i);
+		rep.add_total_coin(coin);
+		LOG_DEBUG("get all vip level reward total uid:%d vip:%d coin:%d", pPlayer->GetUID(), i, coin);
+	}
+	pPlayer->SendMsgToClient(&rep, net::S2C_MSG_GET_LOGIN_VIP_REWARD_TOTAL_REP);
+	return 0;
+}
+
+//获得登陆签到奖励
 int  CHandleClientMsg::handle_msg_get_login_reward(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len)
 {
 	LOG_DEBUG("获得登陆奖励");
@@ -479,37 +537,67 @@ int  CHandleClientMsg::handle_msg_get_login_reward(NetworkObject* pNetObj, const
 		return 0;
 	uint8 flag = msg.reward_flag();
 	LOG_DEBUG("获得登陆奖励2  uid:%d,flag:%d", pPlayer->GetUID(), flag);
-	uint8 bRet = 0;
-	if(pPlayer->IsSetRewardBitFlag(flag)){
+	uint8	bRet = 0;
+	uint64	award_coin = 0;		//对应奖励金额
+	if(pPlayer->IsSetRewardBitFlag(flag))
+	{
 		LOG_DEBUG("奖励已经领取过了:uid:%d,flag:%d", pPlayer->GetUID(), flag);
 		bRet = net::RESULT_CODE_REPEAT_GET;
-	}else{
+	}	
+	else
+	{
 		switch(flag)
 		{
 		case net::REWARD_CLOGIN:
 			{
-                if(pPlayer->GetDayGameCount() < CDataCfgMgr::Instance().GetSignGameCount())
-                {
-                    LOG_DEBUG("游戏局数不够领取");
-                    bRet = net::RESULT_CODE_FAIL;
-                }
-                else if(CRedisMgr::Instance().IsHaveSignInDev(pPlayer->GetLoginDeviceID())){
-                    LOG_DEBUG("登录奖励IP限制");
-                    bRet = net::RESULT_CODE_IP_LIMIT; 
-                }
-                else{
-					pPlayer->SignIn();
-    				bRet = net::RESULT_CODE_SUCCESS;
-    				int64 coin = CDataCfgMgr::Instance().GetCLoginScore(pPlayer->GetCLogin());
-    				pPlayer->SyncChangeAccountValue(emACCTRAN_OPER_TYPE_LOGIN,flag,0,coin,0,0,0,0);
-                    CRedisMgr::Instance().AddSignInDev(pPlayer->GetLoginDeviceID(),pPlayer->GetUID());
-					
-                    string title    = "奖励提示"; 
-                    string content  = CStringUtility::FormatToString("您已获得 %d 天签到奖励，奖金是 %.2F 筹码 (备注：7天及以后签到是 %.2F 筹码)",pPlayer->GetCLogin(),(coin*0.01),(CDataCfgMgr::Instance().GetCLoginScore(7)*0.01)); 
-              
-                    string nickname = "系统提示";
-                    CDBMysqlMgr::Instance().SendMail(0,pPlayer->GetUID(),title,content,nickname);
-                }
+				
+				//判断是否连续签到
+				uint32 sign_time = pPlayer->GetSignTime();
+				uint32 days = 0;
+				if (sign_time == 0)			//第一次签到
+				{
+					//更新连续签到天数
+					pPlayer->SetCLogin(1);
+					award_coin = CDataCfgMgr::Instance().GetSignAwardInfo(pPlayer->GetVipLevel(), 1);
+				}
+				else
+				{
+					uint32 curr_time = getSysTime();
+					days = diffTimeDay(sign_time, curr_time);
+					if (days == 1)
+					{
+						uint32 sign_days = pPlayer->GetCLogin();
+						if (sign_days >= SIGN_MAX_DAYS)
+						{
+							sign_days = 0;
+						}
+						award_coin = CDataCfgMgr::Instance().GetSignAwardInfo(pPlayer->GetVipLevel(), sign_days + 1);
+
+						//更新连续签到天数
+						pPlayer->SetCLogin(sign_days + 1);
+					}
+					else
+					{
+						//更新连续签到天数
+						pPlayer->SetCLogin(1);
+						award_coin = CDataCfgMgr::Instance().GetSignAwardInfo(pPlayer->GetVipLevel(), 1);
+					}
+				}
+
+				//更新签到时间
+				pPlayer->UpdateSignTime();
+
+				bRet = net::RESULT_CODE_SUCCESS;
+				pPlayer->SyncChangeAccountValue(emACCTRAN_OPER_TYPE_LOGIN, flag, 0, award_coin, 0, 0, 0, 0);
+
+				string title = "奖励提示";
+				string content = CStringUtility::FormatToString("您已获得 %d 天连续签到奖励，奖金是 %.2F 筹码", pPlayer->GetCLogin(), (award_coin*0.01));
+
+				string nickname = "系统提示";
+				CDBMysqlMgr::Instance().SendMail(0, pPlayer->GetUID(), title, content, nickname);
+
+				LOG_DEBUG("签到奖励:uid:%d,flag:%d,award_coin:%d", pPlayer->GetUID(), flag, award_coin);
+				                
 			}break;
 		case net::REWARD_WLOGIN3:
 			{
@@ -548,6 +636,7 @@ int  CHandleClientMsg::handle_msg_get_login_reward(NetworkObject* pNetObj, const
 	net::msg_get_login_reward_rep rep;
 	rep.set_reward_flag(flag);
 	rep.set_result(bRet);
+	rep.set_reward_coin(award_coin);
 	pPlayer->SendMsgToClient(&rep,net::S2C_MSG_GET_LOGIN_REWARD_REP);
 
 	return 0;
@@ -555,21 +644,51 @@ int  CHandleClientMsg::handle_msg_get_login_reward(NetworkObject* pNetObj, const
 // 破产补助
 int  CHandleClientMsg::handle_msg_get_bankrupt_help(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len)
 {
-	LOG_DEBUG("破产补助");
+	//LOG_DEBUG("破产补助");
 	net::msg_get_bankrupt_help_req msg;
 	PARSE_MSG_FROM_ARRAY(msg);
 	CPlayer* pPlayer = GetPlayer(pNetObj);
 	if(pPlayer == NULL || !pPlayer->IsInLobby())
 		return 0;
 	net::msg_get_bankrupt_help_rep rep;
-	uint8 bRet = pPlayer->GetBankruptHelp() ? 1 : 0;
+	uint8 bRet = pPlayer->GetBankruptHelp();
+
+	uint32 brt_count = CDataCfgMgr::Instance().GetBankruptCount() - pPlayer->GetBankrupt();
 
 	rep.set_result(bRet);
-	rep.set_bankrupt_count(pPlayer->GetBankrupt());
+	rep.set_bankrupt_count(brt_count);
+	rep.set_bankrupt_coin(CDataCfgMgr::Instance().GetBankruptValue());
 	pPlayer->SendMsgToClient(&rep,net::S2C_MSG_GET_BANKRUPT_HELP_REP);
-
+	LOG_DEBUG("破产补助申请 uid:%d ret:%d count:%d coin:%d", pPlayer->GetUID(), bRet, brt_count, CDataCfgMgr::Instance().GetBankruptValue());
 	return 0;
 }
+
+// 获取破产补助信息
+int  CHandleClientMsg::handle_msg_get_bankrupt_info(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len)
+{
+	net::msg_get_bankrupt_info_req msg;
+	PARSE_MSG_FROM_ARRAY(msg);
+	CPlayer* pPlayer = GetPlayer(pNetObj);
+	if (pPlayer == NULL || !pPlayer->IsInLobby())
+	{
+		LOG_DEBUG("玩家为空或者不在大厅");
+		return 0;
+	}
+
+	uint32 base = CDataCfgMgr::Instance().GetBankruptBase();
+	uint32 brt_value = CDataCfgMgr::Instance().GetBankruptValue();
+	uint32 brt_count = CDataCfgMgr::Instance().GetBankruptCount() - pPlayer->GetBankrupt();
+	
+	net::msg_get_bankrupt_info_rep rep;
+	rep.set_base(base);
+	rep.set_last_coin(brt_value * brt_count);
+	rep.set_last_count(brt_count);
+	rep.set_award_coin(brt_value);
+	pPlayer->SendMsgToClient(&rep, net::S2C_MSG_GET_BANKRUPT_INFO_REP);
+	LOG_DEBUG("获取破产补助信息 uid:%d base:%d last_coin:%d last_count:%d award_coin:%d", pPlayer->GetUID(), base, brt_value*brt_count, brt_count, brt_value);
+	return 0;
+}
+
 // 兑换积分
 int  CHandleClientMsg::handle_msg_exchange_score(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len)
 {

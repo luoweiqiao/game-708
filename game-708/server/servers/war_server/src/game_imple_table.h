@@ -254,6 +254,7 @@ protected:
 	warGameRecord              		m_record;
 	vector<warGameRecord>			m_vecRecord;	                        //游戏记录
 	vector<warGameRecord>			m_vecGamePlayRecord;	                //游戏记录
+	vector<uint32>					m_chip_range;							//当前房间的筹码
 
 public:
 	void OnRobotTick();

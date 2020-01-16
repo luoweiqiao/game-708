@@ -376,6 +376,17 @@ protected:
 	// return : 非机器人玩家赢分
 	int64 GetBankerAndPlayerWinScore();
 
+	//百人场精准控制
+public:
+	void   OnBrcControlSendAllPlayerInfo(CGamePlayer* pPlayer);			//发送在线所有真实玩家下注详情
+	void   OnBrcControlNoticeSinglePlayerInfo(CGamePlayer* pPlayer);	//通知单个玩家信息
+	void   OnBrcControlSendAllRobotTotalBetInfo();						//发送所有机器人总下注信息
+	void   OnBrcControlSendAllPlayerTotalBetInfo();						//发送所有真实玩家总下注信息
+	bool   OnBrcControlEnterControlInterface(CGamePlayer* pPlayer);		//进入控制界面
+	void   OnBrcControlBetDeal(CGamePlayer* pPlayer);					//下注处理
+	bool   OnBrcAreaControl();											//百人场区域控制
+	void   OnBrcFlushSendAllPlayerInfo();								//刷新在线所有真实玩家信息---玩家进入/退出桌子时调用
+
     //总下注数
 protected:
 	int64						    m_allJettonScore[AREA_COUNT];		            //全体总注 包括机器人

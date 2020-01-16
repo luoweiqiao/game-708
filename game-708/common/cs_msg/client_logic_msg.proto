@@ -10,6 +10,7 @@ import "dice_logic_msg.proto";
 import "war_logic_msg.proto";
 import "fight_logic_msg.proto";
 import "twoeight_logic_msg.proto";
+import "carcity_logic_msg.proto";
 
 //-----------------------------大厅服消息-------------------------------------------------------------------
 // 心跳包
@@ -196,6 +197,28 @@ message msg_get_mission_prize_rep
 	optional mission_data mission = 2;
 	optional base_info baseinfo = 3;
 }
+
+//请求玩家VIP对应的每天登录奖励信息
+message msg_get_login_vip_reward_info_req
+{
+	optional uint32 help_count = 1; //无用
+}
+message msg_get_login_vip_reward_info_rep
+{
+	repeated uint32 reward_coin 	= 1;	// 奖励金额	
+	optional uint32 reward_flag		= 2;	// 是否可以领奖
+}
+
+//所有VIP等级总的奖励信息
+message msg_get_login_vip_reward_total_req
+{
+	optional uint32 help_count = 1; //无用
+}
+message msg_get_login_vip_reward_total_rep
+{
+	repeated uint32 total_coin 		= 1;	// 总奖励金额	
+}
+
 //连续登陆奖励
 message msg_get_login_reward_req
 {
@@ -205,7 +228,9 @@ message msg_get_login_reward_rep
 {
 	optional uint32 reward_flag = 1; // 领奖标记
 	optional uint32 result		= 2; // 领奖结果
+	optional uint32 reward_coin	= 3; // 领奖筹码
 }
+
 //破产补助
 message msg_get_bankrupt_help_req
 {
@@ -215,7 +240,23 @@ message msg_get_bankrupt_help_rep
 {
 	optional uint32 result 			= 1; // 领取结果
 	optional uint32 bankrupt_count  = 2; // 破产次数
+	optional uint32 bankrupt_coin   = 3; // 破产领取金额
 }
+
+//获取破产补助信息
+message msg_get_bankrupt_info_req
+{
+	optional uint32 help_count = 1;		//无用
+}
+
+message msg_get_bankrupt_info_rep
+{
+    optional uint32 base		= 1;	// 低于此积分算破产
+	optional uint32 last_coin	= 2;	// 剩余破产金额
+	optional uint32 last_count	= 3;	// 剩余破产次数
+	optional uint32 award_coin	= 4;	// 每次破产补助金额
+}
+
 //兑换财富币积分
 message msg_exchange_score_req
 {
@@ -747,6 +788,7 @@ message msg_game_play_log
 	optional msg_war_play_log_rep	   war      = 5; // 红黑
 	optional msg_fight_play_log_rep    fight    = 6; // 龙虎斗
 	optional msg_twoeight_play_log_rep twoeight = 7; // 二八杠
+	optional msg_carcity_play_log_rep  carcity  = 8; // 奔驰宝马
 }
 
 // 游戏记录
@@ -774,6 +816,7 @@ message msg_chat_info_forward
 	optional bytes  fromname  = 5; // 发送玩家的昵称
     repeated bytes  toname    = 6; // 目标玩家的昵称列表
 	optional uint64 time      = 7; // 服务器时间戳(秒)
+	optional int32  mtype	  = 8; // 消息类型
 }
 
 //百人场控制账号进入桌子请求

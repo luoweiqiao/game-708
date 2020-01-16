@@ -78,6 +78,7 @@ void CLobbyAsyncDBCallBack::OnLoadPlayerDataEvent(CDBEventRep* pRep)
 		string str_loginip	= refRows["loginip"].as<string>();
 		data.level			= refRows["level"].as<int32>();
 		data.ispay          = refRows["ispay"].as<uint32>();
+		data.sign_time		= refRows["sign_time"].as<uint32>();
 
         CPlayer* pPlayer = dynamic_cast<CPlayer*>(CPlayerMgr::Instance().GetPlayer(uid));
         if(pPlayer != NULL && pPlayer->GetPlayerState() == PLAYER_STATE_LOAD_DATA)

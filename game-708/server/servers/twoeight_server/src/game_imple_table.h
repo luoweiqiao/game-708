@@ -31,7 +31,7 @@ class CGameRoom;
 
 //控制区域
 enum emAREA {
-	REA_XUAN_SHUN = 0, // 顺
+	AREA_SHUN_MEN = 0, // 顺
 	AREA_TIAN_MEN,	   // 天
 	AREA_DI_MEN,	   // 地
 	AREA_BANK,		   // 庄赢
@@ -94,7 +94,7 @@ public:
 	virtual void OnNewDay();
 	virtual void GetGamePlayLogInfo(net::msg_game_play_log* pInfo);
 	virtual void GetGameEndLogInfo(net::msg_game_play_log* pInfo);
-	virtual bool RobotLeavaReadJetton(uint32 uid);
+	virtual bool RobotLeavaReadJetton(uint32 uid); // 玩家下线
 
 	// 发送场景信息(断线重连)
 	virtual void SendGameScene(CGamePlayer* pPlayer);
@@ -306,19 +306,11 @@ protected:
 	vector<stTwoeightGameRecord>	m_vecGamePlayRecord;	                //游戏记录
 
 	bool IsInTableRobot(uint32 uid, CGamePlayer *pPlayer);
-	void OnRobotJettonDeal(CGamePlayer *pPlayer, bool isChairPlayer);
-	void OnChairRobotJetton(); // 椅子机器人押注准备
-	// 定时器触发机器人下注
-	// vecobotPlaceJetton : 下注列表
-	void OnRobotPlaceJetton(vector<tagRobotPlaceJetton> &vRobotPlaceJetton);
-	bool							m_bIsChairRobotAlreadyJetton = false;
-	vector<tagRobotPlaceJetton>		m_chairRobotPlaceJetton;				//下注的坐在椅子上的机器人
-
-	//
-	void OnRobotJetton(); // 观众机器人押注准备
-	bool							m_bIsRobotAlreadyJetton = false;
-	vector<tagRobotPlaceJetton>		m_RobotPlaceJetton;				//下注的机器人
-	int64							m_lGameCount = 0;
+	void OnRobotJettonDeal(CGamePlayer *pPlayer, bool isChairPlayer); // 机器人押注准备实现
+	void OnRobotJetton();      // 机器人押注准备
+	void OnRobotPlaceJetton(); // 定时器触发机器人下注
+	bool						m_bIsRobotAlreadyJetton = false; // 是否机器人准备完毕
+	vector<tagRobotPlaceJetton>	m_RobotPlaceJetton;				 // 机器人下注数据项列表
 
 	/// 计数相关 ///
 	uint32						m_uBairenTotalCount = 0;
@@ -339,7 +331,6 @@ protected:
 	bool   OnBrcAreaControlForA(uint8 ctrl_area_a);						//百人场A区域控制 庄赢/庄输
 	bool   OnBrcAreaControlForB(set<uint8> &area_list);					//百人场B区域控制 天/地/玄/黄 支持多选
 	void   OnBrcFlushSendAllPlayerInfo();								//刷新在线所有真实玩家信息---玩家进入/退出桌子时调用
-	bool   SetControlBankerScore(bool isWin);							//设置庄家总体为赢/输 通过参数控制
 
 	//当申请上庄玩家被强制下庄后，需要通知该上庄玩家
 	void  OnNotityForceApplyUser(CGamePlayer* pPlayer);

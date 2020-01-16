@@ -79,7 +79,9 @@ public:
 	void SortCardList(BYTE cbCardData[], BYTE cbCardCount,bool bAsc = true);
 	//混乱扑克
 	void RandCardList(BYTE cbCardBuffer[], BYTE cbBufferCount);
-    
+	//获取剩余牌
+	bool GetSubDataCard(BYTE cbSubCardData[][MAX_COUNT], vector<BYTE> & vecRemainCardData);
+
 	//功能函数
 public:
 	//逻辑数值

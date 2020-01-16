@@ -80,12 +80,12 @@ public:
 	// 修改玩家账号数值（增量修改）
 	virtual bool  SyncChangeAccountValue(uint16 operType,uint16 subType,int64 diamond,int64 coin,int64 ingot,int64 score,int32 cvalue,int64 safecoin,const string& chessid="");
 
-	bool    PhpAtomChangeAccountValue(uint16 operType, uint16 subType, int64 diamond, int64 coin, int64 ingot, int64 score, int32 cvalue, int64 safecoin);
+	bool    PhpAtomChangeAccountValue(uint16 operType, uint16 subType, int64 diamond, int64 coin, int64 ingot, int64 score, int32 cvalue, int64 safecoin, string chessid);
 
 	// 保存登陆奖励状态
 	void 	SaveLoginInfo();
 	// 领取破产补助
-	bool 	GetBankruptHelp();
+	uint32 	GetBankruptHelp();
 
 	CMissionMgr& GetMissionMgr(){ return m_missionMgr; }
 

@@ -291,6 +291,11 @@ void CGameDiceTable::OnTimeTick()
 					InitChessID();
                     SetGameState(TABLE_STATE_DICE_PLACE_JETTON);
               
+					m_brc_table_status = emTABLE_STATUS_START;
+					m_brc_table_status_time = s_PlaceJettonTime;
+
+					//同步刷新百人场控制界面的桌子状态信息
+					OnBrcControlFlushTableStatus();
                 }
 				else
 				{
@@ -303,6 +308,13 @@ void CGameDiceTable::OnTimeTick()
                 m_coolLogic.beginCooling(s_DispatchTime);
 				DispatchTableCard();
                 OnGameEnd(INVALID_CHAIR,GER_NORMAL);
+
+				m_brc_table_status = emTABLE_STATUS_END;
+				m_brc_table_status_time = 0;
+
+				//同步刷新百人场控制界面的桌子状态信息
+				OnBrcControlFlushTableStatus();
+
             }break;
         case TABLE_STATE_DICE_GAME_END:       // 结束游戏
             {
@@ -312,6 +324,12 @@ void CGameDiceTable::OnTimeTick()
                 SetGameState(TABLE_STATE_DICE_FREE);
                 m_coolLogic.beginCooling(s_FreeTime);
                 
+				m_brc_table_status = emTABLE_STATUS_FREE;
+				m_brc_table_status_time = 0;
+
+				//同步刷新百人场控制界面的桌子状态信息
+				OnBrcControlFlushTableStatus();
+
             }break;
         default:
             break;
@@ -431,6 +449,27 @@ int CGameDiceTable::OnGameMessage(CGamePlayer* pPlayer,uint16 cmdID, const uint8
 		PARSE_MSG_FROM_ARRAY(msg);
 
 		return OnUserContinuousPressure(pPlayer, msg);
+	}break;
+	case net::C2S_MSG_BRC_CONTROL_ENTER_TABLE_REQ://
+	{
+		net::msg_brc_control_user_enter_table_req msg;
+		PARSE_MSG_FROM_ARRAY(msg);
+
+		return OnBrcControlEnterControlInterface(pPlayer);
+	}break;
+	case net::C2S_MSG_BRC_CONTROL_LEAVE_TABLE_REQ://
+	{
+		net::msg_brc_control_user_leave_table_req msg;
+		PARSE_MSG_FROM_ARRAY(msg);
+
+		return OnBrcControlPlayerLeaveInterface(pPlayer);
+	}break;
+	case net::C2S_MSG_BRC_CONTROL_AREA_INFO_REQ://
+	{
+		net::msg_brc_control_area_info_req msg;
+		PARSE_MSG_FROM_ARRAY(msg);
+
+		return OnBrcControlPlayerBetArea(pPlayer, msg);
 	}break;
     default:
         return 0;
@@ -1339,6 +1378,10 @@ bool CGameDiceTable::OnGameEnd(uint16 chairID,uint8 reason)
             CheckRobotCancelBanker();
 			LOG_DEBUG("OnGameEnd2 - roomid:%d,tableid:%d,playerAllWinScore:%d,lBankerWinScore:%d", GetRoomID(), GetTableID(), playerAllWinScore, lBankerWinScore);
 			m_pHostRoom->UpdateStock(this, playerAllWinScore); // add by har
+
+			//同步所有玩家数据到控端
+			OnBrcFlushSendAllPlayerInfo();
+
 			OnTableGameEnd();
 			return true;
         }break;    
@@ -1580,6 +1623,12 @@ void  CGameDiceTable::OnPlayerJoin(bool isJoin,uint16 chairID,CGamePlayer* pPlay
             m_userJettonScore[i].erase(uid);
         }
     }        
+
+	//刷新控制界面的玩家数据
+	if (!pPlayer->IsRobot())
+	{
+		OnBrcFlushSendAllPlayerInfo();
+	}
 }
 // 发送场景信息(断线重连)
 void    CGameDiceTable::SendGameScene(CGamePlayer* pGamePlayer)
@@ -1750,6 +1799,24 @@ void    CGameDiceTable::SendGameScene(CGamePlayer* pGamePlayer)
 
 			pGamePlayer->SendMsgToClient(&msg,net::S2C_MSG_DICE_GAME_PLAY_INFO);
 
+			//刷新所有控制界面信息协议---用于断线重连的处理
+			if (pGamePlayer->GetCtrlFlag())
+			{
+				//刷新百人场桌子状态
+				m_brc_table_status_time = m_coolLogic.getCoolTick();
+				OnBrcControlFlushTableStatus(pGamePlayer);
+
+				//发送控制区域信息
+				OnBrcControlFlushAreaInfo(pGamePlayer);
+				//发送所有真实玩家列表
+				OnBrcControlSendAllPlayerInfo(pGamePlayer);
+				//发送机器人总下注信息
+				OnBrcControlSendAllRobotTotalBetInfo();
+				//发送真实玩家总下注信息
+				OnBrcControlSendAllPlayerTotalBetInfo();
+				//发送申请上庄玩家列表
+				OnBrcControlFlushAppleList();
+			}
 
         }break;
     default:
@@ -2079,6 +2146,10 @@ bool    CGameDiceTable:: OnUserPlaceJetton(CGamePlayer* pPlayer, BYTE cbJettonAr
 
 	if(bPlaceJettonSuccess)
 	{
+
+		//刷新百人场控制界面的下注信息
+		OnBrcControlBetDeal(pPlayer);
+
 		RecordPlayerBaiRenJettonInfo(pPlayer, cbJettonArea, lJettonScore);
 
 		OnAddPlayerJetton(pPlayer->GetUID(), lJettonScore);
@@ -2231,6 +2302,9 @@ bool    CGameDiceTable::OnUserContinuousPressure(CGamePlayer* pPlayer, net::msg_
 
 	rep.set_result(net::RESULT_CODE_SUCCESS);
 	pPlayer->SendMsgToClient(&rep, net::S2C_MSG_DICE_CONTINUOUS_PRESSURE_REP);
+
+	//刷新百人场控制界面的下注信息
+	OnBrcControlBetDeal(pPlayer);
 
 	return true;
 }
@@ -2482,18 +2556,6 @@ bool    CGameDiceTable::DispatchTableCard()
     m_GameLogic.ShakeRandDice(m_cbTableDice,DICE_COUNT);
 	uint32 robotBankerWinPro = m_robotBankerWinPro;
 
-	//int autokillsocre = 0;
-	//int autokillstatus = 0;
-	//bool HaveKilledPlayer = false;
-	//int iAutoKillDefeat = CDataCfgMgr::Instance().GetBaiRenAutoKillDefeat();
-	//int iAutoKillInterval = CDataCfgMgr::Instance().GetBaiRenAutoKillInterval();
-	//if (m_pHostRoom != NULL)
-	//{
-	//	autokillsocre = m_pHostRoom->GetAutoKillSocre();
-	//	autokillstatus = m_pHostRoom->GetAutoKillStatus();
-	//}
-
-
 	bool bIsFalgControlPlayer = false;
 	bool bNeedChangeCard = g_RandGen.RandRatio(robotBankerWinPro, PRO_DENO_10000);
 	bool bIsBrankerWin = false;
@@ -2502,8 +2564,11 @@ bool    CGameDiceTable::DispatchTableCard()
 	bool bIsRobotSubJackpot = false;
 	bool bAw = false;
 	bool bIsStockControl = false;
+	bool bAreaIsControl = false;
 
-	if (m_GameLogic.m_bIsControlDice == false)
+	bAreaIsControl = OnBrcAreaControl();
+
+	if (!bAreaIsControl && m_GameLogic.m_bIsControlDice == false)
 	{
 		bIsFalgControlPlayer = ProgressControlPalyer();
 		if (!bIsFalgControlPlayer)
@@ -2521,70 +2586,11 @@ bool    CGameDiceTable::DispatchTableCard()
 
 		if (!bIsFalgControlPlayer && !bIsRobotSubJackpot && !bIsStockControl)
 			bAw = ActiveWelfareCtrl();
-
-		//if (bIsFalgControlPlayer == false)
-		//{
-		//	if (autokillsocre == 1)
-		//	{
-		//		HaveKilledPlayer = GetHaveKilledPlayer();
-		//		if (HaveKilledPlayer)
-		//		{
-		//			if (autokillstatus == 1)
-		//			{
-		//				if (iAutoKillDefeat > m_pHostRoom->GetAutoKillDefeat())
-		//				{
-		//					KilledPlayerCtrl();
-		//					m_pHostRoom->AddAutoKillDefeat();
-		//					if (iAutoKillDefeat <= m_pHostRoom->GetAutoKillDefeat())
-		//					{
-		//						m_pHostRoom->SetAutoKillStatus(0);
-		//					}
-		//				}
-		//				else
-		//				{
-		//					NotWelfareCtrl();
-		//					m_pHostRoom->AddAutoKillInterval();
-		//					if (iAutoKillInterval <= m_pHostRoom->GetAutoKillInterval())
-		//					{
-		//						m_pHostRoom->SetAutoKillStatus(1);
-		//					}
-		//				}
-		//			}
-		//			else
-		//			{
-		//				NotWelfareCtrl();
-		//				m_pHostRoom->AddAutoKillInterval();
-		//				if (iAutoKillInterval <= m_pHostRoom->GetAutoKillInterval())
-		//				{
-		//					m_pHostRoom->SetAutoKillStatus(1);
-		//				}
-		//			}
-		//		}
-		//		else
-		//		{
-		//			NotWelfareCtrl();
-		//		}
-		//	}
-		//	else
-		//	{
-		//		if (!bIsFalgControlPlayer &&bNeedChangeCard && !bIsPlayerNoWinJackpot && !bIsRobotSubJackpot)
-		//		{
-		//			bIsBrankerWin = SetRobotBrankerWin();
-		//		}
-		//	}
-		//}
-		//else
-		//{
-		//	if (!bIsFalgControlPlayer &&bNeedChangeCard && !bIsPlayerNoWinJackpot && !bIsRobotSubJackpot)
-		//	{
-		//		bIsBrankerWin = SetRobotBrankerWin();
-		//	}
-		//}
-
 	}
+
 	SetIsAllRobotOrPlayerJetton(IsAllRobotOrPlayerJetton()); // add by har
-	LOG_DEBUG("roomid:%d,tableid:%d,m_bIsControlDice:%d,bIsRobotSubJackpot:%d,bIsFalgControlPlayer:%d,bIsPlayerNoWinJackpot:%d,bRobotSubJackpotPro:%d,lMaxPollScore:%lld,lCurPollScore:%lld, bIsRobotSubJackpot:%d,bNeedChangeCard:%d,bIsBrankerWin:%d,robotBankerWinPro:%d,bAw:%d,bIsStockControl:%d,GetIsAllRobotOrPlayerJetton:%d,m_cbTableDice: %d,%d,%d",
-		GetRoomID(), GetTableID(), m_GameLogic.m_bIsControlDice, bIsRobotSubJackpot, bIsFalgControlPlayer, bIsPlayerNoWinJackpot, bRobotSubJackpotPro, tempDiceJackpotInfo.lMaxPollScore, tempDiceJackpotInfo.lCurPollScore, bIsRobotSubJackpot, bNeedChangeCard, bIsBrankerWin, robotBankerWinPro, bAw, bIsStockControl, GetIsAllRobotOrPlayerJetton(), m_cbTableDice[0], m_cbTableDice[1], m_cbTableDice[2]);
+	LOG_DEBUG("roomid:%d,tableid:%d,bAreaIsControl:%d m_bIsControlDice:%d,bIsRobotSubJackpot:%d,bIsFalgControlPlayer:%d,bIsPlayerNoWinJackpot:%d,bRobotSubJackpotPro:%d,lMaxPollScore:%lld,lCurPollScore:%lld, bIsRobotSubJackpot:%d,bNeedChangeCard:%d,bIsBrankerWin:%d,robotBankerWinPro:%d,bAw:%d,bIsStockControl:%d,GetIsAllRobotOrPlayerJetton:%d,m_cbTableDice: %d,%d,%d",
+		GetRoomID(), GetTableID(), bAreaIsControl, m_GameLogic.m_bIsControlDice, bIsRobotSubJackpot, bIsFalgControlPlayer, bIsPlayerNoWinJackpot, bRobotSubJackpotPro, tempDiceJackpotInfo.lMaxPollScore, tempDiceJackpotInfo.lCurPollScore, bIsRobotSubJackpot, bNeedChangeCard, bIsBrankerWin, robotBankerWinPro, bAw, bIsStockControl, GetIsAllRobotOrPlayerJetton(), m_cbTableDice[0], m_cbTableDice[1], m_cbTableDice[2]);
 
     return true;
 }
@@ -6565,4 +6571,575 @@ int64 CGameDiceTable::GetBankerAndPlayerWinScore() {
 	if (IsBankerRealPlayer())
 		playerAllWinScore += lBankerWinScore;
 	return playerAllWinScore;
+}
+
+void CGameDiceTable::OnBrcControlSendAllPlayerInfo(CGamePlayer* pPlayer)
+{
+	if (!pPlayer)
+	{
+		return;
+	}
+	LOG_DEBUG("send brc control all true player info list uid:%d.", pPlayer->GetUID());
+
+	net::msg_brc_control_all_player_bet_info rep;
+
+	//计算座位玩家
+	for (WORD wChairID = 0; wChairID < GAME_PLAYER; wChairID++)
+	{
+		//获取用户
+		CGamePlayer * tmp_pPlayer = GetPlayer(wChairID);
+		if (tmp_pPlayer == NULL)	continue;
+		if (tmp_pPlayer->IsRobot())   continue;
+		uint32 uid = tmp_pPlayer->GetUID();
+
+		net::brc_control_player_bet_info *info = rep.add_player_bet_list();
+		info->set_uid(uid);
+		info->set_coin(tmp_pPlayer->GetAccountValue(emACC_VALUE_COIN));
+		info->set_name(tmp_pPlayer->GetPlayerName());
+		//统计信息
+		auto iter = m_mpPlayerResultInfo.find(uid);
+		if (iter != m_mpPlayerResultInfo.end())
+		{
+			info->set_curr_day_win(iter->second.day_win_coin);
+			info->set_win_number(iter->second.win);
+			info->set_lose_number(iter->second.lose);
+			info->set_total_win(iter->second.total_win_coin);
+		}
+		//下注信息	
+		uint64 total_bet = 0;
+		for (WORD wAreaIndex = 0; wAreaIndex < AREA_COUNT; ++wAreaIndex)
+		{
+			info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+			total_bet += m_userJettonScore[wAreaIndex][uid];
+		}
+		info->set_total_bet(total_bet);
+		info->set_ismaster(IsBrcControlPlayer(uid));
+	}
+
+	//计算旁观玩家
+	map<uint32, CGamePlayer*>::iterator it = m_mpLookers.begin();
+	for (; it != m_mpLookers.end(); ++it)
+	{
+		CGamePlayer* tmp_pPlayer = it->second;
+		if (tmp_pPlayer == NULL)	continue;
+		if (tmp_pPlayer->IsRobot())   continue;
+		uint32 uid = tmp_pPlayer->GetUID();
+
+		net::brc_control_player_bet_info *info = rep.add_player_bet_list();
+		info->set_uid(uid);
+		info->set_coin(tmp_pPlayer->GetAccountValue(emACC_VALUE_COIN));
+		info->set_name(tmp_pPlayer->GetPlayerName());
+
+		//统计信息
+		auto iter = m_mpPlayerResultInfo.find(uid);
+		if (iter != m_mpPlayerResultInfo.end())
+		{
+			info->set_curr_day_win(iter->second.day_win_coin);
+			info->set_win_number(iter->second.win);
+			info->set_lose_number(iter->second.lose);
+			info->set_total_win(iter->second.total_win_coin);
+		}
+		//下注信息	
+		uint64 total_bet = 0;
+		for (WORD wAreaIndex = 0; wAreaIndex < AREA_COUNT; ++wAreaIndex)
+		{
+			info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+			total_bet += m_userJettonScore[wAreaIndex][uid];
+		}
+		info->set_total_bet(total_bet);
+		info->set_ismaster(IsBrcControlPlayer(uid));
+	}
+	pPlayer->SendMsgToClient(&rep, net::S2C_MSG_BRC_CONTROL_ALL_PLAYER_BET_INFO);
+}
+
+void CGameDiceTable::OnBrcControlNoticeSinglePlayerInfo(CGamePlayer* pPlayer)
+{
+	if (!pPlayer)
+	{
+		return;
+	}
+
+	if (pPlayer->IsRobot())   return;
+
+	uint32 uid = pPlayer->GetUID();
+	LOG_DEBUG("notice brc control single true player bet info uid:%d.", uid);
+
+	net::msg_brc_control_single_player_bet_info rep;
+
+	//计算座位玩家
+	for (WORD wChairID = 0; wChairID < GAME_PLAYER; wChairID++)
+	{
+		//获取用户
+		CGamePlayer * tmp_pPlayer = GetPlayer(wChairID);
+		if (tmp_pPlayer == NULL) continue;
+		if (uid == tmp_pPlayer->GetUID())
+		{
+			net::brc_control_player_bet_info *info = rep.mutable_player_bet_info();
+			info->set_uid(uid);
+			info->set_coin(pPlayer->GetAccountValue(emACC_VALUE_COIN));
+			info->set_name(pPlayer->GetPlayerName());
+			//统计信息
+			auto iter = m_mpPlayerResultInfo.find(uid);
+			if (iter != m_mpPlayerResultInfo.end())
+			{
+				info->set_curr_day_win(iter->second.day_win_coin);
+				info->set_win_number(iter->second.win);
+				info->set_lose_number(iter->second.lose);
+				info->set_total_win(iter->second.total_win_coin);
+			}
+			//下注信息	
+			uint64 total_bet = 0;
+			for (WORD wAreaIndex = 0; wAreaIndex < AREA_COUNT; ++wAreaIndex)
+			{
+				info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+				total_bet += m_userJettonScore[wAreaIndex][uid];
+			}
+			info->set_total_bet(total_bet);
+			info->set_ismaster(IsBrcControlPlayer(uid));
+			break;
+		}
+	}
+
+	//计算旁观玩家
+	map<uint32, CGamePlayer*>::iterator it = m_mpLookers.begin();
+	for (; it != m_mpLookers.end(); ++it)
+	{
+		CGamePlayer* tmp_pPlayer = it->second;
+		if (tmp_pPlayer == NULL)continue;
+		if (uid == tmp_pPlayer->GetUID())
+		{
+			net::brc_control_player_bet_info *info = rep.mutable_player_bet_info();
+			info->set_uid(uid);
+			info->set_coin(pPlayer->GetAccountValue(emACC_VALUE_COIN));
+			info->set_name(pPlayer->GetPlayerName());
+
+			//统计信息
+			auto iter = m_mpPlayerResultInfo.find(uid);
+			if (iter != m_mpPlayerResultInfo.end())
+			{
+				info->set_curr_day_win(iter->second.day_win_coin);
+				info->set_win_number(iter->second.win);
+				info->set_lose_number(iter->second.lose);
+				info->set_total_win(iter->second.total_win_coin);
+			}
+			//下注信息	
+			uint64 total_bet = 0;
+			for (WORD wAreaIndex = 0; wAreaIndex < AREA_COUNT; ++wAreaIndex)
+			{
+				info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+				total_bet += m_userJettonScore[wAreaIndex][uid];
+			}
+			info->set_total_bet(total_bet);
+			info->set_ismaster(IsBrcControlPlayer(uid));
+			break;
+		}
+	}
+
+	for (auto &it : m_setControlPlayers)
+	{
+		it->SendMsgToClient(&rep, net::S2C_MSG_BRC_CONTROL_SINGLE_PLAYER_BET_INFO);
+	}
+}
+
+void CGameDiceTable::OnBrcControlSendAllRobotTotalBetInfo()
+{
+	LOG_DEBUG("notice brc control all robot totol bet info.");
+
+	net::msg_brc_control_total_robot_bet_info rep;
+	for (WORD wAreaIndex = 0; wAreaIndex < AREA_COUNT; ++wAreaIndex)
+	{
+		rep.add_area_info(m_allJettonScore[wAreaIndex] - m_playerJettonScore[wAreaIndex]);
+		LOG_DEBUG("wAreaIndex:%d m_allJettonScore[%d]:%lld m_playerJettonScore[%d]:%lld", wAreaIndex, wAreaIndex, m_allJettonScore[wAreaIndex], wAreaIndex, m_playerJettonScore[wAreaIndex]);
+	}
+
+	for (auto &it : m_setControlPlayers)
+	{
+		it->SendMsgToClient(&rep, net::S2C_MSG_BRC_CONTROL_TOTAL_ROBOT_BET_INFO);
+	}
+}
+
+void CGameDiceTable::OnBrcControlSendAllPlayerTotalBetInfo()
+{
+	LOG_DEBUG("notice brc control all player totol bet info.");
+
+	net::msg_brc_control_total_player_bet_info rep;
+	for (WORD wAreaIndex = 0; wAreaIndex < AREA_COUNT; ++wAreaIndex)
+	{
+		rep.add_area_info(m_playerJettonScore[wAreaIndex]);
+	}
+
+	for (auto &it : m_setControlPlayers)
+	{
+		it->SendMsgToClient(&rep, net::S2C_MSG_BRC_CONTROL_TOTAL_PLAYER_BET_INFO);
+	}
+}
+
+bool CGameDiceTable::OnBrcControlEnterControlInterface(CGamePlayer* pPlayer)
+{
+	if (!pPlayer)
+		return false;
+
+	LOG_DEBUG("brc control enter control interface. uid:%d", pPlayer->GetUID());
+
+	bool ret = OnBrcControlPlayerEnterInterface(pPlayer);
+	if (ret)
+	{
+		//刷新百人场桌子状态
+		m_brc_table_status_time = m_coolLogic.getCoolTick();
+		OnBrcControlFlushTableStatus(pPlayer);
+
+		//发送所有真实玩家列表
+		OnBrcControlSendAllPlayerInfo(pPlayer);
+		//发送机器人总下注信息
+		OnBrcControlSendAllRobotTotalBetInfo();
+		//发送真实玩家总下注信息
+		OnBrcControlSendAllPlayerTotalBetInfo();
+		//发送申请上庄玩家列表
+		OnBrcControlFlushAppleList();
+
+		return true;
+	}
+	return false;
+}
+
+void CGameDiceTable::OnBrcControlBetDeal(CGamePlayer* pPlayer)
+{
+	if (!pPlayer)
+		return;
+
+	LOG_DEBUG("brc control bet deal. uid:%d", pPlayer->GetUID());
+	if (pPlayer->IsRobot())
+	{
+		//发送机器人总下注信息
+		OnBrcControlSendAllRobotTotalBetInfo();
+	}
+	else
+	{
+		//通知单个玩家下注信息
+		OnBrcControlNoticeSinglePlayerInfo(pPlayer);
+		//发送真实玩家总下注信息
+		OnBrcControlSendAllPlayerTotalBetInfo();
+	}
+}
+
+bool CGameDiceTable::OnBrcAreaControl()
+{
+	LOG_DEBUG("brc area control.roomid:%d,tableid:%d", m_pHostRoom->GetRoomID(), GetTableID());
+
+	if (m_real_control_uid == 0)
+	{
+		LOG_DEBUG("brc area control the control uid is zero.");
+		return false;
+	}
+
+	//获取当前控制区域
+	uint8 ctrl_area = AREA_COUNT;
+	for (uint8 i = 0; i < AREA_COUNT; ++i)
+	{
+		if (m_req_control_area[i] == 1)
+		{
+			ctrl_area = i;
+			break;
+		}
+	}
+	if (ctrl_area == AREA_COUNT)
+	{
+		LOG_DEBUG("brc area control the ctrl_area is error. ctrl_area:%d", ctrl_area);
+		return false;
+	}
+
+	int irand_count = 1000;		// 1000次没有随机到就放弃
+	int iRandIndex = 0;
+	for (; iRandIndex < irand_count; iRandIndex++)
+	{
+		//计算点数
+		m_GameLogic.ComputeDiceResult();
+
+		//判断当前结果
+		bool find_flag = false;
+		switch (ctrl_area)
+		{
+		case CT_SUM_SMALL:
+		{
+			if (m_GameLogic.GetBigSmall(m_cbTableDice) == CT_SUM_SMALL && !m_GameLogic.IsWaidice())
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_SUM_BIG:
+		{
+			if (m_GameLogic.GetBigSmall(m_cbTableDice) == CT_SUM_BIG && !m_GameLogic.IsWaidice())
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_POINT_FOUR:
+		case CT_POINT_FIVE:
+		case CT_POINT_SIX:
+		case CT_POINT_SEVEN:
+		case CT_POINT_EIGHT:
+		case CT_POINT_NINE:
+		case CT_POINT_TEN:
+		case CT_POINT_ELEVEN:
+		case CT_POINT_TWELVE:
+		case CT_POINT_THIR_TEEN:
+		case CT_POINT_FOUR_TEEN:
+		case CT_POINT_FIF_TEEN:
+		case CT_POINT_SIX_TEEN:
+		case CT_POINT_SEVEN_TEEN:
+		{
+			if (m_GameLogic.GetDicePoint(m_cbTableDice) == ctrl_area && !m_GameLogic.IsWaidice())
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_ANY_CICLE_DICE:
+		{
+			if (m_GameLogic.IsWaidice())
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_ONE:
+		{
+			if (m_GameLogic.m_enNumber_1 == CT_ONE || m_GameLogic.m_enNumber_1 == CT_TWICE_ONE || m_GameLogic.m_enNumber_1 == CT_TRIPLE_ONE)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TWO:
+		{
+			if (m_GameLogic.m_enNumber_2 == CT_TWO || m_GameLogic.m_enNumber_2 == CT_TWICE_TWO || m_GameLogic.m_enNumber_2 == CT_TRIPLE_TWO)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_THREE:
+		{
+			if (m_GameLogic.m_enNumber_3 == CT_THREE || m_GameLogic.m_enNumber_3 == CT_TWICE_THREE || m_GameLogic.m_enNumber_3 == CT_TRIPLE_THREE)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_FOUR:
+		{
+			if (m_GameLogic.m_enNumber_4 == CT_FOUR || m_GameLogic.m_enNumber_4 == CT_TWICE_FOUR || m_GameLogic.m_enNumber_4 == CT_TRIPLE_FOUR)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_FIVE:
+		{
+			if (m_GameLogic.m_enNumber_5 == CT_FIVE || m_GameLogic.m_enNumber_5 == CT_TWICE_FIVE || m_GameLogic.m_enNumber_5 == CT_TRIPLE_FIVE)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_SIX:		
+		{
+			if (m_GameLogic.m_enNumber_6 == CT_SIX || m_GameLogic.m_enNumber_6 == CT_TWICE_SIX || m_GameLogic.m_enNumber_6 == CT_TRIPLE_SIX)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TWICE_ONE:
+		{
+			if (m_GameLogic.m_enNumber_1 == CT_TWICE_ONE || m_GameLogic.m_enNumber_1 == CT_TRIPLE_ONE)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TWICE_TWO:
+		{
+			if (m_GameLogic.m_enNumber_2 == CT_TWICE_TWO || m_GameLogic.m_enNumber_2 == CT_TRIPLE_TWO)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TWICE_THREE:
+		{
+			if (m_GameLogic.m_enNumber_3 == CT_TWICE_THREE || m_GameLogic.m_enNumber_3 == CT_TRIPLE_THREE)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TWICE_FOUR:
+		{
+			if (m_GameLogic.m_enNumber_4 == CT_TWICE_FOUR || m_GameLogic.m_enNumber_4 == CT_TRIPLE_FOUR)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TWICE_FIVE:
+		{
+			if (m_GameLogic.m_enNumber_5 == CT_TWICE_FIVE || m_GameLogic.m_enNumber_5 == CT_TRIPLE_FIVE)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TWICE_SIX:
+		{
+			if (m_GameLogic.m_enNumber_6 == CT_TWICE_SIX || m_GameLogic.m_enNumber_6 == CT_TRIPLE_SIX)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TRIPLE_ONE:
+		{
+			if (m_GameLogic.m_enNumber_1 == CT_TRIPLE_ONE)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TRIPLE_TWO:
+		{
+			if (m_GameLogic.m_enNumber_2 == CT_TRIPLE_TWO)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TRIPLE_THREE:
+		{
+			if (m_GameLogic.m_enNumber_3 == CT_TRIPLE_THREE)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TRIPLE_FOUR:
+		{
+			if (m_GameLogic.m_enNumber_4 == CT_TRIPLE_FOUR)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TRIPLE_FIVE:
+		{
+			if (m_GameLogic.m_enNumber_5 == CT_TRIPLE_FIVE)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		case CT_TRIPLE_SIX:
+		{
+			if (m_GameLogic.m_enNumber_6 == CT_TRIPLE_SIX)
+			{
+				find_flag = true;
+			}
+			break;
+		}
+		}
+
+		if (find_flag)
+		{
+			LOG_DEBUG("brc area control is success.roomid:%d,tableid:%d,ctrl_area:%d", m_pHostRoom->GetRoomID(), GetTableID(), ctrl_area);
+			return true;
+		}
+		else
+		{
+			m_GameLogic.ShakeRandDice(m_cbTableDice, DICE_COUNT);
+		}
+	}
+	LOG_WARNING("brc area control is fail.roomid:%d,tableid:%d,ctrl_area:%d", m_pHostRoom->GetRoomID(), GetTableID(), ctrl_area);
+	return false;
+}
+
+void CGameDiceTable::OnBrcFlushSendAllPlayerInfo()
+{
+	LOG_DEBUG("send brc flush all true player info list.");
+
+	net::msg_brc_control_all_player_bet_info rep;
+
+	//计算座位玩家
+	for (WORD wChairID = 0; wChairID < GAME_PLAYER; wChairID++)
+	{
+		//获取用户
+		CGamePlayer * tmp_pPlayer = GetPlayer(wChairID);
+		if (tmp_pPlayer == NULL)	continue;
+		if (tmp_pPlayer->IsRobot())   continue;
+		uint32 uid = tmp_pPlayer->GetUID();
+
+		net::brc_control_player_bet_info *info = rep.add_player_bet_list();
+		info->set_uid(uid);
+		info->set_coin(tmp_pPlayer->GetAccountValue(emACC_VALUE_COIN));
+		info->set_name(tmp_pPlayer->GetPlayerName());
+
+		//统计信息
+		auto iter = m_mpPlayerResultInfo.find(uid);
+		if (iter != m_mpPlayerResultInfo.end())
+		{
+			info->set_curr_day_win(iter->second.day_win_coin);
+			info->set_win_number(iter->second.win);
+			info->set_lose_number(iter->second.lose);
+			info->set_total_win(iter->second.total_win_coin);
+		}
+		//下注信息	
+		uint64 total_bet = 0;
+		for (WORD wAreaIndex = 0; wAreaIndex < AREA_COUNT; ++wAreaIndex)
+		{
+			info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+			total_bet += m_userJettonScore[wAreaIndex][uid];
+		}
+		info->set_total_bet(total_bet);
+		info->set_ismaster(IsBrcControlPlayer(uid));
+	}
+
+	//计算旁观玩家
+	map<uint32, CGamePlayer*>::iterator it = m_mpLookers.begin();
+	for (; it != m_mpLookers.end(); ++it)
+	{
+		CGamePlayer* tmp_pPlayer = it->second;
+		if (tmp_pPlayer == NULL)	continue;
+		if (tmp_pPlayer->IsRobot())   continue;
+		uint32 uid = tmp_pPlayer->GetUID();
+
+		net::brc_control_player_bet_info *info = rep.add_player_bet_list();
+		info->set_uid(uid);
+		info->set_coin(tmp_pPlayer->GetAccountValue(emACC_VALUE_COIN));
+		info->set_name(tmp_pPlayer->GetPlayerName());
+
+		//统计信息
+		auto iter = m_mpPlayerResultInfo.find(uid);
+		if (iter != m_mpPlayerResultInfo.end())
+		{
+			info->set_curr_day_win(iter->second.day_win_coin);
+			info->set_win_number(iter->second.win);
+			info->set_lose_number(iter->second.lose);
+			info->set_total_win(iter->second.total_win_coin);
+		}
+		//下注信息	
+		uint64 total_bet = 0;
+		for (WORD wAreaIndex = 0; wAreaIndex < AREA_COUNT; ++wAreaIndex)
+		{
+			info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+			total_bet += m_userJettonScore[wAreaIndex][uid];
+		}
+		info->set_total_bet(total_bet);
+		info->set_ismaster(IsBrcControlPlayer(uid));
+	}
+
+	for (auto &it : m_setControlPlayers)
+	{
+		it->SendMsgToClient(&rep, net::S2C_MSG_BRC_CONTROL_ALL_PLAYER_BET_INFO);
+	}
 }

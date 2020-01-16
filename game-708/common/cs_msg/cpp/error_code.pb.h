@@ -163,7 +163,8 @@ enum GAME_CATE_TYPE {
   GAME_CATE_ROBNIU = 16,
   GAME_CATE_FISHING = 17,
   GAME_CATE_TWOEIGHT = 18,
-  GAME_CATE_MAX_TYPE = 19
+  GAME_CATE_CARCITY = 19,
+  GAME_CATE_MAX_TYPE = 20
 };
 bool GAME_CATE_TYPE_IsValid(int value);
 const GAME_CATE_TYPE GAME_CATE_TYPE_MIN = GAME_CATE_LOBBY;
@@ -494,6 +495,25 @@ inline bool TABLE_STATE_TWOEIGHT_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<TABLE_STATE_TWOEIGHT>(
     TABLE_STATE_TWOEIGHT_descriptor(), name, value);
 }
+enum TABLE_STATE_CARCITY {
+  TABLE_STATE_CARCITY_FREE = 1,
+  TABLE_STATE_CARCITY_PLACE_JETTON = 2
+};
+bool TABLE_STATE_CARCITY_IsValid(int value);
+const TABLE_STATE_CARCITY TABLE_STATE_CARCITY_MIN = TABLE_STATE_CARCITY_FREE;
+const TABLE_STATE_CARCITY TABLE_STATE_CARCITY_MAX = TABLE_STATE_CARCITY_PLACE_JETTON;
+const int TABLE_STATE_CARCITY_ARRAYSIZE = TABLE_STATE_CARCITY_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* TABLE_STATE_CARCITY_descriptor();
+inline const ::std::string& TABLE_STATE_CARCITY_Name(TABLE_STATE_CARCITY value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    TABLE_STATE_CARCITY_descriptor(), value);
+}
+inline bool TABLE_STATE_CARCITY_Parse(
+    const ::std::string& name, TABLE_STATE_CARCITY* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TABLE_STATE_CARCITY>(
+    TABLE_STATE_CARCITY_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -590,6 +610,10 @@ inline const EnumDescriptor* GetEnumDescriptor< ::net::TABLE_STATE_FISHING>() {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::net::TABLE_STATE_TWOEIGHT>() {
   return ::net::TABLE_STATE_TWOEIGHT_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::net::TABLE_STATE_CARCITY>() {
+  return ::net::TABLE_STATE_CARCITY_descriptor();
 }
 
 }  // namespace google

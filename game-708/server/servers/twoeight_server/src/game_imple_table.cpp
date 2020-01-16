@@ -172,6 +172,7 @@ void CGameTwoeightbarTable::OnTimeTick() {
 		{
 			if (OnGameStart()) {
 				InitChessID();
+				CalculateDeity(); // 根据输赢计数自动设置玩家/机器人到座位上
 				SetGameState(TABLE_STATE_TWOEIGHT_PLACE_JETTON);
 
 				m_brc_table_status = emTABLE_STATUS_START;
@@ -190,7 +191,6 @@ void CGameTwoeightbarTable::OnTimeTick() {
 			SetGameState(TABLE_STATE_TWOEIGHT_GAME_END);
 			m_coolLogic.beginCooling(s_DispatchTime);
 			DispatchTableCard();
-			m_bIsChairRobotAlreadyJetton = false;
 			m_bIsRobotAlreadyJetton = false;
 			OnGameEnd(INVALID_CHAIR, GER_NORMAL);
 
@@ -224,20 +224,13 @@ void CGameTwoeightbarTable::OnTimeTick() {
 		}
 	}
 
-	if (tableState == TABLE_STATE_TWOEIGHT_PLACE_JETTON && m_coolLogic.getPassTick() > 0) {
-		OnChairRobotJetton();
+	if (tableState == TABLE_STATE_TWOEIGHT_PLACE_JETTON && m_coolLogic.getPassTick() > 0)
 		OnRobotJetton();
-	}
 }
 
 void CGameTwoeightbarTable::OnRobotTick() {
-	uint8 tableState = GetGameState();
-	int64 passtick = m_coolLogic.getPassTick();
-	
-	if (tableState == net::TABLE_STATE_NIUNIU_PLACE_JETTON && m_coolLogic.getPassTick() > 500) {
-		OnRobotPlaceJetton(m_chairRobotPlaceJetton);
-		OnRobotPlaceJetton(m_RobotPlaceJetton);
-	}
+	if (GetGameState() == net::TABLE_STATE_NIUNIU_PLACE_JETTON && m_coolLogic.getPassTick() > 500)
+		OnRobotPlaceJetton();
 }
 
 //游戏消息
@@ -284,34 +277,34 @@ int CGameTwoeightbarTable::OnGameMessage(CGamePlayer *pPlayer, uint16 cmdID, con
 
 		return OnUserContinuousPressure(pPlayer, msg);
 	}break;
-	/*case net::C2S_MSG_BRC_CONTROL_ENTER_TABLE_REQ: //
+	case net::C2S_MSG_BRC_CONTROL_ENTER_TABLE_REQ:
 	{
 		net::msg_brc_control_user_enter_table_req msg;
 		PARSE_MSG_FROM_ARRAY(msg);
 
 		return OnBrcControlEnterControlInterface(pPlayer);
 	}break;
-	case net::C2S_MSG_BRC_CONTROL_LEAVE_TABLE_REQ: //
+	case net::C2S_MSG_BRC_CONTROL_LEAVE_TABLE_REQ:
 	{
 		net::msg_brc_control_user_leave_table_req msg;
 		PARSE_MSG_FROM_ARRAY(msg);
 
 		return OnBrcControlPlayerLeaveInterface(pPlayer);
 	}break;
-	case net::C2S_MSG_BRC_CONTROL_FORCE_LEAVE_BANKER_REQ: //
+	case net::C2S_MSG_BRC_CONTROL_FORCE_LEAVE_BANKER_REQ:
 	{
 		net::msg_brc_control_force_leave_banker_req msg;
 		PARSE_MSG_FROM_ARRAY(msg);
 
 		return OnBrcControlApplePlayer(pPlayer, msg.uid());
 	}break;
-	case net::C2S_MSG_BRC_CONTROL_AREA_INFO_REQ: //
+	case net::C2S_MSG_BRC_CONTROL_AREA_INFO_REQ:
 	{
 		net::msg_brc_control_area_info_req msg;
 		PARSE_MSG_FROM_ARRAY(msg);
 
 		return OnBrcControlPlayerBetArea(pPlayer, msg);
-	}break;*/
+	}break;
 	default:
 		return 0;
 	}
@@ -566,7 +559,7 @@ bool CGameTwoeightbarTable::OnGameEnd(uint16 chairID, uint8 reason) {
 		LOG_DEBUG("OnGameEnd2 roomid:%d,tableid:%d,lPlayerScoreResult:%lld,lRobotScoreResult:%lld,playerAllWinScore:%lld",
 			GetRoomID(), GetTableID(), lPlayerScoreResult, lRobotScoreResult, playerAllWinScore);
 
-		//如果当前庄家为真实玩家，需要更新精准控制统计
+		// 如果当前庄家为真实玩家，需要更新精准控制统计
 		if (m_pCurBanker && !m_pCurBanker->IsRobot())
 			OnBrcControlSetResultInfo(GetBankerUID(), lBankerWinScore);
 
@@ -574,8 +567,8 @@ bool CGameTwoeightbarTable::OnGameEnd(uint16 chairID, uint8 reason) {
 		SaveBlingLog();
 		CheckRobotCancelBanker();
 
-		//同步所有玩家数据到控端
-		//OnBrcFlushSendAllPlayerInfo();
+		// 同步所有玩家数据到控端
+		OnBrcFlushSendAllPlayerInfo();
 		m_pHostRoom->UpdateStock(this, playerAllWinScore);
 		OnTableGameEnd();
 		return true;
@@ -621,9 +614,9 @@ void CGameTwoeightbarTable::OnPlayerJoin(bool isJoin, uint16 chairID, CGamePlaye
 			m_userJettonScore[i].erase(pPlayer->GetUID());
 	}
 
-	//刷新控制界面的玩家数据
-	//if (!pPlayer->IsRobot())
-	//	OnBrcFlushSendAllPlayerInfo();
+	// 刷新控制界面的玩家数据
+	if (!pPlayer->IsRobot())
+		OnBrcFlushSendAllPlayerInfo();
 }
 
 // 发送场景信息(断线重连)
@@ -667,7 +660,7 @@ void CGameTwoeightbarTable::SendGameScene(CGamePlayer* pPlayer) {
 		pPlayer->SendMsgToClient(&msg, net::S2C_MSG_TWOEIGHT_GAME_PLAY_INFO);
 
 		//刷新所有控制界面信息协议---用于断线重连的处理
-		/*if (pPlayer->GetCtrlFlag()) {
+		if (pPlayer->GetCtrlFlag()) {
 			//刷新百人场桌子状态
 			m_brc_table_status_time = m_coolLogic.getCoolTick();
 			OnBrcControlFlushTableStatus(pPlayer);
@@ -682,7 +675,7 @@ void CGameTwoeightbarTable::SendGameScene(CGamePlayer* pPlayer) {
 			OnBrcControlSendAllPlayerTotalBetInfo();
 			//发送申请上庄玩家列表
 			OnBrcControlFlushAppleList();
-		}*/
+		}
 
 	}break;
 	default:
@@ -906,8 +899,8 @@ bool CGameTwoeightbarTable::OnUserPlaceJetton(CGamePlayer* pPlayer, uint8 cbJett
 
 		SendMsgToAll(&broad, net::S2C_MSG_TWOEIGHT_PLACE_JETTON_BROADCAST);
 
-		//刷新百人场控制界面的下注信息
-		//OnBrcControlBetDeal(pPlayer);
+		// 刷新百人场控制界面的下注信息
+		OnBrcControlBetDeal(pPlayer);
 	} else {
 		net::msg_twoeight_place_jetton_rep msg;
 		msg.set_jetton_area(cbJettonArea);
@@ -1001,8 +994,8 @@ bool CGameTwoeightbarTable::OnUserContinuousPressure(CGamePlayer* pPlayer, net::
 	rep.set_result(net::RESULT_CODE_SUCCESS);
 	pPlayer->SendMsgToClient(&rep, net::S2C_MSG_TWOEIGHT_CONTINUOUS_PRESSURE_REP);
 
-	//刷新百人场控制界面的下注信息
-	//OnBrcControlBetDeal(pPlayer);
+	// 刷新百人场控制界面的下注信息
+	OnBrcControlBetDeal(pPlayer);
 
 	return true;
 }
@@ -1541,9 +1534,10 @@ bool CGameTwoeightbarTable::DispatchTableCard() {
 	//重新洗牌
 	TwoeightLogic::RandCardList(m_cbTableCardArray);
 
-	bool bAreaCtrl = false; // OnBrcAreaControl(); // TODO: 点控等后面再做
+	bool bAreaCtrl = OnBrcAreaControl();
 	SetIsAllRobotOrPlayerJetton(IsAllRobotOrPlayerJetton());
-	LOG_DEBUG("bAreaCtrl:%d,bIsDispatchTableCardStock:%d", bAreaCtrl, GetIsAllRobotOrPlayerJetton());
+	LOG_DEBUG("1 - roomid:%d,tableid:%d,bAreaCtrl:%d,GetIsAllRobotOrPlayerJetton:%d",
+		GetRoomID(), GetTableID(), bAreaCtrl, GetIsAllRobotOrPlayerJetton());
 
 	int nNotWelfareCtrlRet = 0; // 非福利控制返回值
 	if (bAreaCtrl)
@@ -1595,7 +1589,7 @@ bool CGameTwoeightbarTable::DispatchTableCard() {
 	bool bBrankerIsRobot = !IsBankerRealPlayer();
 	int64 playerWinScore = GetBankerAndPlayerWinScore(m_cbTableCardArray, lBankerWinScore);
 
-	LOG_DEBUG("DispatchTableCard - roomid:%d,tableid:%d,bAreaCtrl:%d,ChessWelfare:%d,bBrankerIsRobot:%d,nNotWelfareCtrlRet:%d,bankerAllWinLoseComputeCount:%d,bankerAllWinLoseCount:%d,allWLNeedChangeIndex:%d, vSortCardIndexs:%d-%d-%d-%d, old_win:%d-%d-%d,old_multiple:%d-%d-%d, win:%d-%d-%d,multiple:%d-%d-%d, oldPlayerWinScore:%lld,playerWinScore:%lld",
+	LOG_DEBUG("2 - roomid:%d,tableid:%d,bAreaCtrl:%d,ChessWelfare:%d,bBrankerIsRobot:%d,nNotWelfareCtrlRet:%d,bankerAllWinLoseComputeCount:%d,bankerAllWinLoseCount:%d,allWLNeedChangeIndex:%d, vSortCardIndexs:%d-%d-%d-%d, old_win:%d-%d-%d,old_multiple:%d-%d-%d, win:%d-%d-%d,multiple:%d-%d-%d, oldPlayerWinScore:%lld,playerWinScore:%lld",
 			GetRoomID(), GetTableID(), bAreaCtrl, GetChessWelfare(),
 			bBrankerIsRobot, nNotWelfareCtrlRet, oldBankerAllWinLoseComputeCount, oldBankerAllWinLoseCount, allWLNeedChangeIndex,
 			vSortCardIndexs[0], vSortCardIndexs[1], vSortCardIndexs[2], vSortCardIndexs[3],
@@ -1858,16 +1852,12 @@ void CGameTwoeightbarTable::StandUpBankerSeat(CGamePlayer* pPlayer) {
 		}
 }
 
+// 玩家下线
 bool CGameTwoeightbarTable::RobotLeavaReadJetton(uint32 uid) {
-	for (vector<tagRobotPlaceJetton>::iterator iter_begin_look = m_RobotPlaceJetton.begin(); iter_begin_look != m_RobotPlaceJetton.end(); ++iter_begin_look)
-		if (iter_begin_look->uid == uid) {
-			m_RobotPlaceJetton.erase(iter_begin_look);
-			break;
-		}
-	for (vector<tagRobotPlaceJetton>::iterator iter_begin_chairid = m_chairRobotPlaceJetton.begin(); iter_begin_chairid != m_chairRobotPlaceJetton.end(); ++iter_begin_chairid)
-		if (iter_begin_chairid->uid == uid) {
-			m_chairRobotPlaceJetton.erase(iter_begin_chairid);
-			break;
+	for (vector<tagRobotPlaceJetton>::iterator iter_begin = m_RobotPlaceJetton.begin(); iter_begin != m_RobotPlaceJetton.end(); ++iter_begin)
+		if (iter_begin->uid == uid) {
+			m_RobotPlaceJetton.erase(iter_begin);
+			return true;
 		}
 	return true;
 }
@@ -1876,12 +1866,8 @@ bool CGameTwoeightbarTable::IsSetJetton(uint32 uid) {
 	if (TABLE_STATE_TWOEIGHT_GAME_END == GetGameState())
 		return false;
 
-	for (uint8 i = 0; i < AREA_COUNT; ++i)
+	for (uint8 i = ID_SHUN_MEN; i < AREA_COUNT; ++i)
 		if (m_userJettonScore[i][uid] > 0)
-			return true;
-
-	for (uint32 i = 0; i < m_chairRobotPlaceJetton.size(); ++i)
-		if (uid == m_chairRobotPlaceJetton[i].uid)
 			return true;
 
 	for (uint32 i = 0; i < m_RobotPlaceJetton.size(); ++i)
@@ -2082,15 +2068,14 @@ int64 CGameTwoeightbarTable::GetApplyBankerConditionLimit() {
 	return GetBaseScore() * 20;
 }
 
+// 机器人押注准备实现
 void CGameTwoeightbarTable::OnRobotJettonDeal(CGamePlayer *pPlayer, bool isChairPlayer) {
 	if (pPlayer == NULL || !pPlayer->IsRobot() || pPlayer == m_pCurBanker)
 		return;
 
-	vector<tagRobotPlaceJetton> *pRobotPlaceJetton = &m_chairRobotPlaceJetton;
 	int iJettonCountMin = 5;
 	int iJettonCountMax = 9;
 	if (!isChairPlayer) {
-		pRobotPlaceJetton = &m_RobotPlaceJetton;
 		iJettonCountMin = 1;
 		iJettonCountMax = 6;
 	}
@@ -2148,30 +2133,36 @@ void CGameTwoeightbarTable::OnRobotJettonDeal(CGamePlayer *pPlayer, bool isChair
 		robotPlaceJetton.area = cbJettonArea;
 		robotPlaceJetton.jetton = lUserRealJetton;
 		robotPlaceJetton.bflag = false;
-		pRobotPlaceJetton->push_back(robotPlaceJetton);
+		m_RobotPlaceJetton.push_back(robotPlaceJetton);
 	}
 }
 
-// 椅子机器人押注准备
-void CGameTwoeightbarTable::OnChairRobotJetton() {
-	if (m_bIsChairRobotAlreadyJetton)
+// 观众机器人押注准备
+void CGameTwoeightbarTable::OnRobotJetton() {
+	if (m_bIsRobotAlreadyJetton)
 		return;
-	m_bIsChairRobotAlreadyJetton = true;
-	m_chairRobotPlaceJetton.clear();
+	m_bIsRobotAlreadyJetton = true;
+	m_RobotPlaceJetton.clear();
 	for (uint32 i = 0; i < GAME_PLAYER; ++i)
 		OnRobotJettonDeal(GetPlayer(i), true);
-	LOG_DEBUG("chair_robot_jetton - roomid:%d,tableid:%d,m_chairRobotPlaceJetton.size:%d", GetRoomID(), GetTableID(), m_chairRobotPlaceJetton.size());
+	for (map<uint32, CGamePlayer*>::iterator it = m_mpLookers.begin(); it != m_mpLookers.end(); ++it) {
+		if (g_RandGen.RandRatio(50, PRO_DENO_100))
+			continue;
+		OnRobotJettonDeal(it->second, false);
+	}
+	LOG_DEBUG("robot_jetton - roomid:%d,tableid:%d,m_chairRobotPlaceJetton.size:%lld,m_mpLookers.size:%lld",
+		GetRoomID(), GetTableID(), m_RobotPlaceJetton.size(), m_mpLookers.size());
 }
 
-void CGameTwoeightbarTable::OnRobotPlaceJetton(vector<tagRobotPlaceJetton> &vRobotPlaceJetton) {
-	if (vRobotPlaceJetton.empty())
+void CGameTwoeightbarTable::OnRobotPlaceJetton() {
+	if (m_RobotPlaceJetton.empty())
 		return;
 
 	int64 passtick = m_coolLogic.getPassTick(); // 下注开始后经历的时间(毫秒)
 	int delNum = 0; // 要删除的下注项数量
 	unordered_set<uint32> usRobotPlaceJetton; // 每个玩家每次定时器tick只能下注一次
-	for (uint32 i = 0; i < vRobotPlaceJetton.size(); ++i) {
-		tagRobotPlaceJetton &robotPlaceJetton = vRobotPlaceJetton[i];
+	for (uint32 i = 0; i < m_RobotPlaceJetton.size(); ++i) {
+		tagRobotPlaceJetton &robotPlaceJetton = m_RobotPlaceJetton[i];
 		if (robotPlaceJetton.bflag) {
 			++delNum;
 			continue;
@@ -2193,34 +2184,18 @@ void CGameTwoeightbarTable::OnRobotPlaceJetton(vector<tagRobotPlaceJetton> &vRob
 
 	uint32 j = 0;
 	for (int i = 0; i < delNum; ++i) {
-		for (vector<tagRobotPlaceJetton>::iterator iter_begin = vRobotPlaceJetton.begin() + j; j < vRobotPlaceJetton.size(); ++iter_begin, ++j)
+		for (vector<tagRobotPlaceJetton>::iterator iter_begin = m_RobotPlaceJetton.begin() + j; j < m_RobotPlaceJetton.size(); ++iter_begin, ++j)
 			if (iter_begin->bflag) {
-				iter_swap(iter_begin, vRobotPlaceJetton.end() - 1);
-				vRobotPlaceJetton.pop_back();
+				iter_swap(iter_begin, m_RobotPlaceJetton.end() - 1);
+				m_RobotPlaceJetton.pop_back();
 				break;
 			}
-		if (j >= vRobotPlaceJetton.size())
+		if (j >= m_RobotPlaceJetton.size())
 			break;
 	}
 	//if (delNum > 0)
 	//	LOG_DEBUG("roomid:%d,tableid:%d,delNum:%lld,m_chairRobotPlaceJetton.size:%lld,m_RobotPlaceJetton.size:%lld,m_mpLookers.size:%lld",
 	//		GetRoomID(), GetTableID(), delNum, m_chairRobotPlaceJetton.size(), m_RobotPlaceJetton.size(), m_mpLookers.size());
-}
-
-// 观众机器人押注准备
-void CGameTwoeightbarTable::OnRobotJetton() {
-	if (m_bIsRobotAlreadyJetton)
-		return;
-	m_bIsRobotAlreadyJetton = true;
-	m_RobotPlaceJetton.clear();
-	int64 iJettonOldTime = -1;
-	for (map<uint32, CGamePlayer*>::iterator it = m_mpLookers.begin(); it != m_mpLookers.end(); ++it) {
-		if (g_RandGen.RandRatio(50, PRO_DENO_100))
-			continue;
-		OnRobotJettonDeal(it->second, false);
-	}
-	LOG_DEBUG("robot_jetton - roomid:%d,tableid:%d,m_chairRobotPlaceJetton.size:%lld,m_mpLookers.size:%lld",
-		GetRoomID(), GetTableID(), m_RobotPlaceJetton.size(), m_mpLookers.size());
 }
 
 bool CGameTwoeightbarTable::IsInTableRobot(uint32 uid, CGamePlayer *pPlayer) {
@@ -2370,8 +2345,8 @@ void CGameTwoeightbarTable::CheckRobotApplyBanker() {
 		int64 buyinScore = defaultBuyinScore;
 		uint8 autoAddScore = 0;
 		if (curScore < buyinScore) {
-			if (g_RandGen.RandRatio(50, PRO_DENO_100))
-			    continue; // 将半数低财富的机器人排除上庄
+			if (g_RandGen.RandRatio(70, PRO_DENO_100))
+			    continue; // 将70%低财富的机器人排除上庄
 			buyinScore = curScore;
 			++minApplyNum;
 		} else {
@@ -2438,95 +2413,398 @@ void CGameTwoeightbarTable::GetGameEndLogInfo(net::msg_game_play_log* pInfo) {
 		plog->add_seats_win(record.wins[j]);
 }
 
-/*void CGameTwoeightbarTable::OnBrcControlSendAllPlayerInfo(CGamePlayer* pPlayer) {
+void CGameTwoeightbarTable::OnBrcControlSendAllPlayerInfo(CGamePlayer* pPlayer) {
+	if (pPlayer == NULL)
+		return;
+	LOG_DEBUG("send brc control all true player info list uid:%d.", pPlayer->GetUID());
+
+	net::msg_brc_control_all_player_bet_info rep;
+
+	//计算座位玩家
+	for (uint16 wChairID = 0; wChairID < GAME_PLAYER; ++wChairID) {
+		//获取用户
+		CGamePlayer *tmp_pPlayer = GetPlayer(wChairID);
+		if (tmp_pPlayer == NULL)
+			continue;
+		if (tmp_pPlayer->IsRobot())
+			continue;
+		uint32 uid = tmp_pPlayer->GetUID();
+
+		net::brc_control_player_bet_info *info = rep.add_player_bet_list();
+		info->set_uid(uid);
+		info->set_coin(tmp_pPlayer->GetAccountValue(emACC_VALUE_COIN));
+		info->set_name(tmp_pPlayer->GetPlayerName());
+
+		//统计信息
+		map<uint32, tagPlayerResultInfo>::iterator iter = m_mpPlayerResultInfo.find(uid);
+		if (iter != m_mpPlayerResultInfo.end()) {
+			info->set_curr_day_win(iter->second.day_win_coin);
+			info->set_win_number(iter->second.win);
+			info->set_lose_number(iter->second.lose);
+			info->set_total_win(iter->second.total_win_coin);
+		}
+		//下注信息	
+		uint64 total_bet = 0;
+		for (uint16 wAreaIndex = ID_SHUN_MEN; wAreaIndex < AREA_COUNT; ++wAreaIndex) {
+			info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+			total_bet += m_userJettonScore[wAreaIndex][uid];
+		}
+		info->set_total_bet(total_bet);
+		info->set_ismaster(IsBrcControlPlayer(uid));
+	}
+
+	//计算旁观玩家
+	for (map<uint32, CGamePlayer*>::iterator it = m_mpLookers.begin(); it != m_mpLookers.end(); ++it) {
+		CGamePlayer* tmp_pPlayer = it->second;
+		if (tmp_pPlayer == NULL)
+			continue;
+		if (tmp_pPlayer->IsRobot())
+			continue;
+		uint32 uid = tmp_pPlayer->GetUID();
+
+		net::brc_control_player_bet_info *info = rep.add_player_bet_list();
+		info->set_uid(uid);
+		info->set_coin(tmp_pPlayer->GetAccountValue(emACC_VALUE_COIN));
+		info->set_name(tmp_pPlayer->GetPlayerName());
+
+		//统计信息
+		map<uint32, tagPlayerResultInfo>::iterator iter = m_mpPlayerResultInfo.find(uid);
+		if (iter != m_mpPlayerResultInfo.end()) {
+			info->set_curr_day_win(iter->second.day_win_coin);
+			info->set_win_number(iter->second.win);
+			info->set_lose_number(iter->second.lose);
+			info->set_total_win(iter->second.total_win_coin);
+		}
+		//下注信息	
+		uint64 total_bet = 0;
+		for (uint16 wAreaIndex = ID_SHUN_MEN; wAreaIndex < AREA_COUNT; ++wAreaIndex) {
+			info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+			total_bet += m_userJettonScore[wAreaIndex][uid];
+		}
+		info->set_total_bet(total_bet);
+		info->set_ismaster(IsBrcControlPlayer(uid));
+	}
+	pPlayer->SendMsgToClient(&rep, net::S2C_MSG_BRC_CONTROL_ALL_PLAYER_BET_INFO);
 }
 
-void CGameTwoeightbarTable::OnBrcControlNoticeSinglePlayerInfo(CGamePlayer* pPlayer){
+void CGameTwoeightbarTable::OnBrcControlNoticeSinglePlayerInfo(CGamePlayer* pPlayer) {
+	if (pPlayer == NULL)
+		return;
+
+	if (pPlayer->IsRobot())
+		return;
+
+	uint32 uid = pPlayer->GetUID();
+	LOG_DEBUG("notice brc control single true player bet info uid:%d.", uid);
+
+	net::msg_brc_control_single_player_bet_info rep;
+
+	//计算座位玩家
+	for (uint16 wChairID = 0; wChairID < GAME_PLAYER; ++wChairID) {
+		//获取用户
+		CGamePlayer *tmp_pPlayer = GetPlayer(wChairID);
+		if (tmp_pPlayer == NULL)
+			continue;
+		if (uid == tmp_pPlayer->GetUID()) {
+			net::brc_control_player_bet_info *info = rep.mutable_player_bet_info();
+			info->set_uid(uid);
+			info->set_coin(pPlayer->GetAccountValue(emACC_VALUE_COIN));
+			info->set_name(pPlayer->GetPlayerName());
+
+			//统计信息
+			map<uint32, tagPlayerResultInfo>::iterator iter = m_mpPlayerResultInfo.find(uid);
+			if (iter != m_mpPlayerResultInfo.end()) {
+				info->set_curr_day_win(iter->second.day_win_coin);
+				info->set_win_number(iter->second.win);
+				info->set_lose_number(iter->second.lose);
+				info->set_total_win(iter->second.total_win_coin);
+			}
+			//下注信息	
+			uint64 total_bet = 0;
+			for (uint16 wAreaIndex = ID_SHUN_MEN; wAreaIndex < AREA_COUNT; ++wAreaIndex) {
+				info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+				total_bet += m_userJettonScore[wAreaIndex][uid];
+			}
+			info->set_total_bet(total_bet);
+			info->set_ismaster(IsBrcControlPlayer(uid));
+			break;
+		}
+	}
+
+	//计算旁观玩家
+	for (map<uint32, CGamePlayer*>::iterator it = m_mpLookers.begin(); it != m_mpLookers.end(); ++it) {
+		CGamePlayer* tmp_pPlayer = it->second;
+		if (tmp_pPlayer == NULL)
+			continue;
+		if (uid == tmp_pPlayer->GetUID()) {
+			net::brc_control_player_bet_info *info = rep.mutable_player_bet_info();
+			info->set_uid(uid);
+			info->set_coin(pPlayer->GetAccountValue(emACC_VALUE_COIN));
+			info->set_name(pPlayer->GetPlayerName());
+
+			//统计信息
+			map<uint32, tagPlayerResultInfo>::iterator iter = m_mpPlayerResultInfo.find(uid);
+			if (iter != m_mpPlayerResultInfo.end()) {
+				info->set_curr_day_win(iter->second.day_win_coin);
+				info->set_win_number(iter->second.win);
+				info->set_lose_number(iter->second.lose);
+				info->set_total_win(iter->second.total_win_coin);
+			}
+			//下注信息	
+			uint64 total_bet = 0;
+			for (uint16 wAreaIndex = ID_SHUN_MEN; wAreaIndex < AREA_COUNT; ++wAreaIndex) {
+				info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+				total_bet += m_userJettonScore[wAreaIndex][uid];
+			}
+			info->set_total_bet(total_bet);
+			info->set_ismaster(IsBrcControlPlayer(uid));
+			break;
+		}
+	}
+
+	for (CGamePlayer* it : m_setControlPlayers)
+		it->SendMsgToClient(&rep, net::S2C_MSG_BRC_CONTROL_SINGLE_PLAYER_BET_INFO);
 }
 
 void CGameTwoeightbarTable::OnBrcControlSendAllRobotTotalBetInfo() {
+	LOG_DEBUG("notice brc control all robot totol bet info.");
+
+	net::msg_brc_control_total_robot_bet_info rep;
+	for (WORD wAreaIndex = ID_SHUN_MEN; wAreaIndex < AREA_COUNT; ++wAreaIndex) {
+		rep.add_area_info(m_allJettonScore[wAreaIndex] - m_playerJettonScore[wAreaIndex]);
+		LOG_DEBUG("wAreaIndex:%d m_allJettonScore[%d]:%lld m_playerJettonScore[%d]:%lld", wAreaIndex, wAreaIndex, m_allJettonScore[wAreaIndex], wAreaIndex, m_playerJettonScore[wAreaIndex]);
+	}
+
+	for (CGamePlayer* it : m_setControlPlayers)
+		it->SendMsgToClient(&rep, net::S2C_MSG_BRC_CONTROL_TOTAL_ROBOT_BET_INFO);
 }
 
 void CGameTwoeightbarTable::OnBrcControlSendAllPlayerTotalBetInfo() {
+	LOG_DEBUG("notice brc control all player totol bet info.");
+
+	net::msg_brc_control_total_player_bet_info rep;
+	for (uint16 wAreaIndex = ID_SHUN_MEN; wAreaIndex < AREA_COUNT; ++wAreaIndex)
+		rep.add_area_info(m_playerJettonScore[wAreaIndex]);
+
+	for (CGamePlayer* it : m_setControlPlayers)
+		it->SendMsgToClient(&rep, net::S2C_MSG_BRC_CONTROL_TOTAL_PLAYER_BET_INFO);
 }
 
 bool CGameTwoeightbarTable::OnBrcControlEnterControlInterface(CGamePlayer* pPlayer) {
+	if (pPlayer == NULL)
+		return false;
+
+	LOG_DEBUG("brc control enter control interface. uid:%d", pPlayer->GetUID());
+
+	bool ret = OnBrcControlPlayerEnterInterface(pPlayer);
+	if (ret) {
+		//刷新百人场桌子状态
+		m_brc_table_status_time = m_coolLogic.getCoolTick();
+		OnBrcControlFlushTableStatus(pPlayer);
+
+		//发送所有真实玩家列表
+		OnBrcControlSendAllPlayerInfo(pPlayer);
+		//发送机器人总下注信息
+		OnBrcControlSendAllRobotTotalBetInfo();
+		//发送真实玩家总下注信息
+		OnBrcControlSendAllPlayerTotalBetInfo();
+		//发送申请上庄玩家列表
+		OnBrcControlFlushAppleList();
+
+		return true;
+	}
+	return false;
 }
 
 void CGameTwoeightbarTable::OnBrcControlBetDeal(CGamePlayer* pPlayer) {
+	if (pPlayer == NULL)
+		return;
+
+	LOG_DEBUG("brc control bet deal. uid:%d", pPlayer->GetUID());
+	if (pPlayer->IsRobot())
+		//发送机器人总下注信息
+		OnBrcControlSendAllRobotTotalBetInfo();
+	else {
+		//通知单个玩家下注信息
+		OnBrcControlNoticeSinglePlayerInfo(pPlayer);
+		//发送真实玩家总下注信息
+		OnBrcControlSendAllPlayerTotalBetInfo();
+	}
 }
 
 bool CGameTwoeightbarTable::OnBrcAreaControl() {
+	LOG_DEBUG("brc area control. roomid:%d,tableid:%d,m_real_control_uid:%d", GetRoomID(), GetTableID(), m_real_control_uid);
+
+	if (m_real_control_uid == 0) {
+		LOG_DEBUG("brc area control the control uid is zero.");
+		return false;
+	}
+
+	//获取当前控制区域
+	uint8 ctrl_area_a = AREA_MAX;	//A 区域 庄赢/庄输
+
+	bool ctrl_area_b = false;
+	set<uint8> ctrl_area_b_list;	//B 区域 顺/天/地 支持多个
+
+	for (uint8 i = 0; i < AREA_MAX; ++i)
+		if (m_req_control_area[i] == 1) {
+			if (i == AREA_SHUN_MEN || i == AREA_TIAN_MEN || i == AREA_DI_MEN) { //B 区域控制
+				ctrl_area_b_list.insert(i);
+				ctrl_area_b = true;
+			} else    //A 区域控制
+				ctrl_area_a = i;
+		}
+
+	if (!ctrl_area_b && ctrl_area_a == AREA_MAX) {
+		LOG_DEBUG("brc area control the ctrl_area is none.");
+		return false;
+	}
+
+	//判断当前执行的控制是A区域还是B区域
+	if (ctrl_area_a != AREA_MAX)
+		return OnBrcAreaControlForA(ctrl_area_a);
+
+	if (ctrl_area_b && ctrl_area_b_list.size() <= AREA_COUNT)
+		return OnBrcAreaControlForB(ctrl_area_b_list);
+
+	return false;
 }
 
 void CGameTwoeightbarTable::OnBrcFlushSendAllPlayerInfo() {
+	LOG_DEBUG("send brc flush all true player info list.");
+
+	net::msg_brc_control_all_player_bet_info rep;
+
+	//计算座位玩家
+	for (uint16 wChairID = 0; wChairID < GAME_PLAYER; ++wChairID) {
+		//获取用户
+		CGamePlayer *tmp_pPlayer = GetPlayer(wChairID);
+		if (tmp_pPlayer == NULL)
+			continue;
+		if (tmp_pPlayer->IsRobot())
+			continue;
+		uint32 uid = tmp_pPlayer->GetUID();
+
+		net::brc_control_player_bet_info *info = rep.add_player_bet_list();
+		info->set_uid(uid);
+		info->set_coin(tmp_pPlayer->GetAccountValue(emACC_VALUE_COIN));
+		info->set_name(tmp_pPlayer->GetPlayerName());
+
+		//统计信息
+		map<uint32, tagPlayerResultInfo>::iterator iter = m_mpPlayerResultInfo.find(uid);
+		if (iter != m_mpPlayerResultInfo.end()) {
+			info->set_curr_day_win(iter->second.day_win_coin);
+			info->set_win_number(iter->second.win);
+			info->set_lose_number(iter->second.lose);
+			info->set_total_win(iter->second.total_win_coin);
+		}
+		//下注信息	
+		uint64 total_bet = 0;
+		for (uint16 wAreaIndex = ID_SHUN_MEN; wAreaIndex < AREA_COUNT; ++wAreaIndex) {
+			info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+			total_bet += m_userJettonScore[wAreaIndex][uid];
+		}
+		info->set_total_bet(total_bet);
+		info->set_ismaster(IsBrcControlPlayer(uid));
+	}
+
+	// 计算旁观玩家
+	for (map<uint32, CGamePlayer*>::iterator it = m_mpLookers.begin(); it != m_mpLookers.end(); ++it) {
+		CGamePlayer* tmp_pPlayer = it->second;
+		if (tmp_pPlayer == NULL)
+			continue;
+		if (tmp_pPlayer->IsRobot())
+			continue;
+		uint32 uid = tmp_pPlayer->GetUID();
+
+		net::brc_control_player_bet_info *info = rep.add_player_bet_list();
+		info->set_uid(uid);
+		info->set_coin(tmp_pPlayer->GetAccountValue(emACC_VALUE_COIN));
+		info->set_name(tmp_pPlayer->GetPlayerName());
+
+		//统计信息
+		map<uint32, tagPlayerResultInfo>::iterator iter = m_mpPlayerResultInfo.find(uid);
+		if (iter != m_mpPlayerResultInfo.end()) {
+			info->set_curr_day_win(iter->second.day_win_coin);
+			info->set_win_number(iter->second.win);
+			info->set_lose_number(iter->second.lose);
+			info->set_total_win(iter->second.total_win_coin);
+		}
+		//下注信息	
+		uint64 total_bet = 0;
+		for (uint16 wAreaIndex = ID_SHUN_MEN; wAreaIndex < AREA_COUNT; ++wAreaIndex) {
+			info->add_area_info(m_userJettonScore[wAreaIndex][uid]);
+			total_bet += m_userJettonScore[wAreaIndex][uid];
+		}
+		info->set_total_bet(total_bet);
+		info->set_ismaster(IsBrcControlPlayer(uid));
+	}
+
+	for (CGamePlayer *it : m_setControlPlayers)
+		it->SendMsgToClient(&rep, net::S2C_MSG_BRC_CONTROL_ALL_PLAYER_BET_INFO);
 }
 
 bool CGameTwoeightbarTable::OnBrcAreaControlForB(set<uint8> &area_list) {
+	uint8 area_size = area_list.size();
+	LOG_DEBUG("brc area control for B. area_size:%d", area_size);
+
+	for (uint8 area_id : area_list)
+		LOG_DEBUG("brc area control for B. id:%d", area_id);
+
+	// 所有牌从小到大位置顺序 
+	uint8 uArSortCardIndex[MAX_SEAT_INDEX] = { 0 };
+	GetCardSortIndex(uArSortCardIndex);
+
+	uint8 cbTableCard[MAX_SEAT_INDEX][SINGLE_CARD_NUM] = { {0} };
+
+	// 根据区域置换牌 设置就为赢，否则为输
+	uint8 front = 0;
+	uint8 back = 0;
+	for (uint8 i = ID_SHUN_MEN; i < AREA_COUNT; ++i) {
+		bool isfind = false;
+		set<uint8>::iterator iter;
+		iter = area_list.find(i);
+		if (iter != area_list.end())
+			isfind = true;
+		else
+			isfind = false;
+
+		// 如果为赢，则取大牌
+		if (isfind) {
+			memcpy(cbTableCard[i + 1], m_cbTableCardArray[uArSortCardIndex[AREA_COUNT - back]], SINGLE_CARD_NUM);
+			++back;
+		} else { //如果为输，则取小牌
+			memcpy(cbTableCard[i + 1], m_cbTableCardArray[uArSortCardIndex[front]], SINGLE_CARD_NUM);
+			++front;
+		}
+	}
+
+	uint8 banker = AREA_COUNT - back;
+	// 设置庄家的牌
+	memcpy(cbTableCard[0], m_cbTableCardArray[uArSortCardIndex[banker]], SINGLE_CARD_NUM);
+
+	// 根据控牌结果发牌
+	memcpy(m_cbTableCardArray, cbTableCard, sizeof(m_cbTableCardArray));
+
+	LOG_DEBUG("brc area control for B. front:%d back:%d banker:%d", front, back, banker);
+
+	return true;
 }
 
 bool CGameTwoeightbarTable::OnBrcAreaControlForA(uint8 ctrl_area_a) {
-}
-
-bool CGameTwoeightbarTable::SetControlBankerScore(bool isWin) {
-	LOG_DEBUG("Set Control Banker Score - isWin:%d", isWin);
-
-	uint8 cbTableCard[CARD_COUNT];
-
-	uint32 bankeruid = GetBankerUID();
-
-	int64 banker_score = 0;
-
-	int irount_count = 1000;
-	int iRountIndex = 0;
-	bool static bWinFlag[AREA_COUNT]; //胜利标识
-	int cbMultiple[AREA_COUNT] = { 1, 1, 1 }; // 区域牌型倍数
-	for (; iRountIndex < irount_count; ++iRountIndex) {
-		// 推断玩家输赢
-		DeduceWinner(bWinFlag[ID_SHUN_MEN], bWinFlag[ID_TIAN_MEN], bWinFlag[ID_DI_MEN], cbMultiple[ID_SHUN_MEN], cbMultiple[ID_TIAN_MEN], cbMultiple[ID_DI_MEN]);
-
-		//计算座位积分
-		for (uint16 wChairID = 0; wChairID < GAME_PLAYER; ++wChairID) {
-			//获取用户
-			CGamePlayer *pPlayer = GetPlayer(wChairID);
-			if (pPlayer == NULL)
-				continue;
-			for (uint16 wAreaIndex = ID_SHUN_MEN; wAreaIndex <= AREA_COUNT; ++wAreaIndex) {
-				if (m_userJettonScore[wAreaIndex][pPlayer->GetUID()] == 0)
-					continue;
-				if (bWinFlag[wAreaIndex])// 赢了
-					banker_score -= (m_userJettonScore[wAreaIndex][pPlayer->GetUID()] * cbMultiple[wAreaIndex]);
-				else // 输了
-					banker_score += m_userJettonScore[wAreaIndex][pPlayer->GetUID()] * cbMultiple[wAreaIndex];
-			}
-		}
-
-		//计算旁观者积分
-		for (map<uint32, CGamePlayer*>::iterator it = m_mpLookers.begin(); it != m_mpLookers.end(); ++it) {
-			CGamePlayer* pPlayer = it->second;
-			if (pPlayer == NULL)
-				continue;
-			for (uint16 wAreaIndex = ID_SHUN_MEN; wAreaIndex < AREA_COUNT; ++wAreaIndex) {
-				if (m_userJettonScore[wAreaIndex][pPlayer->GetUID()] == 0)
-					continue;
-				if (bWinFlag[wAreaIndex])// 赢了
-					banker_score -= (m_userJettonScore[wAreaIndex][pPlayer->GetUID()] * cbMultiple[wAreaIndex]);
-				else // 输了
-					banker_score += m_userJettonScore[wAreaIndex][pPlayer->GetUID()] * cbMultiple[wAreaIndex];
-			}
-		}
-
-		if ((isWin && banker_score > 0) || (!isWin && banker_score < 0))
-			break;
-		else
-			//重新洗牌
-			TwoeightLogic::RandCardList(m_cbTableCardArray);
+	LOG_DEBUG("brc area control for A. ctrl_area_b:%d", ctrl_area_a);
+	//庄赢
+	if (ctrl_area_a == AREA_BANK) {
+		LOG_DEBUG("get area ctrl A is success - roomid:%d,tableid:%d,ctrl_area_b:%d", m_pHostRoom->GetRoomID(), GetTableID(), ctrl_area_a);
+		return SetBankerWinLose(true);
 	}
-	LOG_DEBUG("set banker win or lose - roomid:%d,tableid:%d,bankeruid:%d,banker_score:%lld,isWin:%d", m_pHostRoom->GetRoomID(), GetTableID(), bankeruid, banker_score, isWin);
-	if (iRountIndex >= irount_count)
-		return false;
+	//闲赢
+	if (ctrl_area_a == AREA_XIAN) {
+		LOG_DEBUG("get area ctrl A is success - roomid:%d,tableid:%d,ctrl_area_b:%d", m_pHostRoom->GetRoomID(), GetTableID(), ctrl_area_a);
+		return SetBankerWinLose(false);
+	}
 	return true;
-}*/
+}
 
 void CGameTwoeightbarTable::OnNotityForceApplyUser(CGamePlayer* pPlayer) {
 	LOG_DEBUG("Notity Force Apply uid:%d.", pPlayer->GetUID());

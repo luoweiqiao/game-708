@@ -62,6 +62,7 @@ bool CDataCfgMgr::Reload()
 	CDBMysqlMgr::Instance().GetSyncDBOper(DB_INDEX_TYPE_CFG).LoadNewPlayerWelfareValue(m_vecNewPlayerWelfareValue);
 	CDBMysqlMgr::Instance().GetSyncDBOper(DB_INDEX_TYPE_CFG).LoadUserControlCfg(m_mpUserControlCfg);
 	CDBMysqlMgr::Instance().GetSyncDBOper(DB_INDEX_TYPE_CFG).LoadExclusiveAlipayRecharge(m_vExclusiveInfo);
+	CDBMysqlMgr::Instance().GetSyncDBOper(DB_INDEX_TYPE_CFG).LoadSignInfoCfg(m_mpSignCfg);
 
     // 加载自动杀分玩家列表
     //CDBMysqlMgr::Instance().GetSyncDBOper(DB_INDEX_TYPE_CFG).LoadAutoKillUsers(m_vecAutoKillingUsers);
@@ -2649,4 +2650,45 @@ void CDataCfgMgr::UpdateLuckyInfo(uint32 uid, uint32 gameType, uint32 roomid, ta
 {
 	CDBMysqlMgr::Instance().GetSyncDBOper(DB_INDEX_TYPE_CFG).UpdateLuckyCfg(uid, gameType, roomid, mpLuckyInfo);
 	CDBMysqlMgr::Instance().GetSyncDBOper(DB_INDEX_TYPE_CFG).UpdateLuckyLog(uid, gameType, roomid, mpLuckyInfo);
+}
+
+uint32  CDataCfgMgr::GetSignAwardInfo(uint32 vip_level, uint32 day)
+{
+	//天数判断
+	if (day < 1 || day>SIGN_MAX_DAYS)
+	{
+		LOG_WARNING("the day parameter is error. day:%d", day);
+		return 0;
+	}
+	map<uint32, tagSignInfoCfg>::iterator it = m_mpSignCfg.find(vip_level);
+	if (it == m_mpSignCfg.end())
+	{
+		LOG_WARNING("the vip_level parameter is not exist. vip_level:%d", vip_level);
+		return 0;
+	}
+	else
+	{
+		return it->second.award_day[day-1];
+	}
+}
+
+uint32  CDataCfgMgr::GetSignAwardSumInfo(uint32 vip_level)
+{
+	map<uint32, tagSignInfoCfg>::iterator it = m_mpSignCfg.find(vip_level);
+	if (it == m_mpSignCfg.end())
+	{
+		LOG_WARNING("the vip_level parameter is not exist. vip_level:%d", vip_level);
+		return 0;
+	}
+	else
+	{
+		return it->second.award_sum;
+	}
+}
+
+void  CDataCfgMgr::UpdateSignCfgInfo(uint32 vip_level, tagSignInfoCfg info)
+{
+	m_mpSignCfg[vip_level] = info;
+	LOG_DEBUG("update sign cfg. vip_level:%d award_day:%d %d %d %d %d %d %d", info.vip_level, info.award_day[0], 
+		info.award_day[1], info.award_day[2], info.award_day[3], info.award_day[4], info.award_day[5], info.award_day[6]);
 }

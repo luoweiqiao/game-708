@@ -49,7 +49,7 @@ enum GAME_CONTROL_MULTI_PALYER_TYPE
 
 
 #define CONTROL_TIME_OUT		(5*60*1000)		//控制超时(5分钟)
-#define BRC_MAX_CONTROL_AREA	(20)			//所有百人场最大的下注区域值
+#define BRC_MAX_CONTROL_AREA	(40)			//所有百人场最大的下注区域值
 
 struct tagJackpotScore
 {
@@ -687,7 +687,7 @@ protected:
 	uint32                       m_nrw_ctrl_uid;        //新注册玩家福利---当前局所控的玩家ID
 	uint32                       m_nrw_status;          //新注册玩家福利---当前局所控玩家的状态，用于记录日志时，进行判断
 
-	uint16 m_maxChairNum; // 最大椅子数 add by har
+	uint16 m_maxChairNum = 0; // 最大椅子数
 
 	//百人场精准控制
 	set<CGamePlayer*>    m_setControlPlayers;       // 控制玩家列表---保存所有在控制界面
@@ -709,7 +709,7 @@ protected:
 
 	bool				m_lucky_flag;				//当前局是否触发幸运值
 	set<uint32>			m_set_ctrl_lucky_uid;		//当前局触发幸运值的玩家列表
-	bool m_isAllRobotOrPlayerJetton; // 是否全部为玩家或机器人下注，针对库存系统
+	bool m_isAllRobotOrPlayerJetton = true; // 是否全部为玩家或机器人下注，针对库存系统
 };
 
 #endif //__GAME_TABLE_H__

@@ -534,7 +534,7 @@ int   CHandlePHPMsg::handle_php_update_accvalue_ingame(NetworkObject* pNetObj, C
 	Json::Value  jrep;
 	if (!reader.parse(msg, jvalue) || !jvalue.isMember("uid") || !jvalue.isMember("diamond") || !jvalue.isMember("coin")
 		|| !jvalue.isMember("score") || !jvalue.isMember("ingot") || !jvalue.isMember("cvalue") || !jvalue.isMember("safecoin")
-		|| !jvalue.isMember("ptype") || !jvalue.isMember("sptype"))
+		|| !jvalue.isMember("ptype") || !jvalue.isMember("sptype") || !jvalue["chessid"].isString())
 	{
 		LOG_ERROR("analysis json error - msg:%s", msg.c_str());
 		jrep["ret"] = 0;
@@ -559,7 +559,8 @@ int   CHandlePHPMsg::handle_php_update_accvalue_ingame(NetworkObject* pNetObj, C
 	int64  ingot = jvalue["ingot"].asInt64();
 	int64  cvalue = jvalue["cvalue"].asInt64();
 	int64  safecoin = jvalue["safecoin"].asInt64();
-	LOG_DEBUG("1 update_accvalue_ingame data - uid:%d,oper_type:%d,sub_type:%d,diamond:%lld,coin:%lld,score:%lld,ingot:%lld,cvalue:%lld,safecoin:%lld", uid, oper_type, sub_type, diamond, coin, score, ingot, cvalue, safecoin);
+	string chessid = jvalue["chessid"].asString();
+	LOG_DEBUG("1 update_accvalue_ingame data - uid:%d,oper_type:%d,sub_type:%d,diamond:%lld,coin:%lld,score:%lld,ingot:%lld,cvalue:%lld,safecoin:%lld chessid:%s", uid, oper_type, sub_type, diamond, coin, score, ingot, cvalue, safecoin, chessid.c_str());
 	bool bRet = false;
 	int  code = 0;
 	CPlayer* pPlayer = (CPlayer*)CPlayerMgr::Instance().GetPlayer(uid);
@@ -586,7 +587,7 @@ int   CHandlePHPMsg::handle_php_update_accvalue_ingame(NetworkObject* pNetObj, C
 		LOG_DEBUG("3 update_accvalue_ingame status - uid:%d,oper_type:%d,IsInLobby:%d,needInLobby:%d,curSvrID:%d", uid, oper_type, pPlayer->IsInLobby(), needInLobby, pPlayer->GetCurSvrID());
 		if (pPlayer->IsInLobby() || !needInLobby)
 		{
-			bRet = pPlayer->PhpAtomChangeAccountValue(oper_type, sub_type, diamond, coin, ingot, score, cvalue, safecoin);
+			bRet = pPlayer->PhpAtomChangeAccountValue(oper_type, sub_type, diamond, coin, ingot, score, cvalue, safecoin, chessid);
 			LOG_DEBUG("4 update_accvalue_ingame status - uid:%d,oper_type:%d,bRet:%d", uid, oper_type, bRet);
 
 			if (bRet) {
@@ -619,7 +620,7 @@ int   CHandlePHPMsg::handle_php_update_accvalue_ingame(NetworkObject* pNetObj, C
 	else
 	{
 		
-		bRet = CCommonLogic::AtomChangeOfflineAccData(uid, oper_type, sub_type, diamond, coin, ingot, score, cvalue, safecoin);
+		bRet = CCommonLogic::AtomChangeOfflineAccData(uid, oper_type, sub_type, diamond, coin, ingot, score, cvalue, safecoin, chessid);
 		LOG_DEBUG("5 update_accvalue_ingame status player is null - uid:%d,oper_type:%d,bRet:%d", uid, oper_type, bRet);
 		if (!bRet)
 		{
@@ -1781,7 +1782,7 @@ int CHandlePHPMsg::handle_php_update_new_player_novice_welfare_value(NetworkObje
 	return 0;
 }
 
-//{"cloginreward":"[100,100,100,100,100,100,200]","reset":0}
+//{"vip_level":0,"award_day":"[100,100,100,100,100,100,200]","award_sum":800}
 int CHandlePHPMsg::handle_php_sign_in_update(NetworkObject* pNetObj, CBufferStream& stream)
 {
 	string msg;
@@ -1791,7 +1792,7 @@ int CHandlePHPMsg::handle_php_sign_in_update(NetworkObject* pNetObj, CBufferStre
 	Json::Value  jrep;
 
 	LOG_DEBUG("json analysis - msg:%s", msg.c_str());
-	return 0;
+	
 	if (!reader.parse(msg, jvalue))
 	{
 		LOG_ERROR("json analysis error - msg:%s", msg.c_str());
@@ -1800,41 +1801,69 @@ int CHandlePHPMsg::handle_php_sign_in_update(NetworkObject* pNetObj, CBufferStre
 		return 0;
 	}
 
-	if (!jvalue.isMember("cloginreward") || !jvalue.isMember("reset") )
+	if (!jvalue.isMember("award_day") || !jvalue.isMember("vip_level") || !jvalue.isMember("award_sum"))
 	{
 		LOG_ERROR("json analysis error - msg:%s", msg.c_str());
 		jrep["ret"] = 0;
 		SendPHPMsg(pNetObj, jrep.toFastString(), net::PHP_MSG_NOTIFY_SIGN_IN_UPDATE);
 		return 0;
 	}
-	if (!jvalue["reset"].isString() || !jvalue["reset"].isIntegral())
+	if (!jvalue["vip_level"].isIntegral())
 	{
-		LOG_ERROR("json param analysis error - msg:%s", msg.c_str());
+		LOG_ERROR("the vip_level is not integer type");
 		jrep["ret"] = 0;
 		SendPHPMsg(pNetObj, jrep.toFastString(), net::PHP_MSG_NOTIFY_SIGN_IN_UPDATE);
 		return 0;
 	}
-	std::string strJson = jvalue["cloginreward"].asString();
-	int reset = jvalue["reset"].asInt();
-	bool bIsSuccess = CDataCfgMgr::Instance().cloginrewardAnalysis(true, strJson);
-
-	LOG_DEBUG("reset:%d,strJson:%s", reset, strJson.data());
-	if (bIsSuccess)
+	if (!jvalue["award_sum"].isIntegral())
 	{
-		if (reset == 1)
-		{
-			CDBMysqlMgr::Instance().UpdatePlayerClogin();
-			CRedisMgr::Instance().ClearSignInDev();
-			CPlayerMgr::Instance().CloginCleanup();
-		}
-		jrep["ret"] = 1;
-	}
-	else
-	{
+		LOG_ERROR("the award_sum is not integer type");
 		jrep["ret"] = 0;
+		SendPHPMsg(pNetObj, jrep.toFastString(), net::PHP_MSG_NOTIFY_SIGN_IN_UPDATE);
+		return 0;
 	}
-	SendPHPMsg(pNetObj, jrep.toFastString(), net::PHP_MSG_NOTIFY_SIGN_IN_UPDATE);
+	std::string strJson = jvalue["award_day"].toFastString();
+	uint16 vip_level = jvalue["vip_level"].asInt();
+	uint32 award_sum = jvalue["award_sum"].asInt();
+	LOG_DEBUG("vip_level:%d,str_award_day:%s, award_sum:%d", vip_level, strJson.data(), award_sum);
 
+	//解析award_day字段
+	Json::Reader reader_1;
+	Json::Value  jvalue_1;
+	if (strJson.empty() == true || reader_1.parse(strJson, jvalue_1) == false)
+	{
+		LOG_ERROR("解析签到奖励json错误:%s", strJson.c_str());
+		jrep["ret"] = 0;
+		SendPHPMsg(pNetObj, jrep.toFastString(), net::PHP_MSG_NOTIFY_SIGN_IN_UPDATE);
+		return 0;
+	}
+	if (jvalue_1.size() == 0)
+	{
+		LOG_ERROR("size error");
+		jrep["ret"] = 0;
+		SendPHPMsg(pNetObj, jrep.toFastString(), net::PHP_MSG_NOTIFY_SIGN_IN_UPDATE);
+		return 0;
+	}
+	
+	tagSignInfoCfg info;
+	info.vip_level = vip_level;
+	for (uint32 i = 0; i < jvalue_1.size(); ++i)
+	{
+		if (jvalue_1[i].isIntegral())
+		{
+			info.award_day[i] =jvalue_1[i].asInt();
+		}
+	}
+
+	info.vip_level = vip_level;
+	info.award_sum = award_sum;
+
+	//更新配置
+	CDataCfgMgr::Instance().UpdateSignCfgInfo(vip_level, info);
+
+	//返回结果
+	jrep["ret"] = 1;
+	SendPHPMsg(pNetObj, jrep.toFastString(), net::PHP_MSG_NOTIFY_SIGN_IN_UPDATE);
 
 	return 0;
 }

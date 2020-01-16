@@ -185,6 +185,21 @@ void   CServerMgr::SendSvrsInfo2Client(uint32 uid)
 	if (pPlayer->IsRobot() == false)
 	{
 		LOG_DEBUG("发送服务器列表:%d--%d", uid, info.svrs_size());
+		map<uint32, uint64>::iterator iter = m_mpPlayerLoginTime.find(uid);
+		if (iter != m_mpPlayerLoginTime.end()) {
+			int64 expendTime = getTickCount64() - iter->second;
+			if (m_minLoginTime == 0)
+				m_minLoginTime = expendTime;
+			if (expendTime > m_maxLoginTime)
+				m_maxLoginTime = expendTime;
+			else if (expendTime < m_minLoginTime)
+				m_minLoginTime = expendTime;
+			m_loginAllTime += expendTime;
+			++m_loginAllCount;
+			m_mpPlayerLoginTime.erase(uid);
+			LOG_DEBUG("uid:%d,登陆耗时:%lldms,总次数:%lld,平均延时:%lldms,最大延时:%lldms,最小延时:%lldms,m_mpPlayerLoginTime.size:%lld",
+				uid, expendTime, m_loginAllCount, m_loginAllTime/m_loginAllCount, m_maxLoginTime, m_minLoginTime, m_mpPlayerLoginTime.size());
+		}
 	}
 	
 }
@@ -710,4 +725,9 @@ void	CServerMgr::ResetLuckyCfg(net::msg_reset_lucky_cfg * pmsg)
 		stGServer& server = it->second;
 		SendMsg2Server(server.svrID, pmsg, net::L2S_MSG_RESET_LUCKY_CFG, 0);
 	}
+}
+
+// 设置玩家登录时间
+void CServerMgr::SetPlayerLoginTime(uint32 uid) {
+	m_mpPlayerLoginTime[uid] = getTickCount64();
 }

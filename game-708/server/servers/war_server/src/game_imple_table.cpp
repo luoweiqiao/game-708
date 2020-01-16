@@ -148,6 +148,10 @@ void CGameWarTable::GetTableFaceInfo(net::table_face_info* pInfo)
 	pwar->set_card_time(s_PlaceJettonTime);
 	pwar->set_table_state(GetGameState());
 	pwar->set_sitdown(m_pHostRoom->GetSitDown());
+	for (uint32 i = 0; i < m_chip_range.size(); i++)
+	{
+		pwar->add_chip(m_chip_range[i]);
+	}
 }
 
 //配置桌子
@@ -207,8 +211,30 @@ bool CGameWarTable::ReAnalysisParam() {
 		m_sysBankerWinPro = jvalue["sbw"].asInt();
 	}
 
+	//解析筹码范围
+	if (jvalue.isMember("chip_range"))
+	{		
+		string str_chip_range = jvalue["chip_range"].asString();
+		LOG_DEBUG("roomid:%d,str_chip_range:%s", GetRoomID(), str_chip_range.c_str());
+		m_chip_range.clear();
 
-	LOG_ERROR("reader_json -  roomid:%d,tableid:%d,m_sysBankerWinPro:%d,m_iArrDispatchCardPro:%d %d %d %d %d %d",
+		Json::Reader tmpreader;
+		Json::Value  tmpjvalue;
+		if (str_chip_range.empty() == false && tmpreader.parse(str_chip_range, tmpjvalue))
+		{			
+			for (uint32 i = 0; i < tmpjvalue.size(); i++)
+			{				
+				if (!tmpjvalue[i].isIntegral())
+				{
+					continue;
+				}
+				uint32 chip = tmpjvalue[i].asUInt();
+				m_chip_range.push_back(chip);
+				LOG_DEBUG("json analysis - roomid:%d i:%d chip:%d", GetRoomID(), i, chip);
+			}			
+		}		
+	}
+	LOG_DEBUG("reader_json -  roomid:%d,tableid:%d,m_sysBankerWinPro:%d,m_iArrDispatchCardPro:%d %d %d %d %d %d",
 		GetRoomID(), GetTableID(), m_sysBankerWinPro, m_iArrDispatchCardPro[0], m_iArrDispatchCardPro[1], m_iArrDispatchCardPro[2], m_iArrDispatchCardPro[3], m_iArrDispatchCardPro[4], m_iArrDispatchCardPro[5]);
 
 	return true;
@@ -2302,7 +2328,7 @@ int64 CGameWarTable::GetRobotJettonScore(CGamePlayer* pPlayer, uint8 area)
 			lUserRealJetton = 50000;
 		}
 	}
-	else if (lUserCurJetton >= 2000000)
+	else if (lUserCurJetton >= 2000000 && lUserCurJetton < 8000000)
 	{
 		if (g_RandGen.RandRatio(500, PRO_DENO_10000))
 		{
@@ -2317,9 +2343,36 @@ int64 CGameWarTable::GetRobotJettonScore(CGamePlayer* pPlayer, uint8 area)
 			lUserRealJetton = 50000;
 		}
 	}
+	else if (lUserCurJetton >= 8000000)
+	{
+		if (g_RandGen.RandRatio(500, PRO_DENO_10000))
+		{
+			lUserRealJetton = 500000;
+		}
+		else if (g_RandGen.RandRatio(3000, PRO_DENO_10000))
+		{
+			lUserRealJetton = 200000;
+		}
+		else
+		{
+			lUserRealJetton = 100000;
+		}
+	}
 	else
 	{
 		lUserRealJetton = 100;
+	}
+	if (lUserRealJetton > lUserMaxJetton && lUserRealJetton == 500000)
+	{
+		lUserRealJetton = 200000;
+	}
+	if (lUserRealJetton > lUserMaxJetton && lUserRealJetton == 200000)
+	{
+		lUserRealJetton = 100000;
+	}
+	if (lUserRealJetton > lUserMaxJetton && lUserRealJetton == 100000)
+	{
+		lUserRealJetton = 50000;
 	}
 	if (lUserRealJetton > lUserMaxJetton && lUserRealJetton == 50000)
 	{
@@ -2345,7 +2398,24 @@ int64 CGameWarTable::GetRobotJettonScore(CGamePlayer* pPlayer, uint8 area)
 	{
 		lUserRealJetton = 0;
 	}
-	return lUserRealJetton;
+
+	//判断筹码是否在配置范围内
+	if (lUserRealJetton > 0)
+	{
+		for (uint32 i = 0; i < m_chip_range.size(); i++)
+		{
+			if (m_chip_range[i] == lUserRealJetton)
+			{
+				return lUserRealJetton;
+			}
+		}
+		lUserRealJetton = 0;
+		return lUserRealJetton;
+	}
+	else
+	{
+		return lUserRealJetton;
+	}
 }
 
 

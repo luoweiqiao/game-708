@@ -280,6 +280,11 @@ public:
 	void	LoadLuckyConfig(uint32 uid, uint32 gameType, map<uint8, tagUserLuckyCfg> &mpLuckyCfg);
 	void	UpdateLuckyInfo(uint32 uid, uint32 gameType, uint32 roomid, tagUserLuckyCfg mpLuckyInfo);
 
+	//签到
+	uint32	GetSignAwardInfo(uint32 vip_level, uint32 day);
+	uint32	GetSignAwardSumInfo(uint32 vip_level);
+	void	UpdateSignCfgInfo(uint32 vip_level, tagSignInfoCfg mpSignInfo);
+
 protected:
     typedef map<uint32,stMissionCfg> MAP_MISSCFG;
     typedef map<string,string>       MAP_SYSCFG;
@@ -411,6 +416,9 @@ protected:
 	map<uint32, tagUserControlCfg>		m_mpUserControlCfg;
 	vector<string>				m_vecMasterCity;
 	vector<uint32>				m_vecMasterUid;
+
+	// 签到---配置信息
+	map<uint32, tagSignInfoCfg>		m_mpSignCfg;
 
 };
 

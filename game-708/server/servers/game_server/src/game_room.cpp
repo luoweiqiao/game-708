@@ -130,6 +130,7 @@ bool    CGameRoom::CheckRoomCanGameStart()
 	case net::GAME_CATE_BULLFIGHT:
 	case net::GAME_CATE_PAIJIU:
 	case net::GAME_CATE_TWOEIGHT:
+	case net::GAME_CATE_CARCITY:
 	{
 		bIsNeewCheck = true;
 	}
@@ -353,7 +354,7 @@ bool	CGameRoom::ReAnalysisParam() {
 	m_tagJackpotScore.tm_min =  g_RandGen.RandRange(0, 59);
 
 
-	LOG_ERROR("jackpot_value - roomid:%d,lMinScore:%d,lMaxScore:%d,m_lMaxPollScore:%lld,m_lMinPollScore:%lld,iIsUpdateCurPollScore:%d,m_lCurPollScore:%lld,m_uSysWinPro:%d,uSysLostPro:%d,uSysLostWinProChange:%d,lUpdateJackpotScore:%lld,iUserJackpotControl:%d,ulLastRestTime:%lld,tm_hour:%d,tm_min:%d,m_lPlayerMaxWinScore:%lld",
+	LOG_DEBUG("jackpot_value - roomid:%d,lMinScore:%d,lMaxScore:%d,m_lMaxPollScore:%lld,m_lMinPollScore:%lld,iIsUpdateCurPollScore:%d,m_lCurPollScore:%lld,m_uSysWinPro:%d,uSysLostPro:%d,uSysLostWinProChange:%d,lUpdateJackpotScore:%lld,iUserJackpotControl:%d,ulLastRestTime:%lld,tm_hour:%d,tm_min:%d,m_lPlayerMaxWinScore:%lld",
 		GetRoomID(), m_MasterShowUserInfo.lMinScore, m_MasterShowUserInfo.lMaxScore, m_tagJackpotScore.lMaxPollScore, m_tagJackpotScore.lMinPollScore, iIsUpdateCurPollScore, m_tagJackpotScore.lCurPollScore, m_tagJackpotScore.uSysWinPro, m_tagJackpotScore.uSysLostPro,m_tagJackpotScore.uSysLostWinProChange, m_tagJackpotScore.lUpdateJackpotScore, m_tagJackpotScore.iUserJackpotControl, m_tagJackpotScore.ulLastRestTime, m_tagJackpotScore.tm_hour, m_tagJackpotScore.tm_min, m_lPlayerMaxWinScore);
 
 	return true;
@@ -1545,6 +1546,42 @@ int CGameRoom::CheckRoommParambyGameType(uint32 gametype, string param) {
 			if (!jvalue["rzapwm"].isIntegral()) { bflag = 1857 /*false*/; }
 			if (!jvalue["rzaplr"].isIntegral()) { bflag = 1858 /*false*/; }
 		}
+	}
+	else if (gametype == net::GAME_CATE_CARCITY) {
+	    if (!jvalue.isMember("mp0")) { bflag = 1900 /*false*/; }
+	    if (!jvalue.isMember("mp1")) { bflag = 1901 /*false*/; }
+	    if (!jvalue.isMember("mp2")) { bflag = 1902 /*false*/; }
+	    if (!jvalue.isMember("mp3")) { bflag = 1903 /*false*/; }
+	    if (!jvalue.isMember("mp4")) { bflag = 1904 /*false*/; }
+		if (!jvalue.isMember("mp5")) { bflag = 1905 /*false*/; }
+		if (!jvalue.isMember("mp6")) { bflag = 1906 /*false*/; }
+		if (!jvalue.isMember("mp7")) { bflag = 1907 /*false*/; }
+		if (!jvalue.isMember("pr0")) { bflag = 1908 /*false*/; }
+		if (!jvalue.isMember("pr1")) { bflag = 1909 /*false*/; }
+		if (!jvalue.isMember("pr2")) { bflag = 1910 /*false*/; }
+		if (!jvalue.isMember("pr3")) { bflag = 1911 /*false*/; }
+		if (!jvalue.isMember("pr4")) { bflag = 1912 /*false*/; }
+		if (!jvalue.isMember("pr5")) { bflag = 1913 /*false*/; }
+		if (!jvalue.isMember("pr6")) { bflag = 1914 /*false*/; }
+		if (!jvalue.isMember("pr7")) { bflag = 1915 /*false*/; }
+	    if (bflag == 0) {
+		    if (!jvalue["mp0"].isIntegral()) { bflag = 1950 /*false*/; }
+		    if (!jvalue["mp1"].isIntegral()) { bflag = 1951 /*false*/; }
+		    if (!jvalue["mp2"].isIntegral()) { bflag = 1952 /*false*/; }
+		    if (!jvalue["mp3"].isIntegral()) { bflag = 1953 /*false*/; }
+		    if (!jvalue["mp4"].isIntegral()) { bflag = 1954 /*false*/; }
+			if (!jvalue["mp5"].isIntegral()) { bflag = 1955 /*false*/; }
+			if (!jvalue["mp6"].isIntegral()) { bflag = 1956 /*false*/; }
+			if (!jvalue["mp7"].isIntegral()) { bflag = 1957 /*false*/; }
+			if (!jvalue["pr0"].isIntegral()) { bflag = 1958 /*false*/; }
+			if (!jvalue["pr1"].isIntegral()) { bflag = 1959 /*false*/; }
+			if (!jvalue["pr2"].isIntegral()) { bflag = 1960 /*false*/; }
+			if (!jvalue["pr3"].isIntegral()) { bflag = 1961 /*false*/; }
+			if (!jvalue["pr4"].isIntegral()) { bflag = 1962 /*false*/; }
+			if (!jvalue["pr5"].isIntegral()) { bflag = 1963 /*false*/; }
+			if (!jvalue["pr6"].isIntegral()) { bflag = 1964 /*false*/; }
+			if (!jvalue["pr7"].isIntegral()) { bflag = 1965 /*false*/; }
+	    }
 	} else {
 		bflag = 1 /*false*/;
 	}

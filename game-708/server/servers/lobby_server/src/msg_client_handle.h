@@ -41,10 +41,18 @@ protected:
 	int  handle_msg_give_safebox(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);
 	// 获得任务奖励
 	int  handle_msg_get_mission_prize(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);
-	// 获得登陆奖励
+
+	// 获取用户对应VIP等级每天的登陆奖励
+	int  handle_msg_get_login_vip_reward_info(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);
+	// 获取所有VIP等级对应的签到奖励总额
+	int  handle_msg_get_login_vip_reward_total(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);
+	// 签到奖励
 	int  handle_msg_get_login_reward(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);
+	
 	// 破产补助
 	int  handle_msg_get_bankrupt_help(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);
+	// 获取破产补助信息
+	int  handle_msg_get_bankrupt_info(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);
 	// 兑换积分
 	int  handle_msg_exchange_score(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);
 	// 发送喇叭

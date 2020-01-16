@@ -90,6 +90,9 @@ public:
 
 	// 加载捕鱼配置表
 	bool LoadFishInfoCfg(map<uint8, tagFishInfoCfg> &mpCfg);
+
+	// 加载签到配置表
+	bool LoadSignInfoCfg(map<uint32, tagSignInfoCfg> &mpCfg);
 };
 
 

@@ -182,6 +182,7 @@ bool    CCommonLogic::IsBaiRenRobotGame(uint16 gameType)
 	case net::GAME_CATE_WAR:
 	case net::GAME_CATE_FIGHT:
 	case net::GAME_CATE_TWOEIGHT:
+	case net::GAME_CATE_CARCITY:
 		return true;
 	default:
 		return false;
@@ -202,6 +203,7 @@ bool    CCommonLogic::IsBaiRenGame(uint16 gameType)
 	case net::GAME_CATE_FIGHT:
 	case net::GAME_CATE_FRUIT_MACHINE:
 	case net::GAME_CATE_TWOEIGHT:
+	case net::GAME_CATE_CARCITY:
 		return true;
 	default:
 		return false;
@@ -249,6 +251,7 @@ bool    CCommonLogic::IsOpenGame(uint16 gameType)
 	case net::GAME_CATE_ROBNIU:
 	case net::GAME_CATE_FISHING:
 	case net::GAME_CATE_TWOEIGHT:
+	case net::GAME_CATE_CARCITY:
         {
             return true;    
         }break;
@@ -260,6 +263,7 @@ bool    CCommonLogic::IsOpenGame(uint16 gameType)
 }
 
 // 统计前20局的百人游戏 (客户端显示神算子 大富豪)
+// 玩家不能主动点击坐到座位上，系统自动设置座位上的玩家
 bool    CCommonLogic::IsBaiRenCount(uint16 gameType)
 {
 	switch (gameType)

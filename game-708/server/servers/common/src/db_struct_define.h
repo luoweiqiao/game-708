@@ -21,6 +21,7 @@ struct stPlayerBaseInfo
 	int32  level;		 // vip等级
 	uint64 rtime;		 // 注册时间
 	uint8  ispay;		 // 是否充值玩家 0:表示未充值 1:表示充值
+	uint64 sign_time;	 // 签到时间
     stPlayerBaseInfo(){
         clear();
     }
@@ -41,6 +42,7 @@ struct stPlayerBaseInfo
 		level		 = info.level;
 		rtime        = info.rtime;
 		ispay        = info.ispay;
+		sign_time    = info.sign_time;
 	}
     void  clear(){
         name         = "";
@@ -58,6 +60,7 @@ struct stPlayerBaseInfo
 		level		 = 0;
 		rtime        = 0;
 		ispay		 = 0;
+		sign_time    = 0;
     }
 };
 // 玩家数值信息
@@ -831,6 +834,22 @@ struct tagFishInfoCfg
 		prize_min = 0;
 		prize_max = 0;
 		kill_rate = 0;		
+	}
+};
+
+//配置信息---签到
+#define SIGN_MAX_DAYS			7
+#define MAX_VIP_LEVEL			15
+struct tagSignInfoCfg
+{
+	uint32	vip_level;					//玩家VIP等级
+	uint32	award_day[SIGN_MAX_DAYS];	//每天签到奖励数组
+	uint32  award_sum;					//7天总奖励
+	tagSignInfoCfg()
+	{
+		vip_level = 0;
+		award_sum = 0;
+		memset(award_day, 0, sizeof(award_day[SIGN_MAX_DAYS]));
 	}
 };
 

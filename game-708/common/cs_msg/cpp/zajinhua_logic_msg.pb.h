@@ -51,6 +51,9 @@ class msg_zajinhua_open_card;
 class msg_zajinhua_game_end_rep;
 class msg_zajinhua_show_card_req;
 class msg_zajinhua_show_card_rep;
+class msg_zajinhua_send_master_card_rep;
+class msg_zajinhua_recv_master_card_req;
+class msg_zajinhua_recv_master_card_rep;
 
 // ===================================================================
 
@@ -1713,6 +1716,359 @@ class msg_zajinhua_show_card_rep : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static msg_zajinhua_show_card_rep* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class msg_zajinhua_send_master_card_rep : public ::google::protobuf::Message {
+ public:
+  msg_zajinhua_send_master_card_rep();
+  virtual ~msg_zajinhua_send_master_card_rep();
+
+  msg_zajinhua_send_master_card_rep(const msg_zajinhua_send_master_card_rep& from);
+
+  inline msg_zajinhua_send_master_card_rep& operator=(const msg_zajinhua_send_master_card_rep& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const msg_zajinhua_send_master_card_rep& default_instance();
+
+  void Swap(msg_zajinhua_send_master_card_rep* other);
+
+  // implements Message ----------------------------------------------
+
+  msg_zajinhua_send_master_card_rep* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const msg_zajinhua_send_master_card_rep& from);
+  void MergeFrom(const msg_zajinhua_send_master_card_rep& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated uint32 card_types = 1;
+  inline int card_types_size() const;
+  inline void clear_card_types();
+  static const int kCardTypesFieldNumber = 1;
+  inline ::google::protobuf::uint32 card_types(int index) const;
+  inline void set_card_types(int index, ::google::protobuf::uint32 value);
+  inline void add_card_types(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      card_types() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_card_types();
+
+  // repeated uint32 chairid = 2;
+  inline int chairid_size() const;
+  inline void clear_chairid();
+  static const int kChairidFieldNumber = 2;
+  inline ::google::protobuf::uint32 chairid(int index) const;
+  inline void set_chairid(int index, ::google::protobuf::uint32 value);
+  inline void add_chairid(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      chairid() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_chairid();
+
+  // repeated uint32 isrobot = 3;
+  inline int isrobot_size() const;
+  inline void clear_isrobot();
+  static const int kIsrobotFieldNumber = 3;
+  inline ::google::protobuf::uint32 isrobot(int index) const;
+  inline void set_isrobot(int index, ::google::protobuf::uint32 value);
+  inline void add_isrobot(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      isrobot() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_isrobot();
+
+  // repeated uint32 cards = 4;
+  inline int cards_size() const;
+  inline void clear_cards();
+  static const int kCardsFieldNumber = 4;
+  inline ::google::protobuf::uint32 cards(int index) const;
+  inline void set_cards(int index, ::google::protobuf::uint32 value);
+  inline void add_cards(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      cards() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_cards();
+
+  // optional uint32 time_leave = 5;
+  inline bool has_time_leave() const;
+  inline void clear_time_leave();
+  static const int kTimeLeaveFieldNumber = 5;
+  inline ::google::protobuf::uint32 time_leave() const;
+  inline void set_time_leave(::google::protobuf::uint32 value);
+
+  // repeated uint32 remain_cards = 6;
+  inline int remain_cards_size() const;
+  inline void clear_remain_cards();
+  static const int kRemainCardsFieldNumber = 6;
+  inline ::google::protobuf::uint32 remain_cards(int index) const;
+  inline void set_remain_cards(int index, ::google::protobuf::uint32 value);
+  inline void add_remain_cards(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      remain_cards() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_remain_cards();
+
+  // @@protoc_insertion_point(class_scope:net.msg_zajinhua_send_master_card_rep)
+ private:
+  inline void set_has_time_leave();
+  inline void clear_has_time_leave();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > card_types_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > chairid_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > isrobot_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > cards_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > remain_cards_;
+  ::google::protobuf::uint32 time_leave_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+
+  friend void  protobuf_AddDesc_zajinhua_5flogic_5fmsg_2eproto();
+  friend void protobuf_AssignDesc_zajinhua_5flogic_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_zajinhua_5flogic_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static msg_zajinhua_send_master_card_rep* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class msg_zajinhua_recv_master_card_req : public ::google::protobuf::Message {
+ public:
+  msg_zajinhua_recv_master_card_req();
+  virtual ~msg_zajinhua_recv_master_card_req();
+
+  msg_zajinhua_recv_master_card_req(const msg_zajinhua_recv_master_card_req& from);
+
+  inline msg_zajinhua_recv_master_card_req& operator=(const msg_zajinhua_recv_master_card_req& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const msg_zajinhua_recv_master_card_req& default_instance();
+
+  void Swap(msg_zajinhua_recv_master_card_req* other);
+
+  // implements Message ----------------------------------------------
+
+  msg_zajinhua_recv_master_card_req* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const msg_zajinhua_recv_master_card_req& from);
+  void MergeFrom(const msg_zajinhua_recv_master_card_req& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated uint32 chairid = 1;
+  inline int chairid_size() const;
+  inline void clear_chairid();
+  static const int kChairidFieldNumber = 1;
+  inline ::google::protobuf::uint32 chairid(int index) const;
+  inline void set_chairid(int index, ::google::protobuf::uint32 value);
+  inline void add_chairid(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      chairid() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_chairid();
+
+  // repeated uint32 cards = 2;
+  inline int cards_size() const;
+  inline void clear_cards();
+  static const int kCardsFieldNumber = 2;
+  inline ::google::protobuf::uint32 cards(int index) const;
+  inline void set_cards(int index, ::google::protobuf::uint32 value);
+  inline void add_cards(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      cards() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_cards();
+
+  // @@protoc_insertion_point(class_scope:net.msg_zajinhua_recv_master_card_req)
+ private:
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > chairid_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > cards_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+
+  friend void  protobuf_AddDesc_zajinhua_5flogic_5fmsg_2eproto();
+  friend void protobuf_AssignDesc_zajinhua_5flogic_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_zajinhua_5flogic_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static msg_zajinhua_recv_master_card_req* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class msg_zajinhua_recv_master_card_rep : public ::google::protobuf::Message {
+ public:
+  msg_zajinhua_recv_master_card_rep();
+  virtual ~msg_zajinhua_recv_master_card_rep();
+
+  msg_zajinhua_recv_master_card_rep(const msg_zajinhua_recv_master_card_rep& from);
+
+  inline msg_zajinhua_recv_master_card_rep& operator=(const msg_zajinhua_recv_master_card_rep& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const msg_zajinhua_recv_master_card_rep& default_instance();
+
+  void Swap(msg_zajinhua_recv_master_card_rep* other);
+
+  // implements Message ----------------------------------------------
+
+  msg_zajinhua_recv_master_card_rep* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const msg_zajinhua_recv_master_card_rep& from);
+  void MergeFrom(const msg_zajinhua_recv_master_card_rep& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint32 result = 1;
+  inline bool has_result() const;
+  inline void clear_result();
+  static const int kResultFieldNumber = 1;
+  inline ::google::protobuf::uint32 result() const;
+  inline void set_result(::google::protobuf::uint32 value);
+
+  // repeated uint32 chairid = 2;
+  inline int chairid_size() const;
+  inline void clear_chairid();
+  static const int kChairidFieldNumber = 2;
+  inline ::google::protobuf::uint32 chairid(int index) const;
+  inline void set_chairid(int index, ::google::protobuf::uint32 value);
+  inline void add_chairid(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      chairid() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_chairid();
+
+  // repeated uint32 remain_cards = 3;
+  inline int remain_cards_size() const;
+  inline void clear_remain_cards();
+  static const int kRemainCardsFieldNumber = 3;
+  inline ::google::protobuf::uint32 remain_cards(int index) const;
+  inline void set_remain_cards(int index, ::google::protobuf::uint32 value);
+  inline void add_remain_cards(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      remain_cards() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_remain_cards();
+
+  // @@protoc_insertion_point(class_scope:net.msg_zajinhua_recv_master_card_rep)
+ private:
+  inline void set_has_result();
+  inline void clear_has_result();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > chairid_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > remain_cards_;
+  ::google::protobuf::uint32 result_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+
+  friend void  protobuf_AddDesc_zajinhua_5flogic_5fmsg_2eproto();
+  friend void protobuf_AssignDesc_zajinhua_5flogic_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_zajinhua_5flogic_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static msg_zajinhua_recv_master_card_rep* default_instance_;
+};
 // ===================================================================
 
 
@@ -2851,6 +3207,287 @@ msg_zajinhua_show_card_rep::cards() const {
 inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
 msg_zajinhua_show_card_rep::mutable_cards() {
   return &cards_;
+}
+
+// -------------------------------------------------------------------
+
+// msg_zajinhua_send_master_card_rep
+
+// repeated uint32 card_types = 1;
+inline int msg_zajinhua_send_master_card_rep::card_types_size() const {
+  return card_types_.size();
+}
+inline void msg_zajinhua_send_master_card_rep::clear_card_types() {
+  card_types_.Clear();
+}
+inline ::google::protobuf::uint32 msg_zajinhua_send_master_card_rep::card_types(int index) const {
+  return card_types_.Get(index);
+}
+inline void msg_zajinhua_send_master_card_rep::set_card_types(int index, ::google::protobuf::uint32 value) {
+  card_types_.Set(index, value);
+}
+inline void msg_zajinhua_send_master_card_rep::add_card_types(::google::protobuf::uint32 value) {
+  card_types_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+msg_zajinhua_send_master_card_rep::card_types() const {
+  return card_types_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+msg_zajinhua_send_master_card_rep::mutable_card_types() {
+  return &card_types_;
+}
+
+// repeated uint32 chairid = 2;
+inline int msg_zajinhua_send_master_card_rep::chairid_size() const {
+  return chairid_.size();
+}
+inline void msg_zajinhua_send_master_card_rep::clear_chairid() {
+  chairid_.Clear();
+}
+inline ::google::protobuf::uint32 msg_zajinhua_send_master_card_rep::chairid(int index) const {
+  return chairid_.Get(index);
+}
+inline void msg_zajinhua_send_master_card_rep::set_chairid(int index, ::google::protobuf::uint32 value) {
+  chairid_.Set(index, value);
+}
+inline void msg_zajinhua_send_master_card_rep::add_chairid(::google::protobuf::uint32 value) {
+  chairid_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+msg_zajinhua_send_master_card_rep::chairid() const {
+  return chairid_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+msg_zajinhua_send_master_card_rep::mutable_chairid() {
+  return &chairid_;
+}
+
+// repeated uint32 isrobot = 3;
+inline int msg_zajinhua_send_master_card_rep::isrobot_size() const {
+  return isrobot_.size();
+}
+inline void msg_zajinhua_send_master_card_rep::clear_isrobot() {
+  isrobot_.Clear();
+}
+inline ::google::protobuf::uint32 msg_zajinhua_send_master_card_rep::isrobot(int index) const {
+  return isrobot_.Get(index);
+}
+inline void msg_zajinhua_send_master_card_rep::set_isrobot(int index, ::google::protobuf::uint32 value) {
+  isrobot_.Set(index, value);
+}
+inline void msg_zajinhua_send_master_card_rep::add_isrobot(::google::protobuf::uint32 value) {
+  isrobot_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+msg_zajinhua_send_master_card_rep::isrobot() const {
+  return isrobot_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+msg_zajinhua_send_master_card_rep::mutable_isrobot() {
+  return &isrobot_;
+}
+
+// repeated uint32 cards = 4;
+inline int msg_zajinhua_send_master_card_rep::cards_size() const {
+  return cards_.size();
+}
+inline void msg_zajinhua_send_master_card_rep::clear_cards() {
+  cards_.Clear();
+}
+inline ::google::protobuf::uint32 msg_zajinhua_send_master_card_rep::cards(int index) const {
+  return cards_.Get(index);
+}
+inline void msg_zajinhua_send_master_card_rep::set_cards(int index, ::google::protobuf::uint32 value) {
+  cards_.Set(index, value);
+}
+inline void msg_zajinhua_send_master_card_rep::add_cards(::google::protobuf::uint32 value) {
+  cards_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+msg_zajinhua_send_master_card_rep::cards() const {
+  return cards_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+msg_zajinhua_send_master_card_rep::mutable_cards() {
+  return &cards_;
+}
+
+// optional uint32 time_leave = 5;
+inline bool msg_zajinhua_send_master_card_rep::has_time_leave() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void msg_zajinhua_send_master_card_rep::set_has_time_leave() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void msg_zajinhua_send_master_card_rep::clear_has_time_leave() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void msg_zajinhua_send_master_card_rep::clear_time_leave() {
+  time_leave_ = 0u;
+  clear_has_time_leave();
+}
+inline ::google::protobuf::uint32 msg_zajinhua_send_master_card_rep::time_leave() const {
+  return time_leave_;
+}
+inline void msg_zajinhua_send_master_card_rep::set_time_leave(::google::protobuf::uint32 value) {
+  set_has_time_leave();
+  time_leave_ = value;
+}
+
+// repeated uint32 remain_cards = 6;
+inline int msg_zajinhua_send_master_card_rep::remain_cards_size() const {
+  return remain_cards_.size();
+}
+inline void msg_zajinhua_send_master_card_rep::clear_remain_cards() {
+  remain_cards_.Clear();
+}
+inline ::google::protobuf::uint32 msg_zajinhua_send_master_card_rep::remain_cards(int index) const {
+  return remain_cards_.Get(index);
+}
+inline void msg_zajinhua_send_master_card_rep::set_remain_cards(int index, ::google::protobuf::uint32 value) {
+  remain_cards_.Set(index, value);
+}
+inline void msg_zajinhua_send_master_card_rep::add_remain_cards(::google::protobuf::uint32 value) {
+  remain_cards_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+msg_zajinhua_send_master_card_rep::remain_cards() const {
+  return remain_cards_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+msg_zajinhua_send_master_card_rep::mutable_remain_cards() {
+  return &remain_cards_;
+}
+
+// -------------------------------------------------------------------
+
+// msg_zajinhua_recv_master_card_req
+
+// repeated uint32 chairid = 1;
+inline int msg_zajinhua_recv_master_card_req::chairid_size() const {
+  return chairid_.size();
+}
+inline void msg_zajinhua_recv_master_card_req::clear_chairid() {
+  chairid_.Clear();
+}
+inline ::google::protobuf::uint32 msg_zajinhua_recv_master_card_req::chairid(int index) const {
+  return chairid_.Get(index);
+}
+inline void msg_zajinhua_recv_master_card_req::set_chairid(int index, ::google::protobuf::uint32 value) {
+  chairid_.Set(index, value);
+}
+inline void msg_zajinhua_recv_master_card_req::add_chairid(::google::protobuf::uint32 value) {
+  chairid_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+msg_zajinhua_recv_master_card_req::chairid() const {
+  return chairid_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+msg_zajinhua_recv_master_card_req::mutable_chairid() {
+  return &chairid_;
+}
+
+// repeated uint32 cards = 2;
+inline int msg_zajinhua_recv_master_card_req::cards_size() const {
+  return cards_.size();
+}
+inline void msg_zajinhua_recv_master_card_req::clear_cards() {
+  cards_.Clear();
+}
+inline ::google::protobuf::uint32 msg_zajinhua_recv_master_card_req::cards(int index) const {
+  return cards_.Get(index);
+}
+inline void msg_zajinhua_recv_master_card_req::set_cards(int index, ::google::protobuf::uint32 value) {
+  cards_.Set(index, value);
+}
+inline void msg_zajinhua_recv_master_card_req::add_cards(::google::protobuf::uint32 value) {
+  cards_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+msg_zajinhua_recv_master_card_req::cards() const {
+  return cards_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+msg_zajinhua_recv_master_card_req::mutable_cards() {
+  return &cards_;
+}
+
+// -------------------------------------------------------------------
+
+// msg_zajinhua_recv_master_card_rep
+
+// optional uint32 result = 1;
+inline bool msg_zajinhua_recv_master_card_rep::has_result() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void msg_zajinhua_recv_master_card_rep::set_has_result() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void msg_zajinhua_recv_master_card_rep::clear_has_result() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void msg_zajinhua_recv_master_card_rep::clear_result() {
+  result_ = 0u;
+  clear_has_result();
+}
+inline ::google::protobuf::uint32 msg_zajinhua_recv_master_card_rep::result() const {
+  return result_;
+}
+inline void msg_zajinhua_recv_master_card_rep::set_result(::google::protobuf::uint32 value) {
+  set_has_result();
+  result_ = value;
+}
+
+// repeated uint32 chairid = 2;
+inline int msg_zajinhua_recv_master_card_rep::chairid_size() const {
+  return chairid_.size();
+}
+inline void msg_zajinhua_recv_master_card_rep::clear_chairid() {
+  chairid_.Clear();
+}
+inline ::google::protobuf::uint32 msg_zajinhua_recv_master_card_rep::chairid(int index) const {
+  return chairid_.Get(index);
+}
+inline void msg_zajinhua_recv_master_card_rep::set_chairid(int index, ::google::protobuf::uint32 value) {
+  chairid_.Set(index, value);
+}
+inline void msg_zajinhua_recv_master_card_rep::add_chairid(::google::protobuf::uint32 value) {
+  chairid_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+msg_zajinhua_recv_master_card_rep::chairid() const {
+  return chairid_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+msg_zajinhua_recv_master_card_rep::mutable_chairid() {
+  return &chairid_;
+}
+
+// repeated uint32 remain_cards = 3;
+inline int msg_zajinhua_recv_master_card_rep::remain_cards_size() const {
+  return remain_cards_.size();
+}
+inline void msg_zajinhua_recv_master_card_rep::clear_remain_cards() {
+  remain_cards_.Clear();
+}
+inline ::google::protobuf::uint32 msg_zajinhua_recv_master_card_rep::remain_cards(int index) const {
+  return remain_cards_.Get(index);
+}
+inline void msg_zajinhua_recv_master_card_rep::set_remain_cards(int index, ::google::protobuf::uint32 value) {
+  remain_cards_.Set(index, value);
+}
+inline void msg_zajinhua_recv_master_card_rep::add_remain_cards(::google::protobuf::uint32 value) {
+  remain_cards_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+msg_zajinhua_recv_master_card_rep::remain_cards() const {
+  return remain_cards_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+msg_zajinhua_recv_master_card_rep::mutable_remain_cards() {
+  return &remain_cards_;
 }
 
 

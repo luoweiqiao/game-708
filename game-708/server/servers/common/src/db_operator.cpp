@@ -1316,3 +1316,39 @@ bool    CDBOperator::LoadFishInfoCfg(map<uint8, tagFishInfoCfg> &mpCfg)
 	}
 	return true;
 }
+
+// 加载签到配置表---sign_cfg表
+bool    CDBOperator::LoadSignInfoCfg(map<uint32, tagSignInfoCfg> &mpCfg)
+{
+	memset(m_szCommand, 0, sizeof(m_szCommand));
+	sprintf(m_szCommand, "select * from sign_cfg;");
+	vector<map<string, MYSQLValue> > vecData;
+
+	int iRet = this->Query(m_szCommand, vecData);
+	if (iRet == -1)
+	{
+		return false;
+	}
+	mpCfg.clear();
+	LOG_DEBUG("LoadSignInfoCfg - size:%d", vecData.size());
+	for (uint32 i = 0; i < vecData.size(); ++i)
+	{
+		map<string, MYSQLValue> &refRows = vecData[i];
+
+		tagSignInfoCfg cfg;
+		//cfg.id = refRows["id"].as<uint32>();
+		cfg.vip_level = refRows["vip_level"].as<uint32>();
+		cfg.award_day[0] = refRows["award_1"].as<uint32>();
+		cfg.award_day[1] = refRows["award_2"].as<uint32>();
+		cfg.award_day[2] = refRows["award_3"].as<uint32>();
+		cfg.award_day[3] = refRows["award_4"].as<uint32>();
+		cfg.award_day[4] = refRows["award_5"].as<uint32>();
+		cfg.award_day[5] = refRows["award_6"].as<uint32>();
+		cfg.award_day[6] = refRows["award_7"].as<uint32>();
+		cfg.award_sum = refRows["award_sum"].as<uint32>();
+		LOG_DEBUG("record - vip_level:%d award_day:%d %d %d %d %d %d %d award_sum:%d", 
+			cfg.vip_level, cfg.award_day[0], cfg.award_day[1], cfg.award_day[2], cfg.award_day[3], cfg.award_day[4], cfg.award_day[5], cfg.award_day[6], cfg.award_sum);
+		mpCfg.insert(make_pair(cfg.vip_level, cfg));
+	}
+	return true;
+}

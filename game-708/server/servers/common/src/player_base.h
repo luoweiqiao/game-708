@@ -228,6 +228,12 @@ public:
 	//新注册玩家福利功能
 	uint64  GetRtime() { return m_baseInfo.rtime; }
 	void    SetIsPay(uint8 status) { m_baseInfo.ispay = status;	}
+
+	//签到信息
+	void	SetCLogin(uint32 value) { m_baseInfo.clogin = value; }
+	uint32	GetSignTime() { return m_baseInfo.sign_time; }
+	void	UpdateSignTime() { m_baseInfo.sign_time = getSysTime(); }
+
 	//bool   IsKilledScore(uint16 gametype);
 	//stAutoKillConfrontationCfg   GetKilledScoreCfg();
 

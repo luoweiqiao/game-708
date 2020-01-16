@@ -428,7 +428,7 @@ bool    CGameTable::CanSitDown(CGamePlayer* pPlayer,uint16 chairID)
 		return false;
 	}
 	uint16 gameType = m_pHostRoom->GetGameType();
-	if (CCommonLogic::IsBaiRenCount(gameType) && gameType != net::GAME_CATE_TWOEIGHT)
+	if (CCommonLogic::IsBaiRenCount(gameType))
 	{
 		{
 			LOG_DEBUG("bairencount - dont sit down - roomid:%d,tableid:%d,uid:%d,isrobot:%d,chairID:%d", GetRoomID(), GetTableID(), pPlayer->GetUID(), pPlayer->IsRobot(), chairID);
@@ -495,6 +495,7 @@ bool    CGameTable::NeedSitDown()
 	case net::GAME_CATE_WAR:
 	case net::GAME_CATE_FIGHT:
 	case net::GAME_CATE_TWOEIGHT:
+	case net::GAME_CATE_CARCITY:
         return true;
     default:
         return false;
@@ -1803,6 +1804,7 @@ int64 CGameTable::GetBankruptScore()
 		case net::GAME_CATE_FIGHT:
 		case net::GAME_CATE_FRUIT_MACHINE:
 		case net::GAME_CATE_TWOEIGHT:
+		case net::GAME_CATE_CARCITY:
 		{
 			lBankruptScore = m_pHostRoom->GetJettonMin();
 		}break;
@@ -2218,6 +2220,7 @@ bool CGameTable::GetControlPalyerGame(uint16 gameType)
 	case net::GAME_CATE_WAR:
 	case net::GAME_CATE_BULLFIGHT:
 	case net::GAME_CATE_TWOEIGHT:
+	case net::GAME_CATE_CARCITY:
 	{
 		return true;
 	}break;
@@ -2449,6 +2452,7 @@ bool CGameTable::ContinuousPressureBaiRenGame()
 	case net::GAME_CATE_DICE:
 	case net::GAME_CATE_FIGHT:
 	case net::GAME_CATE_TWOEIGHT:
+	case net::GAME_CATE_CARCITY:
 	{
 		return true;
 	}break;
