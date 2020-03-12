@@ -33,6 +33,7 @@
 #include "war_logic_msg.pb.h"
 #include "fight_logic_msg.pb.h"
 #include "twoeight_logic_msg.pb.h"
+#include "carcity_logic_msg.pb.h"
 // @@protoc_insertion_point(includes)
 
 namespace net {
@@ -72,10 +73,16 @@ class msg_send_all_mission_rep;
 class msg_send_mission_rep;
 class msg_get_mission_prize_req;
 class msg_get_mission_prize_rep;
+class msg_get_login_vip_reward_info_req;
+class msg_get_login_vip_reward_info_rep;
+class msg_get_login_vip_reward_total_req;
+class msg_get_login_vip_reward_total_rep;
 class msg_get_login_reward_req;
 class msg_get_login_reward_rep;
 class msg_get_bankrupt_help_req;
 class msg_get_bankrupt_help_rep;
+class msg_get_bankrupt_info_req;
+class msg_get_bankrupt_info_rep;
 class msg_exchange_score_req;
 class msg_exchange_score_rep;
 class msg_speak_broadcast_req;
@@ -3000,6 +3007,350 @@ class msg_get_mission_prize_rep : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class msg_get_login_vip_reward_info_req : public ::google::protobuf::Message {
+ public:
+  msg_get_login_vip_reward_info_req();
+  virtual ~msg_get_login_vip_reward_info_req();
+
+  msg_get_login_vip_reward_info_req(const msg_get_login_vip_reward_info_req& from);
+
+  inline msg_get_login_vip_reward_info_req& operator=(const msg_get_login_vip_reward_info_req& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const msg_get_login_vip_reward_info_req& default_instance();
+
+  void Swap(msg_get_login_vip_reward_info_req* other);
+
+  // implements Message ----------------------------------------------
+
+  msg_get_login_vip_reward_info_req* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const msg_get_login_vip_reward_info_req& from);
+  void MergeFrom(const msg_get_login_vip_reward_info_req& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint32 help_count = 1;
+  inline bool has_help_count() const;
+  inline void clear_help_count();
+  static const int kHelpCountFieldNumber = 1;
+  inline ::google::protobuf::uint32 help_count() const;
+  inline void set_help_count(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:net.msg_get_login_vip_reward_info_req)
+ private:
+  inline void set_has_help_count();
+  inline void clear_has_help_count();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 help_count_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+
+  friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_client_5flogic_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static msg_get_login_vip_reward_info_req* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class msg_get_login_vip_reward_info_rep : public ::google::protobuf::Message {
+ public:
+  msg_get_login_vip_reward_info_rep();
+  virtual ~msg_get_login_vip_reward_info_rep();
+
+  msg_get_login_vip_reward_info_rep(const msg_get_login_vip_reward_info_rep& from);
+
+  inline msg_get_login_vip_reward_info_rep& operator=(const msg_get_login_vip_reward_info_rep& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const msg_get_login_vip_reward_info_rep& default_instance();
+
+  void Swap(msg_get_login_vip_reward_info_rep* other);
+
+  // implements Message ----------------------------------------------
+
+  msg_get_login_vip_reward_info_rep* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const msg_get_login_vip_reward_info_rep& from);
+  void MergeFrom(const msg_get_login_vip_reward_info_rep& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated uint32 reward_coin = 1;
+  inline int reward_coin_size() const;
+  inline void clear_reward_coin();
+  static const int kRewardCoinFieldNumber = 1;
+  inline ::google::protobuf::uint32 reward_coin(int index) const;
+  inline void set_reward_coin(int index, ::google::protobuf::uint32 value);
+  inline void add_reward_coin(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      reward_coin() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_reward_coin();
+
+  // optional uint32 reward_flag = 2;
+  inline bool has_reward_flag() const;
+  inline void clear_reward_flag();
+  static const int kRewardFlagFieldNumber = 2;
+  inline ::google::protobuf::uint32 reward_flag() const;
+  inline void set_reward_flag(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:net.msg_get_login_vip_reward_info_rep)
+ private:
+  inline void set_has_reward_flag();
+  inline void clear_has_reward_flag();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > reward_coin_;
+  ::google::protobuf::uint32 reward_flag_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+
+  friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_client_5flogic_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static msg_get_login_vip_reward_info_rep* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class msg_get_login_vip_reward_total_req : public ::google::protobuf::Message {
+ public:
+  msg_get_login_vip_reward_total_req();
+  virtual ~msg_get_login_vip_reward_total_req();
+
+  msg_get_login_vip_reward_total_req(const msg_get_login_vip_reward_total_req& from);
+
+  inline msg_get_login_vip_reward_total_req& operator=(const msg_get_login_vip_reward_total_req& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const msg_get_login_vip_reward_total_req& default_instance();
+
+  void Swap(msg_get_login_vip_reward_total_req* other);
+
+  // implements Message ----------------------------------------------
+
+  msg_get_login_vip_reward_total_req* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const msg_get_login_vip_reward_total_req& from);
+  void MergeFrom(const msg_get_login_vip_reward_total_req& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint32 help_count = 1;
+  inline bool has_help_count() const;
+  inline void clear_help_count();
+  static const int kHelpCountFieldNumber = 1;
+  inline ::google::protobuf::uint32 help_count() const;
+  inline void set_help_count(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:net.msg_get_login_vip_reward_total_req)
+ private:
+  inline void set_has_help_count();
+  inline void clear_has_help_count();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 help_count_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+
+  friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_client_5flogic_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static msg_get_login_vip_reward_total_req* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class msg_get_login_vip_reward_total_rep : public ::google::protobuf::Message {
+ public:
+  msg_get_login_vip_reward_total_rep();
+  virtual ~msg_get_login_vip_reward_total_rep();
+
+  msg_get_login_vip_reward_total_rep(const msg_get_login_vip_reward_total_rep& from);
+
+  inline msg_get_login_vip_reward_total_rep& operator=(const msg_get_login_vip_reward_total_rep& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const msg_get_login_vip_reward_total_rep& default_instance();
+
+  void Swap(msg_get_login_vip_reward_total_rep* other);
+
+  // implements Message ----------------------------------------------
+
+  msg_get_login_vip_reward_total_rep* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const msg_get_login_vip_reward_total_rep& from);
+  void MergeFrom(const msg_get_login_vip_reward_total_rep& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated uint32 total_coin = 1;
+  inline int total_coin_size() const;
+  inline void clear_total_coin();
+  static const int kTotalCoinFieldNumber = 1;
+  inline ::google::protobuf::uint32 total_coin(int index) const;
+  inline void set_total_coin(int index, ::google::protobuf::uint32 value);
+  inline void add_total_coin(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      total_coin() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_total_coin();
+
+  // @@protoc_insertion_point(class_scope:net.msg_get_login_vip_reward_total_rep)
+ private:
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > total_coin_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+
+  friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_client_5flogic_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static msg_get_login_vip_reward_total_rep* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class msg_get_login_reward_req : public ::google::protobuf::Message {
  public:
   msg_get_login_reward_req();
@@ -3150,20 +3501,30 @@ class msg_get_login_reward_rep : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 result() const;
   inline void set_result(::google::protobuf::uint32 value);
 
+  // optional uint32 reward_coin = 3;
+  inline bool has_reward_coin() const;
+  inline void clear_reward_coin();
+  static const int kRewardCoinFieldNumber = 3;
+  inline ::google::protobuf::uint32 reward_coin() const;
+  inline void set_reward_coin(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:net.msg_get_login_reward_rep)
  private:
   inline void set_has_reward_flag();
   inline void clear_has_reward_flag();
   inline void set_has_result();
   inline void clear_has_result();
+  inline void set_has_reward_coin();
+  inline void clear_has_reward_coin();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 reward_flag_;
   ::google::protobuf::uint32 result_;
+  ::google::protobuf::uint32 reward_coin_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
 
   friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
   friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
@@ -3324,20 +3685,30 @@ class msg_get_bankrupt_help_rep : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 bankrupt_count() const;
   inline void set_bankrupt_count(::google::protobuf::uint32 value);
 
+  // optional uint32 bankrupt_coin = 3;
+  inline bool has_bankrupt_coin() const;
+  inline void clear_bankrupt_coin();
+  static const int kBankruptCoinFieldNumber = 3;
+  inline ::google::protobuf::uint32 bankrupt_coin() const;
+  inline void set_bankrupt_coin(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:net.msg_get_bankrupt_help_rep)
  private:
   inline void set_has_result();
   inline void clear_has_result();
   inline void set_has_bankrupt_count();
   inline void clear_has_bankrupt_count();
+  inline void set_has_bankrupt_coin();
+  inline void clear_has_bankrupt_coin();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 result_;
   ::google::protobuf::uint32 bankrupt_count_;
+  ::google::protobuf::uint32 bankrupt_coin_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
 
   friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
   friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
@@ -3345,6 +3716,200 @@ class msg_get_bankrupt_help_rep : public ::google::protobuf::Message {
 
   void InitAsDefaultInstance();
   static msg_get_bankrupt_help_rep* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class msg_get_bankrupt_info_req : public ::google::protobuf::Message {
+ public:
+  msg_get_bankrupt_info_req();
+  virtual ~msg_get_bankrupt_info_req();
+
+  msg_get_bankrupt_info_req(const msg_get_bankrupt_info_req& from);
+
+  inline msg_get_bankrupt_info_req& operator=(const msg_get_bankrupt_info_req& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const msg_get_bankrupt_info_req& default_instance();
+
+  void Swap(msg_get_bankrupt_info_req* other);
+
+  // implements Message ----------------------------------------------
+
+  msg_get_bankrupt_info_req* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const msg_get_bankrupt_info_req& from);
+  void MergeFrom(const msg_get_bankrupt_info_req& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint32 help_count = 1;
+  inline bool has_help_count() const;
+  inline void clear_help_count();
+  static const int kHelpCountFieldNumber = 1;
+  inline ::google::protobuf::uint32 help_count() const;
+  inline void set_help_count(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:net.msg_get_bankrupt_info_req)
+ private:
+  inline void set_has_help_count();
+  inline void clear_has_help_count();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 help_count_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+
+  friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_client_5flogic_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static msg_get_bankrupt_info_req* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class msg_get_bankrupt_info_rep : public ::google::protobuf::Message {
+ public:
+  msg_get_bankrupt_info_rep();
+  virtual ~msg_get_bankrupt_info_rep();
+
+  msg_get_bankrupt_info_rep(const msg_get_bankrupt_info_rep& from);
+
+  inline msg_get_bankrupt_info_rep& operator=(const msg_get_bankrupt_info_rep& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const msg_get_bankrupt_info_rep& default_instance();
+
+  void Swap(msg_get_bankrupt_info_rep* other);
+
+  // implements Message ----------------------------------------------
+
+  msg_get_bankrupt_info_rep* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const msg_get_bankrupt_info_rep& from);
+  void MergeFrom(const msg_get_bankrupt_info_rep& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint32 base = 1;
+  inline bool has_base() const;
+  inline void clear_base();
+  static const int kBaseFieldNumber = 1;
+  inline ::google::protobuf::uint32 base() const;
+  inline void set_base(::google::protobuf::uint32 value);
+
+  // optional uint32 last_coin = 2;
+  inline bool has_last_coin() const;
+  inline void clear_last_coin();
+  static const int kLastCoinFieldNumber = 2;
+  inline ::google::protobuf::uint32 last_coin() const;
+  inline void set_last_coin(::google::protobuf::uint32 value);
+
+  // optional uint32 last_count = 3;
+  inline bool has_last_count() const;
+  inline void clear_last_count();
+  static const int kLastCountFieldNumber = 3;
+  inline ::google::protobuf::uint32 last_count() const;
+  inline void set_last_count(::google::protobuf::uint32 value);
+
+  // optional uint32 award_coin = 4;
+  inline bool has_award_coin() const;
+  inline void clear_award_coin();
+  static const int kAwardCoinFieldNumber = 4;
+  inline ::google::protobuf::uint32 award_coin() const;
+  inline void set_award_coin(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:net.msg_get_bankrupt_info_rep)
+ private:
+  inline void set_has_base();
+  inline void clear_has_base();
+  inline void set_has_last_coin();
+  inline void clear_has_last_coin();
+  inline void set_has_last_count();
+  inline void clear_has_last_count();
+  inline void set_has_award_coin();
+  inline void clear_has_award_coin();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 base_;
+  ::google::protobuf::uint32 last_coin_;
+  ::google::protobuf::uint32 last_count_;
+  ::google::protobuf::uint32 award_coin_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+
+  friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_client_5flogic_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static msg_get_bankrupt_info_rep* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -11391,6 +11956,15 @@ class msg_game_play_log : public ::google::protobuf::Message {
   inline ::net::msg_twoeight_play_log_rep* release_twoeight();
   inline void set_allocated_twoeight(::net::msg_twoeight_play_log_rep* twoeight);
 
+  // optional .net.msg_carcity_play_log_rep carcity = 8;
+  inline bool has_carcity() const;
+  inline void clear_carcity();
+  static const int kCarcityFieldNumber = 8;
+  inline const ::net::msg_carcity_play_log_rep& carcity() const;
+  inline ::net::msg_carcity_play_log_rep* mutable_carcity();
+  inline ::net::msg_carcity_play_log_rep* release_carcity();
+  inline void set_allocated_carcity(::net::msg_carcity_play_log_rep* carcity);
+
   // @@protoc_insertion_point(class_scope:net.msg_game_play_log)
  private:
   inline void set_has_bainiu();
@@ -11407,6 +11981,8 @@ class msg_game_play_log : public ::google::protobuf::Message {
   inline void clear_has_fight();
   inline void set_has_twoeight();
   inline void clear_has_twoeight();
+  inline void set_has_carcity();
+  inline void clear_has_carcity();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -11417,9 +11993,10 @@ class msg_game_play_log : public ::google::protobuf::Message {
   ::net::msg_war_play_log_rep* war_;
   ::net::msg_fight_play_log_rep* fight_;
   ::net::msg_twoeight_play_log_rep* twoeight_;
+  ::net::msg_carcity_play_log_rep* carcity_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
 
   friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
   friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
@@ -11758,6 +12335,13 @@ class msg_chat_info_forward : public ::google::protobuf::Message {
   inline ::google::protobuf::uint64 time() const;
   inline void set_time(::google::protobuf::uint64 value);
 
+  // optional int32 mtype = 8;
+  inline bool has_mtype() const;
+  inline void clear_mtype();
+  static const int kMtypeFieldNumber = 8;
+  inline ::google::protobuf::int32 mtype() const;
+  inline void set_mtype(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:net.msg_chat_info_forward)
  private:
   inline void set_has_fromid();
@@ -11768,19 +12352,22 @@ class msg_chat_info_forward : public ::google::protobuf::Message {
   inline void clear_has_fromname();
   inline void set_has_time();
   inline void clear_has_time();
+  inline void set_has_mtype();
+  inline void clear_has_mtype();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > toid_;
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 > online_;
   ::std::string* messagstr_;
+  ::google::protobuf::uint32 fromid_;
+  ::google::protobuf::int32 mtype_;
   ::std::string* fromname_;
   ::google::protobuf::RepeatedPtrField< ::std::string> toname_;
   ::google::protobuf::uint64 time_;
-  ::google::protobuf::uint32 fromid_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
 
   friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
   friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
@@ -15485,6 +16072,138 @@ inline void msg_get_mission_prize_rep::set_allocated_baseinfo(::net::base_info* 
 
 // -------------------------------------------------------------------
 
+// msg_get_login_vip_reward_info_req
+
+// optional uint32 help_count = 1;
+inline bool msg_get_login_vip_reward_info_req::has_help_count() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void msg_get_login_vip_reward_info_req::set_has_help_count() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void msg_get_login_vip_reward_info_req::clear_has_help_count() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void msg_get_login_vip_reward_info_req::clear_help_count() {
+  help_count_ = 0u;
+  clear_has_help_count();
+}
+inline ::google::protobuf::uint32 msg_get_login_vip_reward_info_req::help_count() const {
+  return help_count_;
+}
+inline void msg_get_login_vip_reward_info_req::set_help_count(::google::protobuf::uint32 value) {
+  set_has_help_count();
+  help_count_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// msg_get_login_vip_reward_info_rep
+
+// repeated uint32 reward_coin = 1;
+inline int msg_get_login_vip_reward_info_rep::reward_coin_size() const {
+  return reward_coin_.size();
+}
+inline void msg_get_login_vip_reward_info_rep::clear_reward_coin() {
+  reward_coin_.Clear();
+}
+inline ::google::protobuf::uint32 msg_get_login_vip_reward_info_rep::reward_coin(int index) const {
+  return reward_coin_.Get(index);
+}
+inline void msg_get_login_vip_reward_info_rep::set_reward_coin(int index, ::google::protobuf::uint32 value) {
+  reward_coin_.Set(index, value);
+}
+inline void msg_get_login_vip_reward_info_rep::add_reward_coin(::google::protobuf::uint32 value) {
+  reward_coin_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+msg_get_login_vip_reward_info_rep::reward_coin() const {
+  return reward_coin_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+msg_get_login_vip_reward_info_rep::mutable_reward_coin() {
+  return &reward_coin_;
+}
+
+// optional uint32 reward_flag = 2;
+inline bool msg_get_login_vip_reward_info_rep::has_reward_flag() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void msg_get_login_vip_reward_info_rep::set_has_reward_flag() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void msg_get_login_vip_reward_info_rep::clear_has_reward_flag() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void msg_get_login_vip_reward_info_rep::clear_reward_flag() {
+  reward_flag_ = 0u;
+  clear_has_reward_flag();
+}
+inline ::google::protobuf::uint32 msg_get_login_vip_reward_info_rep::reward_flag() const {
+  return reward_flag_;
+}
+inline void msg_get_login_vip_reward_info_rep::set_reward_flag(::google::protobuf::uint32 value) {
+  set_has_reward_flag();
+  reward_flag_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// msg_get_login_vip_reward_total_req
+
+// optional uint32 help_count = 1;
+inline bool msg_get_login_vip_reward_total_req::has_help_count() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void msg_get_login_vip_reward_total_req::set_has_help_count() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void msg_get_login_vip_reward_total_req::clear_has_help_count() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void msg_get_login_vip_reward_total_req::clear_help_count() {
+  help_count_ = 0u;
+  clear_has_help_count();
+}
+inline ::google::protobuf::uint32 msg_get_login_vip_reward_total_req::help_count() const {
+  return help_count_;
+}
+inline void msg_get_login_vip_reward_total_req::set_help_count(::google::protobuf::uint32 value) {
+  set_has_help_count();
+  help_count_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// msg_get_login_vip_reward_total_rep
+
+// repeated uint32 total_coin = 1;
+inline int msg_get_login_vip_reward_total_rep::total_coin_size() const {
+  return total_coin_.size();
+}
+inline void msg_get_login_vip_reward_total_rep::clear_total_coin() {
+  total_coin_.Clear();
+}
+inline ::google::protobuf::uint32 msg_get_login_vip_reward_total_rep::total_coin(int index) const {
+  return total_coin_.Get(index);
+}
+inline void msg_get_login_vip_reward_total_rep::set_total_coin(int index, ::google::protobuf::uint32 value) {
+  total_coin_.Set(index, value);
+}
+inline void msg_get_login_vip_reward_total_rep::add_total_coin(::google::protobuf::uint32 value) {
+  total_coin_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+msg_get_login_vip_reward_total_rep::total_coin() const {
+  return total_coin_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+msg_get_login_vip_reward_total_rep::mutable_total_coin() {
+  return &total_coin_;
+}
+
+// -------------------------------------------------------------------
+
 // msg_get_login_reward_req
 
 // optional uint32 reward_flag = 1;
@@ -15555,6 +16274,28 @@ inline ::google::protobuf::uint32 msg_get_login_reward_rep::result() const {
 inline void msg_get_login_reward_rep::set_result(::google::protobuf::uint32 value) {
   set_has_result();
   result_ = value;
+}
+
+// optional uint32 reward_coin = 3;
+inline bool msg_get_login_reward_rep::has_reward_coin() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void msg_get_login_reward_rep::set_has_reward_coin() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void msg_get_login_reward_rep::clear_has_reward_coin() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void msg_get_login_reward_rep::clear_reward_coin() {
+  reward_coin_ = 0u;
+  clear_has_reward_coin();
+}
+inline ::google::protobuf::uint32 msg_get_login_reward_rep::reward_coin() const {
+  return reward_coin_;
+}
+inline void msg_get_login_reward_rep::set_reward_coin(::google::protobuf::uint32 value) {
+  set_has_reward_coin();
+  reward_coin_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -15629,6 +16370,146 @@ inline ::google::protobuf::uint32 msg_get_bankrupt_help_rep::bankrupt_count() co
 inline void msg_get_bankrupt_help_rep::set_bankrupt_count(::google::protobuf::uint32 value) {
   set_has_bankrupt_count();
   bankrupt_count_ = value;
+}
+
+// optional uint32 bankrupt_coin = 3;
+inline bool msg_get_bankrupt_help_rep::has_bankrupt_coin() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void msg_get_bankrupt_help_rep::set_has_bankrupt_coin() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void msg_get_bankrupt_help_rep::clear_has_bankrupt_coin() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void msg_get_bankrupt_help_rep::clear_bankrupt_coin() {
+  bankrupt_coin_ = 0u;
+  clear_has_bankrupt_coin();
+}
+inline ::google::protobuf::uint32 msg_get_bankrupt_help_rep::bankrupt_coin() const {
+  return bankrupt_coin_;
+}
+inline void msg_get_bankrupt_help_rep::set_bankrupt_coin(::google::protobuf::uint32 value) {
+  set_has_bankrupt_coin();
+  bankrupt_coin_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// msg_get_bankrupt_info_req
+
+// optional uint32 help_count = 1;
+inline bool msg_get_bankrupt_info_req::has_help_count() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void msg_get_bankrupt_info_req::set_has_help_count() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void msg_get_bankrupt_info_req::clear_has_help_count() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void msg_get_bankrupt_info_req::clear_help_count() {
+  help_count_ = 0u;
+  clear_has_help_count();
+}
+inline ::google::protobuf::uint32 msg_get_bankrupt_info_req::help_count() const {
+  return help_count_;
+}
+inline void msg_get_bankrupt_info_req::set_help_count(::google::protobuf::uint32 value) {
+  set_has_help_count();
+  help_count_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// msg_get_bankrupt_info_rep
+
+// optional uint32 base = 1;
+inline bool msg_get_bankrupt_info_rep::has_base() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void msg_get_bankrupt_info_rep::set_has_base() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void msg_get_bankrupt_info_rep::clear_has_base() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void msg_get_bankrupt_info_rep::clear_base() {
+  base_ = 0u;
+  clear_has_base();
+}
+inline ::google::protobuf::uint32 msg_get_bankrupt_info_rep::base() const {
+  return base_;
+}
+inline void msg_get_bankrupt_info_rep::set_base(::google::protobuf::uint32 value) {
+  set_has_base();
+  base_ = value;
+}
+
+// optional uint32 last_coin = 2;
+inline bool msg_get_bankrupt_info_rep::has_last_coin() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void msg_get_bankrupt_info_rep::set_has_last_coin() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void msg_get_bankrupt_info_rep::clear_has_last_coin() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void msg_get_bankrupt_info_rep::clear_last_coin() {
+  last_coin_ = 0u;
+  clear_has_last_coin();
+}
+inline ::google::protobuf::uint32 msg_get_bankrupt_info_rep::last_coin() const {
+  return last_coin_;
+}
+inline void msg_get_bankrupt_info_rep::set_last_coin(::google::protobuf::uint32 value) {
+  set_has_last_coin();
+  last_coin_ = value;
+}
+
+// optional uint32 last_count = 3;
+inline bool msg_get_bankrupt_info_rep::has_last_count() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void msg_get_bankrupt_info_rep::set_has_last_count() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void msg_get_bankrupt_info_rep::clear_has_last_count() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void msg_get_bankrupt_info_rep::clear_last_count() {
+  last_count_ = 0u;
+  clear_has_last_count();
+}
+inline ::google::protobuf::uint32 msg_get_bankrupt_info_rep::last_count() const {
+  return last_count_;
+}
+inline void msg_get_bankrupt_info_rep::set_last_count(::google::protobuf::uint32 value) {
+  set_has_last_count();
+  last_count_ = value;
+}
+
+// optional uint32 award_coin = 4;
+inline bool msg_get_bankrupt_info_rep::has_award_coin() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void msg_get_bankrupt_info_rep::set_has_award_coin() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void msg_get_bankrupt_info_rep::clear_has_award_coin() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void msg_get_bankrupt_info_rep::clear_award_coin() {
+  award_coin_ = 0u;
+  clear_has_award_coin();
+}
+inline ::google::protobuf::uint32 msg_get_bankrupt_info_rep::award_coin() const {
+  return award_coin_;
+}
+inline void msg_get_bankrupt_info_rep::set_award_coin(::google::protobuf::uint32 value) {
+  set_has_award_coin();
+  award_coin_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -19904,6 +20785,44 @@ inline void msg_game_play_log::set_allocated_twoeight(::net::msg_twoeight_play_l
   }
 }
 
+// optional .net.msg_carcity_play_log_rep carcity = 8;
+inline bool msg_game_play_log::has_carcity() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void msg_game_play_log::set_has_carcity() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void msg_game_play_log::clear_has_carcity() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void msg_game_play_log::clear_carcity() {
+  if (carcity_ != NULL) carcity_->::net::msg_carcity_play_log_rep::Clear();
+  clear_has_carcity();
+}
+inline const ::net::msg_carcity_play_log_rep& msg_game_play_log::carcity() const {
+  return carcity_ != NULL ? *carcity_ : *default_instance_->carcity_;
+}
+inline ::net::msg_carcity_play_log_rep* msg_game_play_log::mutable_carcity() {
+  set_has_carcity();
+  if (carcity_ == NULL) carcity_ = new ::net::msg_carcity_play_log_rep;
+  return carcity_;
+}
+inline ::net::msg_carcity_play_log_rep* msg_game_play_log::release_carcity() {
+  clear_has_carcity();
+  ::net::msg_carcity_play_log_rep* temp = carcity_;
+  carcity_ = NULL;
+  return temp;
+}
+inline void msg_game_play_log::set_allocated_carcity(::net::msg_carcity_play_log_rep* carcity) {
+  delete carcity_;
+  carcity_ = carcity;
+  if (carcity) {
+    set_has_carcity();
+  } else {
+    clear_has_carcity();
+  }
+}
+
 // -------------------------------------------------------------------
 
 // msg_game_play_log_req
@@ -20318,6 +21237,28 @@ inline ::google::protobuf::uint64 msg_chat_info_forward::time() const {
 inline void msg_chat_info_forward::set_time(::google::protobuf::uint64 value) {
   set_has_time();
   time_ = value;
+}
+
+// optional int32 mtype = 8;
+inline bool msg_chat_info_forward::has_mtype() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void msg_chat_info_forward::set_has_mtype() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void msg_chat_info_forward::clear_has_mtype() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void msg_chat_info_forward::clear_mtype() {
+  mtype_ = 0;
+  clear_has_mtype();
+}
+inline ::google::protobuf::int32 msg_chat_info_forward::mtype() const {
+  return mtype_;
+}
+inline void msg_chat_info_forward::set_mtype(::google::protobuf::int32 value) {
+  set_has_mtype();
+  mtype_ = value;
 }
 
 // -------------------------------------------------------------------

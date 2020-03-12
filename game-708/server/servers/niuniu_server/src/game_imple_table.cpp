@@ -4708,7 +4708,7 @@ bool CGameNiuniuTable::SetStockWinLose()
 	int64 stockChange = m_pHostRoom->IsStockChangeCard(this);
 	if (stockChange == 0)
 	{
-		LOG_ERROR("stockChange is zero roomid:%d,tableid:%d",GetRoomID(), GetTableID());
+		LOG_DEBUG("stockChange is zero roomid:%d,tableid:%d",GetRoomID(), GetTableID());
 		return false;
 	}
 

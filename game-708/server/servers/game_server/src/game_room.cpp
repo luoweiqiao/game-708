@@ -674,7 +674,7 @@ bool    CGameRoom::FastJoinEveryColorTable(CGamePlayer* pGamePlayer)
 		}
 	}
 
-	LOG_ERROR("join new table fail - uid:%d,size:%d", pGamePlayer->GetUID(), readyTables.size());
+	LOG_WARNING("join new table fail - uid:%d,size:%d", pGamePlayer->GetUID(), readyTables.size());
 	return false;
 }
 
@@ -1934,7 +1934,7 @@ void CGameRoom::ResetJackpotScore()
 	m_tagJackpotScore.tm_hour = g_RandGen.RandRange(1, 3);
 	m_tagJackpotScore.tm_min = g_RandGen.RandRange(0, 59);
 
-	LOG_ERROR("reader json parse success - roomid:%d,m_lMaxPollScore:%lld,m_lMinPollScore:%lld,iIsUpdateCurPollScore:%d,m_lCurPollScore:%lld,m_uSysWinPro:%d,uSysLostPro:%d,uSysLostWinProChange:%d,lUpdateJackpotScore:%lld,iUserJackpotControl:%d,ulLastRestTime:%lld,tm_hour:%d,tm_min:%d",
+	LOG_DEBUG("reader json parse success - roomid:%d,m_lMaxPollScore:%lld,m_lMinPollScore:%lld,iIsUpdateCurPollScore:%d,m_lCurPollScore:%lld,m_uSysWinPro:%d,uSysLostPro:%d,uSysLostWinProChange:%d,lUpdateJackpotScore:%lld,iUserJackpotControl:%d,ulLastRestTime:%lld,tm_hour:%d,tm_min:%d",
 		GetRoomID(), m_tagJackpotScore.lMaxPollScore, m_tagJackpotScore.lMinPollScore, iIsUpdateCurPollScore, m_tagJackpotScore.lCurPollScore, m_tagJackpotScore.uSysWinPro, m_tagJackpotScore.uSysLostPro, m_tagJackpotScore.uSysLostWinProChange, m_tagJackpotScore.lUpdateJackpotScore, m_tagJackpotScore.iUserJackpotControl, m_tagJackpotScore.ulLastRestTime, m_tagJackpotScore.tm_hour, m_tagJackpotScore.tm_min);
 
 }

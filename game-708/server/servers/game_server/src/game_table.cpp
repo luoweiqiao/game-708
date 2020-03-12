@@ -97,12 +97,12 @@ bool CGameTable::OnTableTick()
 		uint64 uSysTime = getTickCount64();
 		uint64 uOldTime = m_tagControlPalyer.utime;
 		uint64 uEndTame = (uOldTime + CONTROL_TIME_OUT);
-		//LOG_ERROR("control palyer game end - roomid:%d,tableid:%d,uSysTime:%lld,uOldTime:%lld, uid:%d,count:%d,type:%d",
+		//LOG_DEBUG("control palyer game end - roomid:%d,tableid:%d,uSysTime:%lld,uOldTime:%lld, uid:%d,count:%d,type:%d",
 		//GetRoomID(), GetTableID(), uSysTime, uOldTime, m_tagControlPalyer.uid, m_tagControlPalyer.count, m_tagControlPalyer.type);
 
 		if (uEndTame < uSysTime)
 		{
-			LOG_ERROR("control palyer game end - roomid:%d,tableid:%d,uSysTime:%lld,uOldTime:%lld,uEndTame:%lld, uid:%d,count:%d,type:%d,id:%lld",
+			LOG_DEBUG("control palyer game end - roomid:%d,tableid:%d,uSysTime:%lld,uOldTime:%lld,uEndTame:%lld, uid:%d,count:%d,type:%d,id:%lld",
 				GetRoomID(), GetTableID(), uSysTime, uOldTime, uEndTame, m_tagControlPalyer.uid, m_tagControlPalyer.count, m_tagControlPalyer.type, m_tagControlPalyer.id);
 			// save
 			if (m_tagControlPalyer.id != -1)
@@ -3155,7 +3155,7 @@ void CGameTable::GetActiveWelfareCtrlPlayerList()
         CGamePlayer* player = (CGamePlayer*)CPlayerMgr::Instance().GetPlayer(uid);
         if (player == NULL)
         {
-            LOG_ERROR("get user info fail. uid:%", uid);
+            LOG_ERROR("get user info fail. uid:%d", uid);
             continue;
         }
 

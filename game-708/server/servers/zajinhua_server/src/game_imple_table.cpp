@@ -1939,7 +1939,7 @@ bool CGameZajinhuaTable::SetRobotMaxCard()
 {
 	int pro = m_robotBankerWinPro;
 	bool bChange = g_RandGen.RandRatio(pro, PRO_DENO_10000);
-	LOG_ERROR("robot max card - roomid:%d,tableid:%d,pro:%d,bChange:%d", GetRoomID(), GetTableID(), pro, bChange);
+	LOG_DEBUG("robot max card - roomid:%d,tableid:%d,pro:%d,bChange:%d", GetRoomID(), GetTableID(), pro, bChange);
 	if (!bChange)
 	{
 		return false;

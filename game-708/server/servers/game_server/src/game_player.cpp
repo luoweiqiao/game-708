@@ -673,7 +673,7 @@ void	CGamePlayer::GetLuckyCfg()
 	uint16 gametype = CDataCfgMgr::Instance().GetCurSvrCfg().gameType;
 	if (!CCommonLogic::IsLuckyFuncitonGame(gametype))
 	{
-		LOG_ERROR("The current gametype is not deal lucky function. - uid:%d gametype:%d.", GetUID(), gametype);
+		LOG_WARNING("The current gametype is not deal lucky function. - uid:%d gametype:%d.", GetUID(), gametype);
 		return;
 	}
 	CDataCfgMgr::Instance().LoadLuckyConfig(GetUID(), gametype, m_lucky_info);

@@ -1567,7 +1567,7 @@ bool CGameSlotTable::CheckUserSpinLine(CGamePlayer* pPlayer, uint32 nline, uint3
 
 	for (uint32 i = 0; i < m_vecUserJettonCellScore.size(); i++)
 	{
-		LOG_ERROR("m_vecUserJettonCellScore - size:%d,cell:%d", m_vecUserJettonCellScore.size(), m_vecUserJettonCellScore[i]);
+		LOG_DEBUG("m_vecUserJettonCellScore - size:%d,cell:%d", m_vecUserJettonCellScore.size(), m_vecUserJettonCellScore[i]);
 
 		if (m_vecUserJettonCellScore[i] == nbet)
 		{
@@ -1589,6 +1589,7 @@ bool CGameSlotTable::CheckUserSpinLine(CGamePlayer* pPlayer, uint32 nline, uint3
 		return false;
 	}
 	int64 lJettonScore = (nline * nbet);
+	/*
 	if (TableJettonLimmit(pPlayer, lJettonScore, 0) == false)
 	{
 
@@ -1599,7 +1600,7 @@ bool CGameSlotTable::CheckUserSpinLine(CGamePlayer* pPlayer, uint32 nline, uint3
 		//pPlayer->SendMsgToClient(&msg, net::S2C_MSG_SLOT_ERROR_REP);
 		return true;
 	}
-
+	*/
 	int64 lUserScore = GetPlayerCurScore(pPlayer);//用户总金币
 	if (lJettonScore > lUserScore)
 	{

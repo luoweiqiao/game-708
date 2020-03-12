@@ -51,7 +51,7 @@ void  	CGameRobot::OnLogin()
 
 	}
 
-    LOG_ERROR("rob_en_svr - uid:%d,lv:%d-%d,score:%lld,coin:%lld",
+	LOG_DEBUG("rob_en_svr - uid:%d,lv:%d-%d,score:%lld,coin:%lld",
 		GetUID(),GetLvScore(),GetLvCoin(),m_loginInScore,m_loginInCoin);
 }
 

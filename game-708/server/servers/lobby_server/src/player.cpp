@@ -539,7 +539,7 @@ bool	CPlayer::EnterGameSvr(uint16 svrID)
 {
 	if(GetCurSvrID() != 0 && GetCurSvrID() != svrID){
 		//LOG_DEBUG("进入服务器失败:%d-->%d",GetCurSvrID(),svrID);
-		LOG_DEBUG("enter_game_server_failed serverid error - uid:%d,isrobot:%d,batchid:%d,curCerverID:%d,enterServerID:%d",
+		LOG_ERROR("enter_game_server_failed serverid error - uid:%d,isrobot:%d,batchid:%d,curCerverID:%d,enterServerID:%d",
 			GetUID(), IsRobot(), GetBatchID(), GetCurSvrID(), svrID);
 		return false;	
 	}
