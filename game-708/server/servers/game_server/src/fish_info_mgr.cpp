@@ -181,7 +181,15 @@ bool    CFishCfgMgr::GetFishCfgInfo(CGameRoom *pHostRoom, CGamePlayer* pPlayer, 
 			}
 			else
 			{
-				kill_rate = (float32)kill_rate / change_rate;
+				//kill_rate = (float32)kill_rate / change_rate;
+				if (luck_rate <= 100)
+				{
+					kill_rate = kill_rate - kill_rate * luck_rate / 100;
+				}
+				else
+				{
+					LOG_ERROR("The set luck_rate is error. luck_rate:%d", luck_rate);
+				}
 			}
 			LOG_DEBUG("set luck ctrl. change_rate:%f kill_rate:%d", change_rate, kill_rate);
 		}
