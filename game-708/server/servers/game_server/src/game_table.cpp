@@ -2042,7 +2042,7 @@ bool CGameTable::UpdateControlPlayer(int64 id, uint32 uid, uint32 gamecount, uin
 		}
 	}
 
-	LOG_ERROR("add control palyer success - roomid:%d,tableid:%d,uid:%d,gamecount:%d,operatetype:%d,bscore:%lld",
+	LOG_DEBUG("add control palyer success - roomid:%d,tableid:%d,uid:%d,gamecount:%d,operatetype:%d,bscore:%lld",
 		m_pHostRoom->GetRoomID(), GetTableID(), uid, gamecount, operatetype, m_tagControlPalyer.bscore);
 
 	return true;
@@ -2202,7 +2202,7 @@ bool CGameTable::SynControlPlayer(uint32 uid, int32 gamecount, uint32 operatetyp
 		m_tagControlPalyer.Init();
 	}
 
-	LOG_ERROR("syn control palyer success - roomid:%d,tableid:%d,uid:%d,gamecount:%d,operatetype:%d, m_tagControlPalyer.uid:%d,count:%d,type:%d,rccount:%d",
+	LOG_DEBUG("syn control palyer success - roomid:%d,tableid:%d,uid:%d,gamecount:%d,operatetype:%d, m_tagControlPalyer.uid:%d,count:%d,type:%d,rccount:%d",
 		m_pHostRoom->GetRoomID(), GetTableID(), uid, gamecount, operatetype, m_tagControlPalyer.uid, m_tagControlPalyer.count, m_tagControlPalyer.type, m_tagControlPalyer.rccount);
 
 
