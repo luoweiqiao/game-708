@@ -526,7 +526,7 @@ uint32 CGameFightTable::GetBankerUID()
 //游戏结束
 bool CGameFightTable::OnGameEnd(uint16 chairID,uint8 reason)
 {
-    LOG_DEBUG("game end - roomid%d,tableid:%d",GetRoomID(),GetTableID());
+    LOG_DEBUG("game end - roomid:%d,tableid:%d",GetRoomID(),GetTableID());
     switch(reason)
     {
     case GER_NORMAL:		//常规结束
@@ -2213,7 +2213,7 @@ int64   CGameFightTable::CalculateScore()
 
 		if (pPlayer->IsRobot() == false)
 		{
-			LOG_DEBUG("score result looker - uid:%d,mroomid,tableid:%d,_mpUserWinScore:%lld", dwUserID, GetRoomID(), GetTableID(), m_mpUserWinScore[dwUserID]);
+			LOG_DEBUG("score result looker - uid:%d,roomid:%d,tableid:%d,m_mpUserWinScore:%lld", dwUserID, GetRoomID(), GetTableID(), m_mpUserWinScore[dwUserID]);
 
 		}
 
