@@ -23,6 +23,7 @@ bool	CDBOperator::LoadRoomCfg(uint16 gameType,uint8 gameSubType,vector<stRoomCfg
 	sprintf(m_szCommand,"select * from roomcfg where gametype=%d and gamesubtype=%d and isopen=1;",gameType,gameSubType);
 	vector<map<string,MYSQLValue> > vecData;
 
+	vecRooms.clear();
 	int iRet = this->Query(m_szCommand,vecData);
 	if (iRet == -1)
 	{
@@ -71,7 +72,7 @@ bool CDBOperator::LoadRoomStockCfg(uint16 gameType, unordered_map<uint16, stStoc
 	memset(m_szCommand, 0, sizeof(m_szCommand));
 	sprintf(m_szCommand, "select * from room_stock_cfg where gametype=%d;", gameType);
 	vector<map<string, MYSQLValue> > vecData;
-
+	vecRooms.clear();
 	int iRet = this->Query(m_szCommand, vecData);
 	if (iRet == -1)
 		return false;

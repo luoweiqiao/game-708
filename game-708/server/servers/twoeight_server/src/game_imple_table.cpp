@@ -229,7 +229,7 @@ void CGameTwoeightbarTable::OnTimeTick() {
 }
 
 void CGameTwoeightbarTable::OnRobotTick() {
-	if (GetGameState() == net::TABLE_STATE_NIUNIU_PLACE_JETTON && m_coolLogic.getPassTick() > 500)
+	if (GetGameState() == net::TABLE_STATE_TWOEIGHT_PLACE_JETTON && m_coolLogic.getPassTick() > 3000)
 		OnRobotPlaceJetton();
 }
 
