@@ -15,7 +15,7 @@ using namespace game_dice;
 namespace
 {
     const static uint32 s_FreeTime              = 8*1000;       // 空闲时间
-    const static uint32 s_PlaceJettonTime       = 30*1000;      // 下注时间
+    const static uint32 s_PlaceJettonTime       = 60*1000;      // 下注时间
     const static uint32 s_DispatchTime          = 16*1000;      // 发牌时间
     
 };
