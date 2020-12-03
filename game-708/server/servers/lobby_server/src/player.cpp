@@ -60,21 +60,15 @@ void	CPlayer::OnLogin()
 	// 拉取数据  
     CDBMysqlMgr::Instance().AsyncLoadPlayerData(GetUID());
     CDBMysqlMgr::Instance().AsyncLoadAccountData(GetUID());
-	if(IsRobot()){//机器人不加载任务
+	if(IsRobot())
+	{
+		//机器人不加载任务
 		SetLoadState(emACCDATA_TYPE_MISS,1);
-	}else{
+	}else
+	{
 		CDBMysqlMgr::Instance().AsyncLoadMissionData(GetUID());
 	}
-    for(uint32 i=1;i<net::GAME_CATE_MAX_TYPE;++i)
-    {
-        if(!CCommonLogic::IsOpenGame(i))
-        {
-            m_loadGameState[i] = 1;
-            continue;
-        }        
-        CDBMysqlMgr::Instance().AsyncLoadGameData(GetUID(),i);
-    }    
-    
+      
 	SetPlayerState(PLAYER_STATE_LOAD_DATA);
 
 	CDBMysqlMgr::Instance().UpdatePlayerLoginTime(GetUID(),getSysTime(),GetIPStr());
@@ -301,15 +295,7 @@ void    CPlayer::NotifyLeaveGame(uint32 code)
 bool	CPlayer::SendAllPlayerData2Client()
 {
 	SendAccData2Client();
-
-    for(uint16 i=1;i<net::GAME_CATE_MAX_TYPE;++i)
-    {
-		if (!CCommonLogic::IsOpenGame(i))
-		{
-			continue;
-		}
-        UpdateGameInfo2Client(i);
-    }
+	    
     //test 兼容斗地主数据
     /*net::msg_update_land_info msg;    
     net::land_info* pInfo = msg.mutable_land_data();

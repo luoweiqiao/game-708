@@ -60,23 +60,15 @@ bool  CPlayerBase::SetAccountInfo(stAccountInfo& info)
     SetLoadState(emACCDATA_TYPE_ACC,1);
     return true;
 }
+
 bool  CPlayerBase::SetGameInfo(uint16 gameType,const stGameBaseInfo& info)
 {
 	//LOG_DEBUG("SetGameInfo - uid:%d gameType:%d", GetUID(), gameType);
     m_gameInfo[gameType] = info;
-    m_loadGameState[gameType] = 1;
-    bool isAllLoad = true;
-    for(uint16 i=1;i<net::GAME_CATE_MAX_TYPE;++i){
-        if(m_loadGameState[i] == 0){
-            isAllLoad = false;
-            break;
-        }
-    }
-    if(isAllLoad){
-        SetLoadState(emACCDATA_TYPE_GAME,1);
-    }    
+    m_loadGameState[gameType] = 1;  
     return true;
 }
+
 bool  CPlayerBase::IsLoadData(uint8 dataType)
 {    
     if(dataType < emACCDATA_TYPE_MAX){

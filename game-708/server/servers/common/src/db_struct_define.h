@@ -268,8 +268,6 @@ enum emACCDATA_TYPE
     emACCDATA_TYPE_BASE = 1,    // 基本信息
     emACCDATA_TYPE_ACC,         // 账户信息
     emACCDATA_TYPE_MISS,        // 任务数据
-    emACCDATA_TYPE_GAME,        // 游戏数据
-    
     emACCDATA_TYPE_MAX,
 };
 

@@ -50,6 +50,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* msg_update_land_info_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   msg_update_land_info_reflection_ = NULL;
+const ::google::protobuf::Descriptor* msg_get_game_info_req_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  msg_get_game_info_req_reflection_ = NULL;
 const ::google::protobuf::Descriptor* msg_update_game_info_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   msg_update_game_info_reflection_ = NULL;
@@ -652,7 +655,22 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_update_land_info));
-  msg_update_game_info_descriptor_ = file->message_type(10);
+  msg_get_game_info_req_descriptor_ = file->message_type(10);
+  static const int msg_get_game_info_req_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_game_info_req, game_type_),
+  };
+  msg_get_game_info_req_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      msg_get_game_info_req_descriptor_,
+      msg_get_game_info_req::default_instance_,
+      msg_get_game_info_req_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_game_info_req, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_game_info_req, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(msg_get_game_info_req));
+  msg_update_game_info_descriptor_ = file->message_type(11);
   static const int msg_update_game_info_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_update_game_info, data_),
   };
@@ -667,7 +685,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_update_game_info));
-  msg_svrs_info_req_descriptor_ = file->message_type(11);
+  msg_svrs_info_req_descriptor_ = file->message_type(12);
   static const int msg_svrs_info_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_svrs_info_req, game_type_),
   };
@@ -682,7 +700,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_svrs_info_req));
-  msg_svrs_info_rep_descriptor_ = file->message_type(12);
+  msg_svrs_info_rep_descriptor_ = file->message_type(13);
   static const int msg_svrs_info_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_svrs_info_rep, svrs_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_svrs_info_rep, cur_svrid_),
@@ -699,7 +717,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_svrs_info_rep));
-  msg_enter_gamesvr_req_descriptor_ = file->message_type(13);
+  msg_enter_gamesvr_req_descriptor_ = file->message_type(14);
   static const int msg_enter_gamesvr_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_enter_gamesvr_req, svrid_),
   };
@@ -714,7 +732,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_enter_gamesvr_req));
-  msg_enter_gamesvr_rep_descriptor_ = file->message_type(14);
+  msg_enter_gamesvr_rep_descriptor_ = file->message_type(15);
   static const int msg_enter_gamesvr_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_enter_gamesvr_rep, result_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_enter_gamesvr_rep, svrid_),
@@ -731,7 +749,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_enter_gamesvr_rep));
-  msg_control_player_back_lobby_descriptor_ = file->message_type(15);
+  msg_control_player_back_lobby_descriptor_ = file->message_type(16);
   static const int msg_control_player_back_lobby_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_control_player_back_lobby, uid_),
   };
@@ -746,7 +764,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_control_player_back_lobby));
-  msg_login_safebox_req_descriptor_ = file->message_type(16);
+  msg_login_safebox_req_descriptor_ = file->message_type(17);
   static const int msg_login_safebox_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_login_safebox_req, passwd_),
   };
@@ -761,7 +779,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_login_safebox_req));
-  msg_login_safebox_rep_descriptor_ = file->message_type(17);
+  msg_login_safebox_rep_descriptor_ = file->message_type(18);
   static const int msg_login_safebox_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_login_safebox_rep, result_),
   };
@@ -776,7 +794,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_login_safebox_rep));
-  msg_change_safebox_pwd_req_descriptor_ = file->message_type(18);
+  msg_change_safebox_pwd_req_descriptor_ = file->message_type(19);
   static const int msg_change_safebox_pwd_req_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_change_safebox_pwd_req, old_pwd_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_change_safebox_pwd_req, new_pwd_),
@@ -792,7 +810,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_change_safebox_pwd_req));
-  msg_change_safebox_pwd_rep_descriptor_ = file->message_type(19);
+  msg_change_safebox_pwd_rep_descriptor_ = file->message_type(20);
   static const int msg_change_safebox_pwd_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_change_safebox_pwd_rep, result_),
   };
@@ -807,7 +825,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_change_safebox_pwd_rep));
-  msg_take_safebox_req_descriptor_ = file->message_type(20);
+  msg_take_safebox_req_descriptor_ = file->message_type(21);
   static const int msg_take_safebox_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_take_safebox_req, take_coin_),
   };
@@ -822,7 +840,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_take_safebox_req));
-  msg_take_safebox_rep_descriptor_ = file->message_type(21);
+  msg_take_safebox_rep_descriptor_ = file->message_type(22);
   static const int msg_take_safebox_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_take_safebox_rep, take_coin_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_take_safebox_rep, result_),
@@ -838,7 +856,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_take_safebox_rep));
-  msg_give_safebox_req_descriptor_ = file->message_type(22);
+  msg_give_safebox_req_descriptor_ = file->message_type(23);
   static const int msg_give_safebox_req_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_give_safebox_req, give_uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_give_safebox_req, give_coin_),
@@ -855,7 +873,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_give_safebox_req));
-  msg_give_safebox_rep_descriptor_ = file->message_type(23);
+  msg_give_safebox_rep_descriptor_ = file->message_type(24);
   static const int msg_give_safebox_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_give_safebox_rep, give_uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_give_safebox_rep, give_coin_),
@@ -872,7 +890,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_give_safebox_rep));
-  msg_php_broadcast_rep_descriptor_ = file->message_type(24);
+  msg_php_broadcast_rep_descriptor_ = file->message_type(25);
   static const int msg_php_broadcast_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_php_broadcast_rep, msg_),
   };
@@ -887,7 +905,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_php_broadcast_rep));
-  msg_system_broadcast_rep_descriptor_ = file->message_type(25);
+  msg_system_broadcast_rep_descriptor_ = file->message_type(26);
   static const int msg_system_broadcast_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_system_broadcast_rep, msg_),
   };
@@ -902,7 +920,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_system_broadcast_rep));
-  msg_send_all_mission_rep_descriptor_ = file->message_type(26);
+  msg_send_all_mission_rep_descriptor_ = file->message_type(27);
   static const int msg_send_all_mission_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_send_all_mission_rep, missions_),
   };
@@ -917,7 +935,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_send_all_mission_rep));
-  msg_send_mission_rep_descriptor_ = file->message_type(27);
+  msg_send_mission_rep_descriptor_ = file->message_type(28);
   static const int msg_send_mission_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_send_mission_rep, mission_),
   };
@@ -932,7 +950,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_send_mission_rep));
-  msg_get_mission_prize_req_descriptor_ = file->message_type(28);
+  msg_get_mission_prize_req_descriptor_ = file->message_type(29);
   static const int msg_get_mission_prize_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_mission_prize_req, msid_),
   };
@@ -947,7 +965,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_mission_prize_req));
-  msg_get_mission_prize_rep_descriptor_ = file->message_type(29);
+  msg_get_mission_prize_rep_descriptor_ = file->message_type(30);
   static const int msg_get_mission_prize_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_mission_prize_rep, result_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_mission_prize_rep, mission_),
@@ -964,7 +982,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_mission_prize_rep));
-  msg_get_login_vip_reward_info_req_descriptor_ = file->message_type(30);
+  msg_get_login_vip_reward_info_req_descriptor_ = file->message_type(31);
   static const int msg_get_login_vip_reward_info_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_login_vip_reward_info_req, help_count_),
   };
@@ -979,7 +997,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_login_vip_reward_info_req));
-  msg_get_login_vip_reward_info_rep_descriptor_ = file->message_type(31);
+  msg_get_login_vip_reward_info_rep_descriptor_ = file->message_type(32);
   static const int msg_get_login_vip_reward_info_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_login_vip_reward_info_rep, reward_coin_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_login_vip_reward_info_rep, reward_flag_),
@@ -995,7 +1013,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_login_vip_reward_info_rep));
-  msg_get_login_vip_reward_total_req_descriptor_ = file->message_type(32);
+  msg_get_login_vip_reward_total_req_descriptor_ = file->message_type(33);
   static const int msg_get_login_vip_reward_total_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_login_vip_reward_total_req, help_count_),
   };
@@ -1010,7 +1028,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_login_vip_reward_total_req));
-  msg_get_login_vip_reward_total_rep_descriptor_ = file->message_type(33);
+  msg_get_login_vip_reward_total_rep_descriptor_ = file->message_type(34);
   static const int msg_get_login_vip_reward_total_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_login_vip_reward_total_rep, total_coin_),
   };
@@ -1025,7 +1043,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_login_vip_reward_total_rep));
-  msg_get_login_reward_req_descriptor_ = file->message_type(34);
+  msg_get_login_reward_req_descriptor_ = file->message_type(35);
   static const int msg_get_login_reward_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_login_reward_req, reward_flag_),
   };
@@ -1040,7 +1058,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_login_reward_req));
-  msg_get_login_reward_rep_descriptor_ = file->message_type(35);
+  msg_get_login_reward_rep_descriptor_ = file->message_type(36);
   static const int msg_get_login_reward_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_login_reward_rep, reward_flag_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_login_reward_rep, result_),
@@ -1057,7 +1075,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_login_reward_rep));
-  msg_get_bankrupt_help_req_descriptor_ = file->message_type(36);
+  msg_get_bankrupt_help_req_descriptor_ = file->message_type(37);
   static const int msg_get_bankrupt_help_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_bankrupt_help_req, help_count_),
   };
@@ -1072,7 +1090,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_bankrupt_help_req));
-  msg_get_bankrupt_help_rep_descriptor_ = file->message_type(37);
+  msg_get_bankrupt_help_rep_descriptor_ = file->message_type(38);
   static const int msg_get_bankrupt_help_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_bankrupt_help_rep, result_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_bankrupt_help_rep, bankrupt_count_),
@@ -1089,7 +1107,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_bankrupt_help_rep));
-  msg_get_bankrupt_info_req_descriptor_ = file->message_type(38);
+  msg_get_bankrupt_info_req_descriptor_ = file->message_type(39);
   static const int msg_get_bankrupt_info_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_bankrupt_info_req, help_count_),
   };
@@ -1104,7 +1122,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_bankrupt_info_req));
-  msg_get_bankrupt_info_rep_descriptor_ = file->message_type(39);
+  msg_get_bankrupt_info_rep_descriptor_ = file->message_type(40);
   static const int msg_get_bankrupt_info_rep_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_bankrupt_info_rep, base_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_bankrupt_info_rep, last_coin_),
@@ -1122,7 +1140,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_bankrupt_info_rep));
-  msg_exchange_score_req_descriptor_ = file->message_type(40);
+  msg_exchange_score_req_descriptor_ = file->message_type(41);
   static const int msg_exchange_score_req_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_exchange_score_req, exchange_type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_exchange_score_req, exchange_id_),
@@ -1138,7 +1156,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_exchange_score_req));
-  msg_exchange_score_rep_descriptor_ = file->message_type(41);
+  msg_exchange_score_rep_descriptor_ = file->message_type(42);
   static const int msg_exchange_score_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_exchange_score_rep, exchange_type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_exchange_score_rep, exchange_id_),
@@ -1155,7 +1173,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_exchange_score_rep));
-  msg_speak_broadcast_req_descriptor_ = file->message_type(42);
+  msg_speak_broadcast_req_descriptor_ = file->message_type(43);
   static const int msg_speak_broadcast_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_speak_broadcast_req, msg_),
   };
@@ -1170,7 +1188,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_speak_broadcast_req));
-  msg_speak_broadcast_rep_descriptor_ = file->message_type(43);
+  msg_speak_broadcast_rep_descriptor_ = file->message_type(44);
   static const int msg_speak_broadcast_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_speak_broadcast_rep, send_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_speak_broadcast_rep, send_name_),
@@ -1187,7 +1205,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_speak_broadcast_rep));
-  msg_get_history_speak_descriptor_ = file->message_type(44);
+  msg_get_history_speak_descriptor_ = file->message_type(45);
   static const int msg_get_history_speak_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_get_history_speak, get_time_),
   };
@@ -1202,7 +1220,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_history_speak));
-  msg_send_history_speak_descriptor_ = file->message_type(45);
+  msg_send_history_speak_descriptor_ = file->message_type(46);
   static const int msg_send_history_speak_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_send_history_speak, msgs_),
   };
@@ -1217,7 +1235,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_send_history_speak));
-  msg_speak_oper_rep_descriptor_ = file->message_type(46);
+  msg_speak_oper_rep_descriptor_ = file->message_type(47);
   static const int msg_speak_oper_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_speak_oper_rep, result_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_speak_oper_rep, cdtime_),
@@ -1233,7 +1251,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_speak_oper_rep));
-  msg_get_server_info_descriptor_ = file->message_type(47);
+  msg_get_server_info_descriptor_ = file->message_type(48);
   static const int msg_get_server_info_offsets_[1] = {
   };
   msg_get_server_info_reflection_ =
@@ -1247,7 +1265,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_get_server_info));
-  server_info_descriptor_ = file->message_type(48);
+  server_info_descriptor_ = file->message_type(49);
   static const int server_info_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(server_info, svrid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(server_info, player_num_),
@@ -1265,7 +1283,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(server_info));
-  msg_send_server_info_descriptor_ = file->message_type(49);
+  msg_send_server_info_descriptor_ = file->message_type(50);
   static const int msg_send_server_info_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_send_server_info, servers_),
   };
@@ -1280,7 +1298,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_send_server_info));
-  msg_rooms_info_req_descriptor_ = file->message_type(50);
+  msg_rooms_info_req_descriptor_ = file->message_type(51);
   static const int msg_rooms_info_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_rooms_info_req, game_type_),
   };
@@ -1295,7 +1313,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_rooms_info_req));
-  msg_rooms_info_rep_descriptor_ = file->message_type(51);
+  msg_rooms_info_rep_descriptor_ = file->message_type(52);
   static const int msg_rooms_info_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_rooms_info_rep, rooms_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_rooms_info_rep, cur_roomid_),
@@ -1311,7 +1329,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_rooms_info_rep));
-  msg_back_lobby_req_descriptor_ = file->message_type(52);
+  msg_back_lobby_req_descriptor_ = file->message_type(53);
   static const int msg_back_lobby_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_back_lobby_req, uid_),
   };
@@ -1326,7 +1344,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_back_lobby_req));
-  msg_back_lobby_rep_descriptor_ = file->message_type(53);
+  msg_back_lobby_rep_descriptor_ = file->message_type(54);
   static const int msg_back_lobby_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_back_lobby_rep, result_),
   };
@@ -1341,7 +1359,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_back_lobby_rep));
-  msg_goto_gamesvr_req_descriptor_ = file->message_type(54);
+  msg_goto_gamesvr_req_descriptor_ = file->message_type(55);
   static const int msg_goto_gamesvr_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_goto_gamesvr_req, svrid_),
   };
@@ -1356,7 +1374,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_goto_gamesvr_req));
-  msg_goto_gamesvr_rep_descriptor_ = file->message_type(55);
+  msg_goto_gamesvr_rep_descriptor_ = file->message_type(56);
   static const int msg_goto_gamesvr_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_goto_gamesvr_rep, result_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_goto_gamesvr_rep, svrid_),
@@ -1372,7 +1390,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_goto_gamesvr_rep));
-  msg_enter_room_req_descriptor_ = file->message_type(56);
+  msg_enter_room_req_descriptor_ = file->message_type(57);
   static const int msg_enter_room_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_enter_room_req, room_id_),
   };
@@ -1387,7 +1405,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_enter_room_req));
-  msg_enter_novice_welfare_room_req_descriptor_ = file->message_type(57);
+  msg_enter_novice_welfare_room_req_descriptor_ = file->message_type(58);
   static const int msg_enter_novice_welfare_room_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_enter_novice_welfare_room_req, maxjettonrate_),
   };
@@ -1402,7 +1420,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_enter_novice_welfare_room_req));
-  msg_enter_room_rep_descriptor_ = file->message_type(58);
+  msg_enter_room_rep_descriptor_ = file->message_type(59);
   static const int msg_enter_room_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_enter_room_rep, result_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_enter_room_rep, room_),
@@ -1419,7 +1437,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_enter_room_rep));
-  msg_notify_leave_room_rep_descriptor_ = file->message_type(59);
+  msg_notify_leave_room_rep_descriptor_ = file->message_type(60);
   static const int msg_notify_leave_room_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_leave_room_rep, leave_type_),
   };
@@ -1434,7 +1452,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_leave_room_rep));
-  msg_table_list_req_descriptor_ = file->message_type(60);
+  msg_table_list_req_descriptor_ = file->message_type(61);
   static const int msg_table_list_req_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_list_req, table_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_list_req, seach_type_),
@@ -1450,7 +1468,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_table_list_req));
-  msg_table_list_rep_descriptor_ = file->message_type(61);
+  msg_table_list_rep_descriptor_ = file->message_type(62);
   static const int msg_table_list_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_list_rep, tables_),
   };
@@ -1465,7 +1483,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_table_list_rep));
-  msg_create_table_req_descriptor_ = file->message_type(62);
+  msg_create_table_req_descriptor_ = file->message_type(63);
   static const int msg_create_table_req_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_create_table_req, table_name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_create_table_req, passwd_),
@@ -1487,7 +1505,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_create_table_req));
-  msg_create_table_rep_descriptor_ = file->message_type(63);
+  msg_create_table_rep_descriptor_ = file->message_type(64);
   static const int msg_create_table_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_create_table_rep, result_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_create_table_rep, table_id_),
@@ -1503,7 +1521,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_create_table_rep));
-  msg_renew_table_req_descriptor_ = file->message_type(64);
+  msg_renew_table_req_descriptor_ = file->message_type(65);
   static const int msg_renew_table_req_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_renew_table_req, table_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_renew_table_req, renew_days_),
@@ -1519,7 +1537,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_renew_table_req));
-  msg_renew_table_rep_descriptor_ = file->message_type(65);
+  msg_renew_table_rep_descriptor_ = file->message_type(66);
   static const int msg_renew_table_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_renew_table_rep, table_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_renew_table_rep, renew_days_),
@@ -1536,7 +1554,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_renew_table_rep));
-  msg_leave_table_req_descriptor_ = file->message_type(66);
+  msg_leave_table_req_descriptor_ = file->message_type(67);
   static const int msg_leave_table_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_leave_table_req, table_id_),
   };
@@ -1551,7 +1569,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_leave_table_req));
-  msg_leave_table_rep_descriptor_ = file->message_type(67);
+  msg_leave_table_rep_descriptor_ = file->message_type(68);
   static const int msg_leave_table_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_leave_table_rep, result_),
   };
@@ -1566,7 +1584,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_leave_table_rep));
-  msg_enter_table_req_descriptor_ = file->message_type(68);
+  msg_enter_table_req_descriptor_ = file->message_type(69);
   static const int msg_enter_table_req_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_enter_table_req, table_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_enter_table_req, passwd_),
@@ -1582,7 +1600,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_enter_table_req));
-  msg_enter_table_rep_descriptor_ = file->message_type(69);
+  msg_enter_table_rep_descriptor_ = file->message_type(70);
   static const int msg_enter_table_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_enter_table_rep, table_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_enter_table_rep, result_),
@@ -1598,7 +1616,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_enter_table_rep));
-  msg_table_info_rep_descriptor_ = file->message_type(70);
+  msg_table_info_rep_descriptor_ = file->message_type(71);
   static const int msg_table_info_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_info_rep, table_info_),
   };
@@ -1613,7 +1631,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_table_info_rep));
-  msg_seat_info_rep_descriptor_ = file->message_type(71);
+  msg_seat_info_rep_descriptor_ = file->message_type(72);
   static const int msg_seat_info_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_seat_info_rep, players_),
   };
@@ -1628,7 +1646,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_seat_info_rep));
-  msg_table_ready_req_descriptor_ = file->message_type(72);
+  msg_table_ready_req_descriptor_ = file->message_type(73);
   static const int msg_table_ready_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_ready_req, ready_),
   };
@@ -1643,7 +1661,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_table_ready_req));
-  msg_table_ready_rep_descriptor_ = file->message_type(73);
+  msg_table_ready_rep_descriptor_ = file->message_type(74);
   static const int msg_table_ready_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_ready_rep, readys_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_ready_rep, auto_states_),
@@ -1659,7 +1677,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_table_ready_rep));
-  msg_table_chat_req_descriptor_ = file->message_type(74);
+  msg_table_chat_req_descriptor_ = file->message_type(75);
   static const int msg_table_chat_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_chat_req, chat_msg_),
   };
@@ -1674,7 +1692,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_table_chat_req));
-  msg_table_chat_rep_descriptor_ = file->message_type(75);
+  msg_table_chat_rep_descriptor_ = file->message_type(76);
   static const int msg_table_chat_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_chat_rep, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_chat_rep, chat_msg_),
@@ -1690,7 +1708,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_table_chat_rep));
-  msg_table_set_auto_req_descriptor_ = file->message_type(76);
+  msg_table_set_auto_req_descriptor_ = file->message_type(77);
   static const int msg_table_set_auto_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_set_auto_req, auto_type_),
   };
@@ -1705,7 +1723,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_table_set_auto_req));
-  msg_table_set_auto_rep_descriptor_ = file->message_type(77);
+  msg_table_set_auto_rep_descriptor_ = file->message_type(78);
   static const int msg_table_set_auto_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_set_auto_rep, result_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_table_set_auto_rep, auto_state_),
@@ -1721,7 +1739,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_table_set_auto_rep));
-  msg_fast_join_room_req_descriptor_ = file->message_type(78);
+  msg_fast_join_room_req_descriptor_ = file->message_type(79);
   static const int msg_fast_join_room_req_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_fast_join_room_req, deal_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_fast_join_room_req, consume_),
@@ -1737,7 +1755,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_fast_join_room_req));
-  msg_fast_join_by_room_id_req_descriptor_ = file->message_type(79);
+  msg_fast_join_by_room_id_req_descriptor_ = file->message_type(80);
   static const int msg_fast_join_by_room_id_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_fast_join_by_room_id_req, roomid_),
   };
@@ -1752,7 +1770,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_fast_join_by_room_id_req));
-  msg_fast_join_room_rep_descriptor_ = file->message_type(80);
+  msg_fast_join_room_rep_descriptor_ = file->message_type(81);
   static const int msg_fast_join_room_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_fast_join_room_rep, result_),
   };
@@ -1767,7 +1785,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_fast_join_room_rep));
-  msg_fast_join_table_req_descriptor_ = file->message_type(81);
+  msg_fast_join_table_req_descriptor_ = file->message_type(82);
   static const int msg_fast_join_table_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_fast_join_table_req, table_id_),
   };
@@ -1782,7 +1800,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_fast_join_table_req));
-  msg_fast_join_table_rep_descriptor_ = file->message_type(82);
+  msg_fast_join_table_rep_descriptor_ = file->message_type(83);
   static const int msg_fast_join_table_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_fast_join_table_rep, result_),
   };
@@ -1797,7 +1815,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_fast_join_table_rep));
-  msg_master_join_table_req_descriptor_ = file->message_type(83);
+  msg_master_join_table_req_descriptor_ = file->message_type(84);
   static const int msg_master_join_table_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_master_join_table_req, table_id_),
   };
@@ -1812,9 +1830,10 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_master_join_table_req));
-  msg_master_join_table_rep_descriptor_ = file->message_type(84);
-  static const int msg_master_join_table_rep_offsets_[1] = {
+  msg_master_join_table_rep_descriptor_ = file->message_type(85);
+  static const int msg_master_join_table_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_master_join_table_rep, result_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_master_join_table_rep, tuid_),
   };
   msg_master_join_table_rep_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -1827,7 +1846,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_master_join_table_rep));
-  msg_query_table_list_req_descriptor_ = file->message_type(85);
+  msg_query_table_list_req_descriptor_ = file->message_type(86);
   static const int msg_query_table_list_req_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_query_table_list_req, startid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_query_table_list_req, endid_),
@@ -1843,7 +1862,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_query_table_list_req));
-  msg_query_table_list_rep_descriptor_ = file->message_type(86);
+  msg_query_table_list_rep_descriptor_ = file->message_type(87);
   static const int msg_query_table_list_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_query_table_list_rep, tables_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_query_table_list_rep, table_num_),
@@ -1859,7 +1878,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_query_table_list_rep));
-  msg_notify_player_join_rep_descriptor_ = file->message_type(87);
+  msg_notify_player_join_rep_descriptor_ = file->message_type(88);
   static const int msg_notify_player_join_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_player_join_rep, join_leave_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_player_join_rep, player_),
@@ -1875,7 +1894,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_player_join_rep));
-  msg_looker_list_info_rep_descriptor_ = file->message_type(88);
+  msg_looker_list_info_rep_descriptor_ = file->message_type(89);
   static const int msg_looker_list_info_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_looker_list_info_rep, lookers_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_looker_list_info_rep, is_reset_),
@@ -1891,7 +1910,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_looker_list_info_rep));
-  msg_sitdown_standup_req_descriptor_ = file->message_type(89);
+  msg_sitdown_standup_req_descriptor_ = file->message_type(90);
   static const int msg_sitdown_standup_req_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_sitdown_standup_req, oper_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_sitdown_standup_req, chair_id_),
@@ -1907,7 +1926,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_sitdown_standup_req));
-  msg_sitdown_standup_rep_descriptor_ = file->message_type(90);
+  msg_sitdown_standup_rep_descriptor_ = file->message_type(91);
   static const int msg_sitdown_standup_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_sitdown_standup_rep, oper_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_sitdown_standup_rep, chair_id_),
@@ -1924,7 +1943,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_sitdown_standup_rep));
-  msg_items_user_req_descriptor_ = file->message_type(91);
+  msg_items_user_req_descriptor_ = file->message_type(92);
   static const int msg_items_user_req_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_items_user_req, meuid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_items_user_req, bechair_id_),
@@ -1942,7 +1961,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_items_user_req));
-  msg_items_user_rep_descriptor_ = file->message_type(92);
+  msg_items_user_rep_descriptor_ = file->message_type(93);
   static const int msg_items_user_rep_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_items_user_rep, mechair_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_items_user_rep, bechair_id_),
@@ -1960,7 +1979,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_items_user_rep));
-  msg_ingame_update_score_descriptor_ = file->message_type(93);
+  msg_ingame_update_score_descriptor_ = file->message_type(94);
   static const int msg_ingame_update_score_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_ingame_update_score, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_ingame_update_score, game_type_),
@@ -1977,7 +1996,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_ingame_update_score));
-  vip_recharge_wechatinfo_descriptor_ = file->message_type(94);
+  vip_recharge_wechatinfo_descriptor_ = file->message_type(95);
   static const int vip_recharge_wechatinfo_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(vip_recharge_wechatinfo, sortid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(vip_recharge_wechatinfo, title_),
@@ -1996,7 +2015,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(vip_recharge_wechatinfo));
-  msg_notify_vip_recharge_show_req_descriptor_ = file->message_type(95);
+  msg_notify_vip_recharge_show_req_descriptor_ = file->message_type(96);
   static const int msg_notify_vip_recharge_show_req_offsets_[1] = {
   };
   msg_notify_vip_recharge_show_req_reflection_ =
@@ -2010,7 +2029,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_vip_recharge_show_req));
-  msg_notify_vip_recharge_show_descriptor_ = file->message_type(96);
+  msg_notify_vip_recharge_show_descriptor_ = file->message_type(97);
   static const int msg_notify_vip_recharge_show_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_vip_recharge_show, status_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_vip_recharge_show, info_),
@@ -2026,7 +2045,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_vip_recharge_show));
-  msg_notify_unionpayrecharge_show_req_descriptor_ = file->message_type(97);
+  msg_notify_unionpayrecharge_show_req_descriptor_ = file->message_type(98);
   static const int msg_notify_unionpayrecharge_show_req_offsets_[1] = {
   };
   msg_notify_unionpayrecharge_show_req_reflection_ =
@@ -2040,7 +2059,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_unionpayrecharge_show_req));
-  msg_notify_unionpayrecharge_show_rep_descriptor_ = file->message_type(98);
+  msg_notify_unionpayrecharge_show_rep_descriptor_ = file->message_type(99);
   static const int msg_notify_unionpayrecharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_unionpayrecharge_show_rep, status_),
   };
@@ -2055,7 +2074,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_unionpayrecharge_show_rep));
-  msg_notify_wechatpayrecharge_show_req_descriptor_ = file->message_type(99);
+  msg_notify_wechatpayrecharge_show_req_descriptor_ = file->message_type(100);
   static const int msg_notify_wechatpayrecharge_show_req_offsets_[1] = {
   };
   msg_notify_wechatpayrecharge_show_req_reflection_ =
@@ -2069,7 +2088,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_wechatpayrecharge_show_req));
-  msg_notify_wechatpayrecharge_show_rep_descriptor_ = file->message_type(100);
+  msg_notify_wechatpayrecharge_show_rep_descriptor_ = file->message_type(101);
   static const int msg_notify_wechatpayrecharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_wechatpayrecharge_show_rep, status_),
   };
@@ -2084,7 +2103,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_wechatpayrecharge_show_rep));
-  msg_notify_alipayrecharge_show_req_descriptor_ = file->message_type(101);
+  msg_notify_alipayrecharge_show_req_descriptor_ = file->message_type(102);
   static const int msg_notify_alipayrecharge_show_req_offsets_[1] = {
   };
   msg_notify_alipayrecharge_show_req_reflection_ =
@@ -2098,7 +2117,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_alipayrecharge_show_req));
-  msg_notify_alipayrecharge_show_rep_descriptor_ = file->message_type(102);
+  msg_notify_alipayrecharge_show_rep_descriptor_ = file->message_type(103);
   static const int msg_notify_alipayrecharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_alipayrecharge_show_rep, status_),
   };
@@ -2113,7 +2132,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_alipayrecharge_show_rep));
-  msg_notify_otherpayrecharge_show_req_descriptor_ = file->message_type(103);
+  msg_notify_otherpayrecharge_show_req_descriptor_ = file->message_type(104);
   static const int msg_notify_otherpayrecharge_show_req_offsets_[1] = {
   };
   msg_notify_otherpayrecharge_show_req_reflection_ =
@@ -2127,7 +2146,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_otherpayrecharge_show_req));
-  msg_notify_otherpayrecharge_show_rep_descriptor_ = file->message_type(104);
+  msg_notify_otherpayrecharge_show_rep_descriptor_ = file->message_type(105);
   static const int msg_notify_otherpayrecharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_otherpayrecharge_show_rep, status_),
   };
@@ -2142,7 +2161,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_otherpayrecharge_show_rep));
-  msg_notify_qqpayrecharge_show_req_descriptor_ = file->message_type(105);
+  msg_notify_qqpayrecharge_show_req_descriptor_ = file->message_type(106);
   static const int msg_notify_qqpayrecharge_show_req_offsets_[1] = {
   };
   msg_notify_qqpayrecharge_show_req_reflection_ =
@@ -2156,7 +2175,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_qqpayrecharge_show_req));
-  msg_notify_qqpayrecharge_show_rep_descriptor_ = file->message_type(106);
+  msg_notify_qqpayrecharge_show_rep_descriptor_ = file->message_type(107);
   static const int msg_notify_qqpayrecharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_qqpayrecharge_show_rep, status_),
   };
@@ -2171,7 +2190,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_qqpayrecharge_show_rep));
-  msg_notify_wechatscanpayrecharge_show_req_descriptor_ = file->message_type(107);
+  msg_notify_wechatscanpayrecharge_show_req_descriptor_ = file->message_type(108);
   static const int msg_notify_wechatscanpayrecharge_show_req_offsets_[1] = {
   };
   msg_notify_wechatscanpayrecharge_show_req_reflection_ =
@@ -2185,7 +2204,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_wechatscanpayrecharge_show_req));
-  msg_notify_wechatscanpayrecharge_show_rep_descriptor_ = file->message_type(108);
+  msg_notify_wechatscanpayrecharge_show_rep_descriptor_ = file->message_type(109);
   static const int msg_notify_wechatscanpayrecharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_wechatscanpayrecharge_show_rep, status_),
   };
@@ -2200,7 +2219,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_wechatscanpayrecharge_show_rep));
-  msg_notify_jdpayrecharge_show_req_descriptor_ = file->message_type(109);
+  msg_notify_jdpayrecharge_show_req_descriptor_ = file->message_type(110);
   static const int msg_notify_jdpayrecharge_show_req_offsets_[1] = {
   };
   msg_notify_jdpayrecharge_show_req_reflection_ =
@@ -2214,7 +2233,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_jdpayrecharge_show_req));
-  msg_notify_jdpayrecharge_show_rep_descriptor_ = file->message_type(110);
+  msg_notify_jdpayrecharge_show_rep_descriptor_ = file->message_type(111);
   static const int msg_notify_jdpayrecharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_jdpayrecharge_show_rep, status_),
   };
@@ -2229,7 +2248,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_jdpayrecharge_show_rep));
-  msg_notify_applepayrecharge_show_req_descriptor_ = file->message_type(111);
+  msg_notify_applepayrecharge_show_req_descriptor_ = file->message_type(112);
   static const int msg_notify_applepayrecharge_show_req_offsets_[1] = {
   };
   msg_notify_applepayrecharge_show_req_reflection_ =
@@ -2243,7 +2262,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_applepayrecharge_show_req));
-  msg_notify_applepayrecharge_show_rep_descriptor_ = file->message_type(112);
+  msg_notify_applepayrecharge_show_rep_descriptor_ = file->message_type(113);
   static const int msg_notify_applepayrecharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_applepayrecharge_show_rep, status_),
   };
@@ -2258,7 +2277,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_applepayrecharge_show_rep));
-  msg_notify_large_ali_payrecharge_show_req_descriptor_ = file->message_type(113);
+  msg_notify_large_ali_payrecharge_show_req_descriptor_ = file->message_type(114);
   static const int msg_notify_large_ali_payrecharge_show_req_offsets_[1] = {
   };
   msg_notify_large_ali_payrecharge_show_req_reflection_ =
@@ -2272,7 +2291,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_large_ali_payrecharge_show_req));
-  msg_notify_large_ali_payrecharge_show_rep_descriptor_ = file->message_type(114);
+  msg_notify_large_ali_payrecharge_show_rep_descriptor_ = file->message_type(115);
   static const int msg_notify_large_ali_payrecharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_large_ali_payrecharge_show_rep, status_),
   };
@@ -2287,7 +2306,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_large_ali_payrecharge_show_rep));
-  exclusive_alipay_info_descriptor_ = file->message_type(115);
+  exclusive_alipay_info_descriptor_ = file->message_type(116);
   static const int exclusive_alipay_info_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(exclusive_alipay_info, account_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(exclusive_alipay_info, name_),
@@ -2307,7 +2326,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(exclusive_alipay_info));
-  msg_notify_exclusive_alipay_recharge_show_descriptor_ = file->message_type(116);
+  msg_notify_exclusive_alipay_recharge_show_descriptor_ = file->message_type(117);
   static const int msg_notify_exclusive_alipay_recharge_show_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_exclusive_alipay_recharge_show, status_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_exclusive_alipay_recharge_show, info_),
@@ -2323,7 +2342,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_exclusive_alipay_recharge_show));
-  msg_notify_exclusive_alipay_recharge_show_req_descriptor_ = file->message_type(117);
+  msg_notify_exclusive_alipay_recharge_show_req_descriptor_ = file->message_type(118);
   static const int msg_notify_exclusive_alipay_recharge_show_req_offsets_[1] = {
   };
   msg_notify_exclusive_alipay_recharge_show_req_reflection_ =
@@ -2337,7 +2356,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_exclusive_alipay_recharge_show_req));
-  msg_notify_fixed_alipay_recharge_show_req_descriptor_ = file->message_type(118);
+  msg_notify_fixed_alipay_recharge_show_req_descriptor_ = file->message_type(119);
   static const int msg_notify_fixed_alipay_recharge_show_req_offsets_[1] = {
   };
   msg_notify_fixed_alipay_recharge_show_req_reflection_ =
@@ -2351,7 +2370,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_fixed_alipay_recharge_show_req));
-  msg_notify_fixed_alipay_recharge_show_rep_descriptor_ = file->message_type(119);
+  msg_notify_fixed_alipay_recharge_show_rep_descriptor_ = file->message_type(120);
   static const int msg_notify_fixed_alipay_recharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_fixed_alipay_recharge_show_rep, status_),
   };
@@ -2366,7 +2385,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_fixed_alipay_recharge_show_rep));
-  msg_notify_fixed_wechat_recharge_show_req_descriptor_ = file->message_type(120);
+  msg_notify_fixed_wechat_recharge_show_req_descriptor_ = file->message_type(121);
   static const int msg_notify_fixed_wechat_recharge_show_req_offsets_[1] = {
   };
   msg_notify_fixed_wechat_recharge_show_req_reflection_ =
@@ -2380,7 +2399,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_fixed_wechat_recharge_show_req));
-  msg_notify_fixed_wechat_recharge_show_rep_descriptor_ = file->message_type(121);
+  msg_notify_fixed_wechat_recharge_show_rep_descriptor_ = file->message_type(122);
   static const int msg_notify_fixed_wechat_recharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_fixed_wechat_recharge_show_rep, status_),
   };
@@ -2395,7 +2414,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_fixed_wechat_recharge_show_rep));
-  msg_notify_fixed_unionpay_recharge_show_req_descriptor_ = file->message_type(122);
+  msg_notify_fixed_unionpay_recharge_show_req_descriptor_ = file->message_type(123);
   static const int msg_notify_fixed_unionpay_recharge_show_req_offsets_[1] = {
   };
   msg_notify_fixed_unionpay_recharge_show_req_reflection_ =
@@ -2409,7 +2428,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_fixed_unionpay_recharge_show_req));
-  msg_notify_fixed_unionpay_recharge_show_rep_descriptor_ = file->message_type(123);
+  msg_notify_fixed_unionpay_recharge_show_rep_descriptor_ = file->message_type(124);
   static const int msg_notify_fixed_unionpay_recharge_show_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_fixed_unionpay_recharge_show_rep, status_),
   };
@@ -2424,7 +2443,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_fixed_unionpay_recharge_show_rep));
-  msg_notify_exclusive_flash_recharge_show_req_descriptor_ = file->message_type(124);
+  msg_notify_exclusive_flash_recharge_show_req_descriptor_ = file->message_type(125);
   static const int msg_notify_exclusive_flash_recharge_show_req_offsets_[1] = {
   };
   msg_notify_exclusive_flash_recharge_show_req_reflection_ =
@@ -2438,7 +2457,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_exclusive_flash_recharge_show_req));
-  msg_notify_exclusive_flash_recharge_show_rep_descriptor_ = file->message_type(125);
+  msg_notify_exclusive_flash_recharge_show_rep_descriptor_ = file->message_type(126);
   static const int msg_notify_exclusive_flash_recharge_show_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_exclusive_flash_recharge_show_rep, status_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_notify_exclusive_flash_recharge_show_rep, info_),
@@ -2454,7 +2473,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_notify_exclusive_flash_recharge_show_rep));
-  bairen_jetton_info_descriptor_ = file->message_type(126);
+  bairen_jetton_info_descriptor_ = file->message_type(127);
   static const int bairen_jetton_info_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(bairen_jetton_info, area_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(bairen_jetton_info, score_),
@@ -2470,7 +2489,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(bairen_jetton_info));
-  msg_continuous_pressure_jetton_info_rep_descriptor_ = file->message_type(127);
+  msg_continuous_pressure_jetton_info_rep_descriptor_ = file->message_type(128);
   static const int msg_continuous_pressure_jetton_info_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_continuous_pressure_jetton_info_rep, info_),
   };
@@ -2485,7 +2504,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_continuous_pressure_jetton_info_rep));
-  msg_player_continuous_pressure_jetton_req_descriptor_ = file->message_type(128);
+  msg_player_continuous_pressure_jetton_req_descriptor_ = file->message_type(129);
   static const int msg_player_continuous_pressure_jetton_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_player_continuous_pressure_jetton_req, info_),
   };
@@ -2500,7 +2519,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_player_continuous_pressure_jetton_req));
-  msg_player_continuous_pressure_jetton_rep_descriptor_ = file->message_type(129);
+  msg_player_continuous_pressure_jetton_rep_descriptor_ = file->message_type(130);
   static const int msg_player_continuous_pressure_jetton_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_player_continuous_pressure_jetton_rep, result_),
   };
@@ -2515,7 +2534,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_player_continuous_pressure_jetton_rep));
-  msg_game_play_log_descriptor_ = file->message_type(130);
+  msg_game_play_log_descriptor_ = file->message_type(131);
   static const int msg_game_play_log_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_game_play_log, bainiu_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_game_play_log, baccarat_),
@@ -2537,7 +2556,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_game_play_log));
-  msg_game_play_log_req_descriptor_ = file->message_type(131);
+  msg_game_play_log_req_descriptor_ = file->message_type(132);
   static const int msg_game_play_log_req_offsets_[1] = {
   };
   msg_game_play_log_req_reflection_ =
@@ -2551,7 +2570,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_game_play_log_req));
-  msg_game_play_log_rep_descriptor_ = file->message_type(132);
+  msg_game_play_log_rep_descriptor_ = file->message_type(133);
   static const int msg_game_play_log_rep_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_game_play_log_rep, gametype_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_game_play_log_rep, roomid_),
@@ -2570,7 +2589,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_game_play_log_rep));
-  msg_chat_info_forward_descriptor_ = file->message_type(133);
+  msg_chat_info_forward_descriptor_ = file->message_type(134);
   static const int msg_chat_info_forward_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_chat_info_forward, fromid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_chat_info_forward, toid_),
@@ -2592,7 +2611,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_chat_info_forward));
-  msg_brc_control_user_enter_table_req_descriptor_ = file->message_type(134);
+  msg_brc_control_user_enter_table_req_descriptor_ = file->message_type(135);
   static const int msg_brc_control_user_enter_table_req_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_user_enter_table_req, game_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_user_enter_table_req, table_id_),
@@ -2608,7 +2627,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_user_enter_table_req));
-  msg_brc_control_user_enter_table_rep_descriptor_ = file->message_type(135);
+  msg_brc_control_user_enter_table_rep_descriptor_ = file->message_type(136);
   static const int msg_brc_control_user_enter_table_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_user_enter_table_rep, result_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_user_enter_table_rep, area_),
@@ -2625,7 +2644,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_user_enter_table_rep));
-  msg_brc_control_user_leave_table_req_descriptor_ = file->message_type(136);
+  msg_brc_control_user_leave_table_req_descriptor_ = file->message_type(137);
   static const int msg_brc_control_user_leave_table_req_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_user_leave_table_req, game_id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_user_leave_table_req, table_id_),
@@ -2641,7 +2660,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_user_leave_table_req));
-  msg_brc_control_user_leave_table_rep_descriptor_ = file->message_type(137);
+  msg_brc_control_user_leave_table_rep_descriptor_ = file->message_type(138);
   static const int msg_brc_control_user_leave_table_rep_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_user_leave_table_rep, result_),
   };
@@ -2656,7 +2675,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_user_leave_table_rep));
-  msg_brc_control_force_leave_banker_req_descriptor_ = file->message_type(138);
+  msg_brc_control_force_leave_banker_req_descriptor_ = file->message_type(139);
   static const int msg_brc_control_force_leave_banker_req_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_force_leave_banker_req, uid_),
   };
@@ -2671,7 +2690,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_force_leave_banker_req));
-  msg_brc_control_force_leave_banker_rep_descriptor_ = file->message_type(139);
+  msg_brc_control_force_leave_banker_rep_descriptor_ = file->message_type(140);
   static const int msg_brc_control_force_leave_banker_rep_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_force_leave_banker_rep, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_force_leave_banker_rep, result_),
@@ -2687,7 +2706,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_force_leave_banker_rep));
-  msg_brc_control_area_info_req_descriptor_ = file->message_type(140);
+  msg_brc_control_area_info_req_descriptor_ = file->message_type(141);
   static const int msg_brc_control_area_info_req_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_area_info_req, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_area_info_req, area_),
@@ -2704,7 +2723,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_area_info_req));
-  msg_brc_control_area_info_rep_descriptor_ = file->message_type(141);
+  msg_brc_control_area_info_rep_descriptor_ = file->message_type(142);
   static const int msg_brc_control_area_info_rep_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_area_info_rep, result_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_area_info_rep, area_),
@@ -2721,7 +2740,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_area_info_rep));
-  msg_brc_control_total_robot_bet_info_descriptor_ = file->message_type(142);
+  msg_brc_control_total_robot_bet_info_descriptor_ = file->message_type(143);
   static const int msg_brc_control_total_robot_bet_info_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_total_robot_bet_info, area_info_),
   };
@@ -2736,7 +2755,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_total_robot_bet_info));
-  msg_brc_control_total_player_bet_info_descriptor_ = file->message_type(143);
+  msg_brc_control_total_player_bet_info_descriptor_ = file->message_type(144);
   static const int msg_brc_control_total_player_bet_info_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_total_player_bet_info, area_info_),
   };
@@ -2751,7 +2770,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_total_player_bet_info));
-  brc_control_player_bet_info_descriptor_ = file->message_type(144);
+  brc_control_player_bet_info_descriptor_ = file->message_type(145);
   static const int brc_control_player_bet_info_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(brc_control_player_bet_info, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(brc_control_player_bet_info, area_info_),
@@ -2775,7 +2794,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(brc_control_player_bet_info));
-  msg_brc_control_single_player_bet_info_descriptor_ = file->message_type(145);
+  msg_brc_control_single_player_bet_info_descriptor_ = file->message_type(146);
   static const int msg_brc_control_single_player_bet_info_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_single_player_bet_info, player_bet_info_),
   };
@@ -2790,7 +2809,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_single_player_bet_info));
-  msg_brc_control_all_player_bet_info_descriptor_ = file->message_type(146);
+  msg_brc_control_all_player_bet_info_descriptor_ = file->message_type(147);
   static const int msg_brc_control_all_player_bet_info_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_all_player_bet_info, player_bet_list_),
   };
@@ -2805,7 +2824,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_all_player_bet_info));
-  brc_control_player_coin_info_descriptor_ = file->message_type(147);
+  brc_control_player_coin_info_descriptor_ = file->message_type(148);
   static const int brc_control_player_coin_info_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(brc_control_player_coin_info, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(brc_control_player_coin_info, coin_),
@@ -2822,7 +2841,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(brc_control_player_coin_info));
-  msg_brc_control_apple_banker_list_descriptor_ = file->message_type(148);
+  msg_brc_control_apple_banker_list_descriptor_ = file->message_type(149);
   static const int msg_brc_control_apple_banker_list_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_apple_banker_list, bank_info_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_apple_banker_list, user_info_),
@@ -2838,7 +2857,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_apple_banker_list));
-  msg_brc_control_game_end_info_descriptor_ = file->message_type(149);
+  msg_brc_control_game_end_info_descriptor_ = file->message_type(150);
   static const int msg_brc_control_game_end_info_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_game_end_info, uid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_game_end_info, area_info_),
@@ -2854,7 +2873,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_game_end_info));
-  msg_brc_control_game_status_info_descriptor_ = file->message_type(150);
+  msg_brc_control_game_status_info_descriptor_ = file->message_type(151);
   static const int msg_brc_control_game_status_info_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_game_status_info, status_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_game_status_info, time_),
@@ -2870,7 +2889,7 @@ void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(msg_brc_control_game_status_info));
-  msg_brc_control_flush_area_info_descriptor_ = file->message_type(151);
+  msg_brc_control_flush_area_info_descriptor_ = file->message_type(152);
   static const int msg_brc_control_flush_area_info_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_flush_area_info, area_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(msg_brc_control_flush_area_info, times_),
@@ -2918,6 +2937,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     msg_send_base_value_descriptor_, &msg_send_base_value::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     msg_update_land_info_descriptor_, &msg_update_land_info::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    msg_get_game_info_req_descriptor_, &msg_get_game_info_req::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     msg_update_game_info_descriptor_, &msg_update_game_info::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -3227,6 +3248,8 @@ void protobuf_ShutdownFile_client_5flogic_5fmsg_2eproto() {
   delete msg_send_base_value_reflection_;
   delete msg_update_land_info::default_instance_;
   delete msg_update_land_info_reflection_;
+  delete msg_get_game_info_req::default_instance_;
+  delete msg_get_game_info_req_reflection_;
   delete msg_update_game_info::default_instance_;
   delete msg_update_game_info_reflection_;
   delete msg_svrs_info_req::default_instance_;
@@ -3554,244 +3577,245 @@ void protobuf_AddDesc_client_5flogic_5fmsg_2eproto() {
     "\001(\r\"<\n\023msg_send_base_value\022\016\n\006clogin\030\001 \001"
     "(\r\022\025\n\rclogin_reward\030\002 \003(\r\"9\n\024msg_update_"
     "land_info\022!\n\tland_data\030\001 \001(\0132\016.net.land_"
-    "info\"9\n\024msg_update_game_info\022!\n\004data\030\001 \001"
-    "(\0132\023.net.game_data_info\"&\n\021msg_svrs_info"
-    "_req\022\021\n\tgame_type\030\001 \001(\r\"a\n\021msg_svrs_info"
-    "_rep\022\033\n\004svrs\030\001 \003(\0132\r.net.svr_info\022\021\n\tcur"
-    "_svrid\030\002 \001(\r\022\034\n\003num\030\003 \003(\0132\017.net.player_n"
-    "um\"&\n\025msg_enter_gamesvr_req\022\r\n\005svrid\030\001 \001"
-    "(\r\"I\n\025msg_enter_gamesvr_rep\022\016\n\006result\030\001 "
-    "\001(\r\022\r\n\005svrid\030\002 \001(\r\022\021\n\tctrl_flag\030\003 \001(\r\",\n"
-    "\035msg_control_player_back_lobby\022\013\n\003uid\030\001 "
-    "\001(\r\"\'\n\025msg_login_safebox_req\022\016\n\006passwd\030\001"
-    " \001(\014\"\'\n\025msg_login_safebox_rep\022\016\n\006result\030"
-    "\001 \001(\r\">\n\032msg_change_safebox_pwd_req\022\017\n\007o"
-    "ld_pwd\030\001 \001(\014\022\017\n\007new_pwd\030\002 \001(\014\",\n\032msg_cha"
-    "nge_safebox_pwd_rep\022\016\n\006result\030\001 \001(\r\")\n\024m"
-    "sg_take_safebox_req\022\021\n\ttake_coin\030\001 \001(\003\"9"
-    "\n\024msg_take_safebox_rep\022\021\n\ttake_coin\030\001 \001("
-    "\003\022\016\n\006result\030\002 \001(\r\"L\n\024msg_give_safebox_re"
-    "q\022\020\n\010give_uid\030\001 \001(\r\022\021\n\tgive_coin\030\002 \001(\003\022\017"
-    "\n\007own_uid\030\003 \001(\r\"K\n\024msg_give_safebox_rep\022"
-    "\020\n\010give_uid\030\001 \001(\r\022\021\n\tgive_coin\030\002 \001(\003\022\016\n\006"
-    "result\030\003 \001(\r\"$\n\025msg_php_broadcast_rep\022\013\n"
-    "\003msg\030\001 \001(\014\"\'\n\030msg_system_broadcast_rep\022\013"
-    "\n\003msg\030\001 \001(\014\"\?\n\030msg_send_all_mission_rep\022"
-    "#\n\010missions\030\001 \003(\0132\021.net.mission_data\":\n\024"
-    "msg_send_mission_rep\022\"\n\007mission\030\001 \001(\0132\021."
-    "net.mission_data\")\n\031msg_get_mission_priz"
-    "e_req\022\014\n\004msid\030\001 \001(\r\"q\n\031msg_get_mission_p"
-    "rize_rep\022\016\n\006result\030\001 \001(\r\022\"\n\007mission\030\002 \001("
-    "\0132\021.net.mission_data\022 \n\010baseinfo\030\003 \001(\0132\016"
-    ".net.base_info\"7\n!msg_get_login_vip_rewa"
-    "rd_info_req\022\022\n\nhelp_count\030\001 \001(\r\"M\n!msg_g"
-    "et_login_vip_reward_info_rep\022\023\n\013reward_c"
-    "oin\030\001 \003(\r\022\023\n\013reward_flag\030\002 \001(\r\"8\n\"msg_ge"
-    "t_login_vip_reward_total_req\022\022\n\nhelp_cou"
-    "nt\030\001 \001(\r\"8\n\"msg_get_login_vip_reward_tot"
-    "al_rep\022\022\n\ntotal_coin\030\001 \003(\r\"/\n\030msg_get_lo"
-    "gin_reward_req\022\023\n\013reward_flag\030\001 \001(\r\"T\n\030m"
-    "sg_get_login_reward_rep\022\023\n\013reward_flag\030\001"
-    " \001(\r\022\016\n\006result\030\002 \001(\r\022\023\n\013reward_coin\030\003 \001("
-    "\r\"/\n\031msg_get_bankrupt_help_req\022\022\n\nhelp_c"
-    "ount\030\001 \001(\r\"Z\n\031msg_get_bankrupt_help_rep\022"
-    "\016\n\006result\030\001 \001(\r\022\026\n\016bankrupt_count\030\002 \001(\r\022"
-    "\025\n\rbankrupt_coin\030\003 \001(\r\"/\n\031msg_get_bankru"
-    "pt_info_req\022\022\n\nhelp_count\030\001 \001(\r\"d\n\031msg_g"
-    "et_bankrupt_info_rep\022\014\n\004base\030\001 \001(\r\022\021\n\tla"
-    "st_coin\030\002 \001(\r\022\022\n\nlast_count\030\003 \001(\r\022\022\n\nawa"
-    "rd_coin\030\004 \001(\r\"D\n\026msg_exchange_score_req\022"
-    "\025\n\rexchange_type\030\001 \001(\r\022\023\n\013exchange_id\030\002 "
-    "\001(\r\"T\n\026msg_exchange_score_rep\022\025\n\rexchang"
-    "e_type\030\001 \001(\r\022\023\n\013exchange_id\030\002 \001(\r\022\016\n\006res"
-    "ult\030\003 \001(\r\"&\n\027msg_speak_broadcast_req\022\013\n\003"
-    "msg\030\001 \001(\014\"J\n\027msg_speak_broadcast_rep\022\017\n\007"
-    "send_id\030\001 \001(\r\022\021\n\tsend_name\030\002 \001(\014\022\013\n\003msg\030"
-    "\003 \001(\014\")\n\025msg_get_history_speak\022\020\n\010get_ti"
-    "me\030\001 \001(\r\"D\n\026msg_send_history_speak\022*\n\004ms"
-    "gs\030\001 \003(\0132\034.net.msg_speak_broadcast_rep\"4"
-    "\n\022msg_speak_oper_rep\022\016\n\006result\030\001 \001(\r\022\016\n\006"
-    "cdtime\030\002 \001(\r\"\025\n\023msg_get_server_info\"V\n\013s"
-    "erver_info\022\r\n\005svrid\030\001 \001(\r\022\022\n\nplayer_num\030"
-    "\002 \001(\r\022\021\n\trobot_num\030\003 \001(\r\022\021\n\tgame_type\030\004 "
-    "\001(\r\"9\n\024msg_send_server_info\022!\n\007servers\030\001"
-    " \003(\0132\020.net.server_info\"\'\n\022msg_rooms_info"
-    "_req\022\021\n\tgame_type\030\001 \001(\r\"G\n\022msg_rooms_inf"
-    "o_rep\022\035\n\005rooms\030\001 \003(\0132\016.net.room_info\022\022\n\n"
-    "cur_roomid\030\002 \001(\r\"!\n\022msg_back_lobby_req\022\013"
-    "\n\003uid\030\001 \001(\r\"$\n\022msg_back_lobby_rep\022\016\n\006res"
-    "ult\030\001 \001(\r\"%\n\024msg_goto_gamesvr_req\022\r\n\005svr"
-    "id\030\001 \001(\r\"5\n\024msg_goto_gamesvr_rep\022\016\n\006resu"
-    "lt\030\001 \001(\r\022\r\n\005svrid\030\002 \001(\r\"%\n\022msg_enter_roo"
-    "m_req\022\017\n\007room_id\030\001 \001(\r\":\n!msg_enter_novi"
-    "ce_welfare_room_req\022\025\n\rmaxjettonrate\030\001 \001"
-    "(\005\"U\n\022msg_enter_room_rep\022\016\n\006result\030\001 \001(\r"
-    "\022\034\n\004room\030\002 \001(\0132\016.net.room_info\022\021\n\tcur_ta"
-    "ble\030\003 \001(\r\"/\n\031msg_notify_leave_room_rep\022\022"
-    "\n\nleave_type\030\001 \001(\r\":\n\022msg_table_list_req"
-    "\022\020\n\010table_id\030\001 \001(\r\022\022\n\nseach_type\030\002 \001(\r\":"
-    "\n\022msg_table_list_rep\022$\n\006tables\030\001 \003(\0132\024.n"
-    "et.table_face_info\"\245\001\n\024msg_create_table_"
-    "req\022\022\n\ntable_name\030\001 \001(\014\022\016\n\006passwd\030\002 \001(\014\022"
-    "\014\n\004deal\030\003 \001(\r\022\022\n\nbase_score\030\004 \001(\003\022\017\n\007is_"
-    "show\030\005 \001(\r\022\020\n\010fee_type\030\006 \001(\r\022\021\n\tfee_valu"
-    "e\030\007 \001(\003\022\021\n\topen_days\030\010 \001(\r\"8\n\024msg_create"
-    "_table_rep\022\016\n\006result\030\001 \001(\r\022\020\n\010table_id\030\002"
-    " \001(\r\";\n\023msg_renew_table_req\022\020\n\010table_id\030"
-    "\001 \001(\r\022\022\n\nrenew_days\030\002 \001(\r\"K\n\023msg_renew_t"
-    "able_rep\022\020\n\010table_id\030\001 \001(\r\022\022\n\nrenew_days"
-    "\030\002 \001(\r\022\016\n\006result\030\003 \001(\r\"\'\n\023msg_leave_tabl"
-    "e_req\022\020\n\010table_id\030\001 \001(\r\"%\n\023msg_leave_tab"
-    "le_rep\022\016\n\006result\030\001 \001(\r\"7\n\023msg_enter_tabl"
-    "e_req\022\020\n\010table_id\030\001 \001(\r\022\016\n\006passwd\030\002 \001(\014\""
-    "7\n\023msg_enter_table_rep\022\020\n\010table_id\030\001 \001(\r"
-    "\022\016\n\006result\030\002 \001(\r\">\n\022msg_table_info_rep\022("
-    "\n\ntable_info\030\001 \001(\0132\024.net.table_face_info"
-    "\"4\n\021msg_seat_info_rep\022\037\n\007players\030\001 \003(\0132\016"
-    ".net.seat_info\"$\n\023msg_table_ready_req\022\r\n"
-    "\005ready\030\001 \001(\r\":\n\023msg_table_ready_rep\022\016\n\006r"
-    "eadys\030\001 \003(\r\022\023\n\013auto_states\030\002 \003(\r\"&\n\022msg_"
-    "table_chat_req\022\020\n\010chat_msg\030\001 \001(\014\"3\n\022msg_"
-    "table_chat_rep\022\013\n\003uid\030\001 \001(\r\022\020\n\010chat_msg\030"
-    "\002 \001(\014\"+\n\026msg_table_set_auto_req\022\021\n\tauto_"
-    "type\030\001 \001(\r\"<\n\026msg_table_set_auto_rep\022\016\n\006"
-    "result\030\001 \001(\r\022\022\n\nauto_state\030\002 \001(\r\"7\n\026msg_"
-    "fast_join_room_req\022\014\n\004deal\030\001 \001(\r\022\017\n\007cons"
-    "ume\030\002 \001(\r\".\n\034msg_fast_join_by_room_id_re"
-    "q\022\016\n\006roomid\030\001 \001(\r\"(\n\026msg_fast_join_room_"
-    "rep\022\016\n\006result\030\001 \001(\r\"+\n\027msg_fast_join_tab"
-    "le_req\022\020\n\010table_id\030\001 \001(\r\")\n\027msg_fast_joi"
-    "n_table_rep\022\016\n\006result\030\001 \001(\r\"-\n\031msg_maste"
-    "r_join_table_req\022\020\n\010table_id\030\001 \001(\r\"+\n\031ms"
-    "g_master_join_table_rep\022\016\n\006result\030\001 \001(\r\""
-    ":\n\030msg_query_table_list_req\022\017\n\007startid\030\001"
-    " \001(\r\022\r\n\005endid\030\002 \001(\r\"S\n\030msg_query_table_l"
-    "ist_rep\022$\n\006tables\030\001 \003(\0132\024.net.table_face"
-    "_info\022\021\n\ttable_num\030\002 \001(\r\"R\n\032msg_notify_p"
-    "layer_join_rep\022\022\n\njoin_leave\030\001 \001(\r\022 \n\006pl"
-    "ayer\030\002 \001(\0132\020.net.looker_info\"O\n\030msg_look"
-    "er_list_info_rep\022!\n\007lookers\030\001 \003(\0132\020.net."
-    "looker_info\022\020\n\010is_reset\030\002 \001(\r\"<\n\027msg_sit"
-    "down_standup_req\022\017\n\007oper_id\030\001 \001(\r\022\020\n\010cha"
-    "ir_id\030\002 \001(\r\"L\n\027msg_sitdown_standup_rep\022\017"
-    "\n\007oper_id\030\001 \001(\r\022\020\n\010chair_id\030\002 \001(\r\022\016\n\006res"
-    "ult\030\003 \001(\r\"\\\n\022msg_items_user_req\022\r\n\005meuid"
-    "\030\001 \001(\r\022\022\n\nbechair_id\030\002 \001(\r\022\017\n\007item_id\030\003 "
-    "\001(\r\022\022\n\nitem_count\030\004 \001(\r\"a\n\022msg_items_use"
-    "r_rep\022\022\n\nmechair_id\030\001 \001(\r\022\022\n\nbechair_id\030"
-    "\002 \001(\r\022\017\n\007item_id\030\003 \001(\r\022\022\n\nitem_count\030\004 \001"
-    "(\r\"M\n\027msg_ingame_update_score\022\013\n\003uid\030\001 \001"
-    "(\r\022\021\n\tgame_type\030\002 \001(\r\022\022\n\ndiff_score\030\003 \001("
-    "\003\"o\n\027vip_recharge_wechatinfo\022\016\n\006sortid\030\001"
-    " \001(\r\022\r\n\005title\030\002 \001(\014\022\017\n\007account\030\003 \001(\014\022\022\n\n"
-    "low_amount\030\004 \001(\r\022\020\n\010pay_type\030\005 \003(\005\"\"\n ms"
-    "g_notify_vip_recharge_show_req\"Z\n\034msg_no"
-    "tify_vip_recharge_show\022\016\n\006status\030\001 \001(\r\022*"
-    "\n\004info\030\002 \003(\0132\034.net.vip_recharge_wechatin"
-    "fo\"&\n$msg_notify_unionpayrecharge_show_r"
-    "eq\"6\n$msg_notify_unionpayrecharge_show_r"
-    "ep\022\016\n\006status\030\001 \001(\r\"\'\n%msg_notify_wechatp"
-    "ayrecharge_show_req\"7\n%msg_notify_wechat"
-    "payrecharge_show_rep\022\016\n\006status\030\001 \001(\r\"$\n\""
-    "msg_notify_alipayrecharge_show_req\"4\n\"ms"
-    "g_notify_alipayrecharge_show_rep\022\016\n\006stat"
-    "us\030\001 \001(\r\"&\n$msg_notify_otherpayrecharge_"
-    "show_req\"6\n$msg_notify_otherpayrecharge_"
-    "show_rep\022\016\n\006status\030\001 \001(\r\"#\n!msg_notify_q"
-    "qpayrecharge_show_req\"3\n!msg_notify_qqpa"
-    "yrecharge_show_rep\022\016\n\006status\030\001 \001(\r\"+\n)ms"
-    "g_notify_wechatscanpayrecharge_show_req\""
-    ";\n)msg_notify_wechatscanpayrecharge_show"
-    "_rep\022\016\n\006status\030\001 \001(\r\"#\n!msg_notify_jdpay"
-    "recharge_show_req\"3\n!msg_notify_jdpayrec"
-    "harge_show_rep\022\016\n\006status\030\001 \001(\r\"&\n$msg_no"
-    "tify_applepayrecharge_show_req\"6\n$msg_no"
-    "tify_applepayrecharge_show_rep\022\016\n\006status"
-    "\030\001 \001(\r\"+\n)msg_notify_large_ali_payrechar"
-    "ge_show_req\";\n)msg_notify_large_ali_payr"
-    "echarge_show_rep\022\016\n\006status\030\001 \001(\r\"|\n\025excl"
-    "usive_alipay_info\022\017\n\007account\030\001 \001(\014\022\014\n\004na"
-    "me\030\002 \001(\014\022\r\n\005title\030\003 \001(\014\022\017\n\007min_pay\030\004 \001(\005"
-    "\022\017\n\007max_pay\030\005 \001(\005\022\023\n\013lower_float\030\006 \001(\005\"e"
-    "\n)msg_notify_exclusive_alipay_recharge_s"
-    "how\022\016\n\006status\030\001 \001(\r\022(\n\004info\030\002 \003(\0132\032.net."
-    "exclusive_alipay_info\"/\n-msg_notify_excl"
-    "usive_alipay_recharge_show_req\"+\n)msg_no"
-    "tify_fixed_alipay_recharge_show_req\";\n)m"
-    "sg_notify_fixed_alipay_recharge_show_rep"
-    "\022\016\n\006status\030\001 \001(\r\"+\n)msg_notify_fixed_wec"
-    "hat_recharge_show_req\";\n)msg_notify_fixe"
-    "d_wechat_recharge_show_rep\022\016\n\006status\030\001 \001"
-    "(\r\"-\n+msg_notify_fixed_unionpay_recharge"
-    "_show_req\"=\n+msg_notify_fixed_unionpay_r"
-    "echarge_show_rep\022\016\n\006status\030\001 \001(\r\".\n,msg_"
-    "notify_exclusive_flash_recharge_show_req"
-    "\"j\n,msg_notify_exclusive_flash_recharge_"
-    "show_rep\022\016\n\006status\030\001 \001(\r\022*\n\004info\030\002 \003(\0132\034"
-    ".net.vip_recharge_wechatinfo\"1\n\022bairen_j"
-    "etton_info\022\014\n\004area\030\001 \001(\r\022\r\n\005score\030\002 \001(\003\""
-    "P\n\'msg_continuous_pressure_jetton_info_r"
-    "ep\022%\n\004info\030\001 \003(\0132\027.net.bairen_jetton_inf"
-    "o\"R\n)msg_player_continuous_pressure_jett"
-    "on_req\022%\n\004info\030\001 \003(\0132\027.net.bairen_jetton"
-    "_info\";\n)msg_player_continuous_pressure_"
-    "jetton_rep\022\016\n\006result\030\001 \001(\r\"\201\003\n\021msg_game_"
-    "play_log\022,\n\006bainiu\030\001 \001(\0132\034.net.msg_baini"
-    "u_play_log_rep\0220\n\010baccarat\030\002 \001(\0132\036.net.m"
-    "sg_baccarat_play_log_rep\022,\n\006paijiu\030\003 \001(\013"
-    "2\034.net.msg_paijiu_play_log_rep\022(\n\004dice\030\004"
-    " \001(\0132\032.net.msg_dice_play_log_rep\022&\n\003war\030"
-    "\005 \001(\0132\031.net.msg_war_play_log_rep\022*\n\005figh"
-    "t\030\006 \001(\0132\033.net.msg_fight_play_log_rep\0220\n\010"
-    "twoeight\030\007 \001(\0132\036.net.msg_twoeight_play_l"
-    "og_rep\022.\n\007carcity\030\010 \001(\0132\035.net.msg_carcit"
-    "y_play_log_rep\"\027\n\025msg_game_play_log_req\""
-    "\213\001\n\025msg_game_play_log_rep\022\020\n\010gametype\030\001 "
-    "\001(\r\022\016\n\006roomid\030\002 \001(\r\022\021\n\tgamestate\030\003 \001(\r\022\023"
-    "\n\013remain_time\030\004 \001(\r\022(\n\010play_log\030\005 \001(\0132\026."
-    "net.msg_game_play_log\"\227\001\n\025msg_chat_info_"
-    "forward\022\016\n\006fromid\030\001 \001(\r\022\014\n\004toid\030\002 \003(\r\022\016\n"
-    "\006online\030\003 \003(\005\022\021\n\tmessagStr\030\004 \001(\014\022\020\n\010from"
-    "name\030\005 \001(\014\022\016\n\006toname\030\006 \003(\014\022\014\n\004time\030\007 \001(\004"
-    "\022\r\n\005mtype\030\010 \001(\005\"I\n$msg_brc_control_user_"
-    "enter_table_req\022\017\n\007game_id\030\001 \001(\r\022\020\n\010tabl"
-    "e_id\030\002 \001(\r\"S\n$msg_brc_control_user_enter"
-    "_table_rep\022\016\n\006result\030\001 \001(\r\022\014\n\004area\030\002 \003(\r"
-    "\022\r\n\005times\030\003 \001(\r\"I\n$msg_brc_control_user_"
-    "leave_table_req\022\017\n\007game_id\030\001 \001(\r\022\020\n\010tabl"
-    "e_id\030\002 \001(\r\"6\n$msg_brc_control_user_leave"
-    "_table_rep\022\016\n\006result\030\001 \001(\r\"5\n&msg_brc_co"
-    "ntrol_force_leave_banker_req\022\013\n\003uid\030\001 \001("
-    "\r\"E\n&msg_brc_control_force_leave_banker_"
-    "rep\022\013\n\003uid\030\001 \001(\r\022\016\n\006result\030\002 \001(\r\"I\n\035msg_"
-    "brc_control_area_info_req\022\013\n\003uid\030\001 \001(\r\022\014"
-    "\n\004area\030\002 \003(\r\022\r\n\005times\030\003 \001(\r\"L\n\035msg_brc_c"
-    "ontrol_area_info_rep\022\016\n\006result\030\001 \001(\r\022\014\n\004"
-    "area\030\002 \003(\r\022\r\n\005times\030\003 \001(\r\"9\n$msg_brc_con"
-    "trol_total_robot_bet_info\022\021\n\tarea_info\030\001"
-    " \003(\003\":\n%msg_brc_control_total_player_bet"
-    "_info\022\021\n\tarea_info\030\001 \003(\003\"\320\001\n\033brc_control"
-    "_player_bet_info\022\013\n\003uid\030\001 \001(\r\022\021\n\tarea_in"
-    "fo\030\002 \003(\003\022\021\n\ttotal_bet\030\003 \001(\003\022\024\n\014curr_day_"
-    "win\030\004 \001(\003\022\022\n\nwin_number\030\005 \001(\r\022\023\n\013lose_nu"
-    "mber\030\006 \001(\r\022\021\n\ttotal_win\030\007 \001(\003\022\014\n\004coin\030\010 "
-    "\001(\003\022\014\n\004name\030\t \001(\014\022\020\n\010ismaster\030\n \001(\r\"c\n&m"
-    "sg_brc_control_single_player_bet_info\0229\n"
-    "\017player_bet_info\030\001 \001(\0132 .net.brc_control"
-    "_player_bet_info\"`\n#msg_brc_control_all_"
-    "player_bet_info\0229\n\017player_bet_list\030\001 \003(\013"
-    "2 .net.brc_control_player_bet_info\"N\n\034br"
-    "c_control_player_coin_info\022\013\n\003uid\030\001 \001(\r\022"
-    "\014\n\004coin\030\002 \001(\003\022\023\n\013player_type\030\003 \001(\r\"\217\001\n!m"
-    "sg_brc_control_apple_banker_list\0224\n\tbank"
-    "_info\030\001 \001(\0132!.net.brc_control_player_coi"
-    "n_info\0224\n\tuser_info\030\002 \003(\0132!.net.brc_cont"
-    "rol_player_coin_info\"\?\n\035msg_brc_control_"
-    "game_end_info\022\013\n\003uid\030\001 \001(\r\022\021\n\tarea_info\030"
-    "\002 \003(\r\"@\n msg_brc_control_game_status_inf"
-    "o\022\016\n\006status\030\001 \001(\r\022\014\n\004time\030\002 \001(\r\">\n\037msg_b"
-    "rc_control_flush_area_info\022\014\n\004area\030\001 \003(\r"
-    "\022\r\n\005times\030\002 \001(\r", 10455);
+    "info\"*\n\025msg_get_game_info_req\022\021\n\tgame_ty"
+    "pe\030\001 \001(\r\"9\n\024msg_update_game_info\022!\n\004data"
+    "\030\001 \001(\0132\023.net.game_data_info\"&\n\021msg_svrs_"
+    "info_req\022\021\n\tgame_type\030\001 \001(\r\"a\n\021msg_svrs_"
+    "info_rep\022\033\n\004svrs\030\001 \003(\0132\r.net.svr_info\022\021\n"
+    "\tcur_svrid\030\002 \001(\r\022\034\n\003num\030\003 \003(\0132\017.net.play"
+    "er_num\"&\n\025msg_enter_gamesvr_req\022\r\n\005svrid"
+    "\030\001 \001(\r\"I\n\025msg_enter_gamesvr_rep\022\016\n\006resul"
+    "t\030\001 \001(\r\022\r\n\005svrid\030\002 \001(\r\022\021\n\tctrl_flag\030\003 \001("
+    "\r\",\n\035msg_control_player_back_lobby\022\013\n\003ui"
+    "d\030\001 \001(\r\"\'\n\025msg_login_safebox_req\022\016\n\006pass"
+    "wd\030\001 \001(\014\"\'\n\025msg_login_safebox_rep\022\016\n\006res"
+    "ult\030\001 \001(\r\">\n\032msg_change_safebox_pwd_req\022"
+    "\017\n\007old_pwd\030\001 \001(\014\022\017\n\007new_pwd\030\002 \001(\014\",\n\032msg"
+    "_change_safebox_pwd_rep\022\016\n\006result\030\001 \001(\r\""
+    ")\n\024msg_take_safebox_req\022\021\n\ttake_coin\030\001 \001"
+    "(\003\"9\n\024msg_take_safebox_rep\022\021\n\ttake_coin\030"
+    "\001 \001(\003\022\016\n\006result\030\002 \001(\r\"L\n\024msg_give_safebo"
+    "x_req\022\020\n\010give_uid\030\001 \001(\r\022\021\n\tgive_coin\030\002 \001"
+    "(\003\022\017\n\007own_uid\030\003 \001(\r\"K\n\024msg_give_safebox_"
+    "rep\022\020\n\010give_uid\030\001 \001(\r\022\021\n\tgive_coin\030\002 \001(\003"
+    "\022\016\n\006result\030\003 \001(\r\"$\n\025msg_php_broadcast_re"
+    "p\022\013\n\003msg\030\001 \001(\014\"\'\n\030msg_system_broadcast_r"
+    "ep\022\013\n\003msg\030\001 \001(\014\"\?\n\030msg_send_all_mission_"
+    "rep\022#\n\010missions\030\001 \003(\0132\021.net.mission_data"
+    "\":\n\024msg_send_mission_rep\022\"\n\007mission\030\001 \001("
+    "\0132\021.net.mission_data\")\n\031msg_get_mission_"
+    "prize_req\022\014\n\004msid\030\001 \001(\r\"q\n\031msg_get_missi"
+    "on_prize_rep\022\016\n\006result\030\001 \001(\r\022\"\n\007mission\030"
+    "\002 \001(\0132\021.net.mission_data\022 \n\010baseinfo\030\003 \001"
+    "(\0132\016.net.base_info\"7\n!msg_get_login_vip_"
+    "reward_info_req\022\022\n\nhelp_count\030\001 \001(\r\"M\n!m"
+    "sg_get_login_vip_reward_info_rep\022\023\n\013rewa"
+    "rd_coin\030\001 \003(\r\022\023\n\013reward_flag\030\002 \001(\r\"8\n\"ms"
+    "g_get_login_vip_reward_total_req\022\022\n\nhelp"
+    "_count\030\001 \001(\r\"8\n\"msg_get_login_vip_reward"
+    "_total_rep\022\022\n\ntotal_coin\030\001 \003(\r\"/\n\030msg_ge"
+    "t_login_reward_req\022\023\n\013reward_flag\030\001 \001(\r\""
+    "T\n\030msg_get_login_reward_rep\022\023\n\013reward_fl"
+    "ag\030\001 \001(\r\022\016\n\006result\030\002 \001(\r\022\023\n\013reward_coin\030"
+    "\003 \001(\r\"/\n\031msg_get_bankrupt_help_req\022\022\n\nhe"
+    "lp_count\030\001 \001(\r\"Z\n\031msg_get_bankrupt_help_"
+    "rep\022\016\n\006result\030\001 \001(\r\022\026\n\016bankrupt_count\030\002 "
+    "\001(\r\022\025\n\rbankrupt_coin\030\003 \001(\r\"/\n\031msg_get_ba"
+    "nkrupt_info_req\022\022\n\nhelp_count\030\001 \001(\r\"d\n\031m"
+    "sg_get_bankrupt_info_rep\022\014\n\004base\030\001 \001(\r\022\021"
+    "\n\tlast_coin\030\002 \001(\r\022\022\n\nlast_count\030\003 \001(\r\022\022\n"
+    "\naward_coin\030\004 \001(\r\"D\n\026msg_exchange_score_"
+    "req\022\025\n\rexchange_type\030\001 \001(\r\022\023\n\013exchange_i"
+    "d\030\002 \001(\r\"T\n\026msg_exchange_score_rep\022\025\n\rexc"
+    "hange_type\030\001 \001(\r\022\023\n\013exchange_id\030\002 \001(\r\022\016\n"
+    "\006result\030\003 \001(\r\"&\n\027msg_speak_broadcast_req"
+    "\022\013\n\003msg\030\001 \001(\014\"J\n\027msg_speak_broadcast_rep"
+    "\022\017\n\007send_id\030\001 \001(\r\022\021\n\tsend_name\030\002 \001(\014\022\013\n\003"
+    "msg\030\003 \001(\014\")\n\025msg_get_history_speak\022\020\n\010ge"
+    "t_time\030\001 \001(\r\"D\n\026msg_send_history_speak\022*"
+    "\n\004msgs\030\001 \003(\0132\034.net.msg_speak_broadcast_r"
+    "ep\"4\n\022msg_speak_oper_rep\022\016\n\006result\030\001 \001(\r"
+    "\022\016\n\006cdtime\030\002 \001(\r\"\025\n\023msg_get_server_info\""
+    "V\n\013server_info\022\r\n\005svrid\030\001 \001(\r\022\022\n\nplayer_"
+    "num\030\002 \001(\r\022\021\n\trobot_num\030\003 \001(\r\022\021\n\tgame_typ"
+    "e\030\004 \001(\r\"9\n\024msg_send_server_info\022!\n\007serve"
+    "rs\030\001 \003(\0132\020.net.server_info\"\'\n\022msg_rooms_"
+    "info_req\022\021\n\tgame_type\030\001 \001(\r\"G\n\022msg_rooms"
+    "_info_rep\022\035\n\005rooms\030\001 \003(\0132\016.net.room_info"
+    "\022\022\n\ncur_roomid\030\002 \001(\r\"!\n\022msg_back_lobby_r"
+    "eq\022\013\n\003uid\030\001 \001(\r\"$\n\022msg_back_lobby_rep\022\016\n"
+    "\006result\030\001 \001(\r\"%\n\024msg_goto_gamesvr_req\022\r\n"
+    "\005svrid\030\001 \001(\r\"5\n\024msg_goto_gamesvr_rep\022\016\n\006"
+    "result\030\001 \001(\r\022\r\n\005svrid\030\002 \001(\r\"%\n\022msg_enter"
+    "_room_req\022\017\n\007room_id\030\001 \001(\r\":\n!msg_enter_"
+    "novice_welfare_room_req\022\025\n\rmaxjettonrate"
+    "\030\001 \001(\005\"U\n\022msg_enter_room_rep\022\016\n\006result\030\001"
+    " \001(\r\022\034\n\004room\030\002 \001(\0132\016.net.room_info\022\021\n\tcu"
+    "r_table\030\003 \001(\r\"/\n\031msg_notify_leave_room_r"
+    "ep\022\022\n\nleave_type\030\001 \001(\r\":\n\022msg_table_list"
+    "_req\022\020\n\010table_id\030\001 \001(\r\022\022\n\nseach_type\030\002 \001"
+    "(\r\":\n\022msg_table_list_rep\022$\n\006tables\030\001 \003(\013"
+    "2\024.net.table_face_info\"\245\001\n\024msg_create_ta"
+    "ble_req\022\022\n\ntable_name\030\001 \001(\014\022\016\n\006passwd\030\002 "
+    "\001(\014\022\014\n\004deal\030\003 \001(\r\022\022\n\nbase_score\030\004 \001(\003\022\017\n"
+    "\007is_show\030\005 \001(\r\022\020\n\010fee_type\030\006 \001(\r\022\021\n\tfee_"
+    "value\030\007 \001(\003\022\021\n\topen_days\030\010 \001(\r\"8\n\024msg_cr"
+    "eate_table_rep\022\016\n\006result\030\001 \001(\r\022\020\n\010table_"
+    "id\030\002 \001(\r\";\n\023msg_renew_table_req\022\020\n\010table"
+    "_id\030\001 \001(\r\022\022\n\nrenew_days\030\002 \001(\r\"K\n\023msg_ren"
+    "ew_table_rep\022\020\n\010table_id\030\001 \001(\r\022\022\n\nrenew_"
+    "days\030\002 \001(\r\022\016\n\006result\030\003 \001(\r\"\'\n\023msg_leave_"
+    "table_req\022\020\n\010table_id\030\001 \001(\r\"%\n\023msg_leave"
+    "_table_rep\022\016\n\006result\030\001 \001(\r\"7\n\023msg_enter_"
+    "table_req\022\020\n\010table_id\030\001 \001(\r\022\016\n\006passwd\030\002 "
+    "\001(\014\"7\n\023msg_enter_table_rep\022\020\n\010table_id\030\001"
+    " \001(\r\022\016\n\006result\030\002 \001(\r\">\n\022msg_table_info_r"
+    "ep\022(\n\ntable_info\030\001 \001(\0132\024.net.table_face_"
+    "info\"4\n\021msg_seat_info_rep\022\037\n\007players\030\001 \003"
+    "(\0132\016.net.seat_info\"$\n\023msg_table_ready_re"
+    "q\022\r\n\005ready\030\001 \001(\r\":\n\023msg_table_ready_rep\022"
+    "\016\n\006readys\030\001 \003(\r\022\023\n\013auto_states\030\002 \003(\r\"&\n\022"
+    "msg_table_chat_req\022\020\n\010chat_msg\030\001 \001(\014\"3\n\022"
+    "msg_table_chat_rep\022\013\n\003uid\030\001 \001(\r\022\020\n\010chat_"
+    "msg\030\002 \001(\014\"+\n\026msg_table_set_auto_req\022\021\n\ta"
+    "uto_type\030\001 \001(\r\"<\n\026msg_table_set_auto_rep"
+    "\022\016\n\006result\030\001 \001(\r\022\022\n\nauto_state\030\002 \001(\r\"7\n\026"
+    "msg_fast_join_room_req\022\014\n\004deal\030\001 \001(\r\022\017\n\007"
+    "consume\030\002 \001(\r\".\n\034msg_fast_join_by_room_i"
+    "d_req\022\016\n\006roomid\030\001 \001(\r\"(\n\026msg_fast_join_r"
+    "oom_rep\022\016\n\006result\030\001 \001(\r\"+\n\027msg_fast_join"
+    "_table_req\022\020\n\010table_id\030\001 \001(\r\")\n\027msg_fast"
+    "_join_table_rep\022\016\n\006result\030\001 \001(\r\"-\n\031msg_m"
+    "aster_join_table_req\022\020\n\010table_id\030\001 \001(\r\"9"
+    "\n\031msg_master_join_table_rep\022\016\n\006result\030\001 "
+    "\001(\r\022\014\n\004tuid\030\002 \001(\r\":\n\030msg_query_table_lis"
+    "t_req\022\017\n\007startid\030\001 \001(\r\022\r\n\005endid\030\002 \001(\r\"S\n"
+    "\030msg_query_table_list_rep\022$\n\006tables\030\001 \003("
+    "\0132\024.net.table_face_info\022\021\n\ttable_num\030\002 \001"
+    "(\r\"R\n\032msg_notify_player_join_rep\022\022\n\njoin"
+    "_leave\030\001 \001(\r\022 \n\006player\030\002 \001(\0132\020.net.looke"
+    "r_info\"O\n\030msg_looker_list_info_rep\022!\n\007lo"
+    "okers\030\001 \003(\0132\020.net.looker_info\022\020\n\010is_rese"
+    "t\030\002 \001(\r\"<\n\027msg_sitdown_standup_req\022\017\n\007op"
+    "er_id\030\001 \001(\r\022\020\n\010chair_id\030\002 \001(\r\"L\n\027msg_sit"
+    "down_standup_rep\022\017\n\007oper_id\030\001 \001(\r\022\020\n\010cha"
+    "ir_id\030\002 \001(\r\022\016\n\006result\030\003 \001(\r\"\\\n\022msg_items"
+    "_user_req\022\r\n\005meuid\030\001 \001(\r\022\022\n\nbechair_id\030\002"
+    " \001(\r\022\017\n\007item_id\030\003 \001(\r\022\022\n\nitem_count\030\004 \001("
+    "\r\"a\n\022msg_items_user_rep\022\022\n\nmechair_id\030\001 "
+    "\001(\r\022\022\n\nbechair_id\030\002 \001(\r\022\017\n\007item_id\030\003 \001(\r"
+    "\022\022\n\nitem_count\030\004 \001(\r\"M\n\027msg_ingame_updat"
+    "e_score\022\013\n\003uid\030\001 \001(\r\022\021\n\tgame_type\030\002 \001(\r\022"
+    "\022\n\ndiff_score\030\003 \001(\003\"o\n\027vip_recharge_wech"
+    "atinfo\022\016\n\006sortid\030\001 \001(\r\022\r\n\005title\030\002 \001(\014\022\017\n"
+    "\007account\030\003 \001(\014\022\022\n\nlow_amount\030\004 \001(\r\022\020\n\010pa"
+    "y_type\030\005 \003(\005\"\"\n msg_notify_vip_recharge_"
+    "show_req\"Z\n\034msg_notify_vip_recharge_show"
+    "\022\016\n\006status\030\001 \001(\r\022*\n\004info\030\002 \003(\0132\034.net.vip"
+    "_recharge_wechatinfo\"&\n$msg_notify_union"
+    "payrecharge_show_req\"6\n$msg_notify_union"
+    "payrecharge_show_rep\022\016\n\006status\030\001 \001(\r\"\'\n%"
+    "msg_notify_wechatpayrecharge_show_req\"7\n"
+    "%msg_notify_wechatpayrecharge_show_rep\022\016"
+    "\n\006status\030\001 \001(\r\"$\n\"msg_notify_alipayrecha"
+    "rge_show_req\"4\n\"msg_notify_alipayrecharg"
+    "e_show_rep\022\016\n\006status\030\001 \001(\r\"&\n$msg_notify"
+    "_otherpayrecharge_show_req\"6\n$msg_notify"
+    "_otherpayrecharge_show_rep\022\016\n\006status\030\001 \001"
+    "(\r\"#\n!msg_notify_qqpayrecharge_show_req\""
+    "3\n!msg_notify_qqpayrecharge_show_rep\022\016\n\006"
+    "status\030\001 \001(\r\"+\n)msg_notify_wechatscanpay"
+    "recharge_show_req\";\n)msg_notify_wechatsc"
+    "anpayrecharge_show_rep\022\016\n\006status\030\001 \001(\r\"#"
+    "\n!msg_notify_jdpayrecharge_show_req\"3\n!m"
+    "sg_notify_jdpayrecharge_show_rep\022\016\n\006stat"
+    "us\030\001 \001(\r\"&\n$msg_notify_applepayrecharge_"
+    "show_req\"6\n$msg_notify_applepayrecharge_"
+    "show_rep\022\016\n\006status\030\001 \001(\r\"+\n)msg_notify_l"
+    "arge_ali_payrecharge_show_req\";\n)msg_not"
+    "ify_large_ali_payrecharge_show_rep\022\016\n\006st"
+    "atus\030\001 \001(\r\"|\n\025exclusive_alipay_info\022\017\n\007a"
+    "ccount\030\001 \001(\014\022\014\n\004name\030\002 \001(\014\022\r\n\005title\030\003 \001("
+    "\014\022\017\n\007min_pay\030\004 \001(\005\022\017\n\007max_pay\030\005 \001(\005\022\023\n\013l"
+    "ower_float\030\006 \001(\005\"e\n)msg_notify_exclusive"
+    "_alipay_recharge_show\022\016\n\006status\030\001 \001(\r\022(\n"
+    "\004info\030\002 \003(\0132\032.net.exclusive_alipay_info\""
+    "/\n-msg_notify_exclusive_alipay_recharge_"
+    "show_req\"+\n)msg_notify_fixed_alipay_rech"
+    "arge_show_req\";\n)msg_notify_fixed_alipay"
+    "_recharge_show_rep\022\016\n\006status\030\001 \001(\r\"+\n)ms"
+    "g_notify_fixed_wechat_recharge_show_req\""
+    ";\n)msg_notify_fixed_wechat_recharge_show"
+    "_rep\022\016\n\006status\030\001 \001(\r\"-\n+msg_notify_fixed"
+    "_unionpay_recharge_show_req\"=\n+msg_notif"
+    "y_fixed_unionpay_recharge_show_rep\022\016\n\006st"
+    "atus\030\001 \001(\r\".\n,msg_notify_exclusive_flash"
+    "_recharge_show_req\"j\n,msg_notify_exclusi"
+    "ve_flash_recharge_show_rep\022\016\n\006status\030\001 \001"
+    "(\r\022*\n\004info\030\002 \003(\0132\034.net.vip_recharge_wech"
+    "atinfo\"1\n\022bairen_jetton_info\022\014\n\004area\030\001 \001"
+    "(\r\022\r\n\005score\030\002 \001(\003\"P\n\'msg_continuous_pres"
+    "sure_jetton_info_rep\022%\n\004info\030\001 \003(\0132\027.net"
+    ".bairen_jetton_info\"R\n)msg_player_contin"
+    "uous_pressure_jetton_req\022%\n\004info\030\001 \003(\0132\027"
+    ".net.bairen_jetton_info\";\n)msg_player_co"
+    "ntinuous_pressure_jetton_rep\022\016\n\006result\030\001"
+    " \001(\r\"\201\003\n\021msg_game_play_log\022,\n\006bainiu\030\001 \001"
+    "(\0132\034.net.msg_bainiu_play_log_rep\0220\n\010bacc"
+    "arat\030\002 \001(\0132\036.net.msg_baccarat_play_log_r"
+    "ep\022,\n\006paijiu\030\003 \001(\0132\034.net.msg_paijiu_play"
+    "_log_rep\022(\n\004dice\030\004 \001(\0132\032.net.msg_dice_pl"
+    "ay_log_rep\022&\n\003war\030\005 \001(\0132\031.net.msg_war_pl"
+    "ay_log_rep\022*\n\005fight\030\006 \001(\0132\033.net.msg_figh"
+    "t_play_log_rep\0220\n\010twoeight\030\007 \001(\0132\036.net.m"
+    "sg_twoeight_play_log_rep\022.\n\007carcity\030\010 \001("
+    "\0132\035.net.msg_carcity_play_log_rep\"\027\n\025msg_"
+    "game_play_log_req\"\213\001\n\025msg_game_play_log_"
+    "rep\022\020\n\010gametype\030\001 \001(\r\022\016\n\006roomid\030\002 \001(\r\022\021\n"
+    "\tgamestate\030\003 \001(\r\022\023\n\013remain_time\030\004 \001(\r\022(\n"
+    "\010play_log\030\005 \001(\0132\026.net.msg_game_play_log\""
+    "\227\001\n\025msg_chat_info_forward\022\016\n\006fromid\030\001 \001("
+    "\r\022\014\n\004toid\030\002 \003(\r\022\016\n\006online\030\003 \003(\005\022\021\n\tmessa"
+    "gStr\030\004 \001(\014\022\020\n\010fromname\030\005 \001(\014\022\016\n\006toname\030\006"
+    " \003(\014\022\014\n\004time\030\007 \001(\004\022\r\n\005mtype\030\010 \001(\005\"I\n$msg"
+    "_brc_control_user_enter_table_req\022\017\n\007gam"
+    "e_id\030\001 \001(\r\022\020\n\010table_id\030\002 \001(\r\"S\n$msg_brc_"
+    "control_user_enter_table_rep\022\016\n\006result\030\001"
+    " \001(\r\022\014\n\004area\030\002 \003(\r\022\r\n\005times\030\003 \001(\r\"I\n$msg"
+    "_brc_control_user_leave_table_req\022\017\n\007gam"
+    "e_id\030\001 \001(\r\022\020\n\010table_id\030\002 \001(\r\"6\n$msg_brc_"
+    "control_user_leave_table_rep\022\016\n\006result\030\001"
+    " \001(\r\"5\n&msg_brc_control_force_leave_bank"
+    "er_req\022\013\n\003uid\030\001 \001(\r\"E\n&msg_brc_control_f"
+    "orce_leave_banker_rep\022\013\n\003uid\030\001 \001(\r\022\016\n\006re"
+    "sult\030\002 \001(\r\"I\n\035msg_brc_control_area_info_"
+    "req\022\013\n\003uid\030\001 \001(\r\022\014\n\004area\030\002 \003(\r\022\r\n\005times\030"
+    "\003 \001(\r\"L\n\035msg_brc_control_area_info_rep\022\016"
+    "\n\006result\030\001 \001(\r\022\014\n\004area\030\002 \003(\r\022\r\n\005times\030\003 "
+    "\001(\r\"9\n$msg_brc_control_total_robot_bet_i"
+    "nfo\022\021\n\tarea_info\030\001 \003(\003\":\n%msg_brc_contro"
+    "l_total_player_bet_info\022\021\n\tarea_info\030\001 \003"
+    "(\003\"\320\001\n\033brc_control_player_bet_info\022\013\n\003ui"
+    "d\030\001 \001(\r\022\021\n\tarea_info\030\002 \003(\003\022\021\n\ttotal_bet\030"
+    "\003 \001(\003\022\024\n\014curr_day_win\030\004 \001(\003\022\022\n\nwin_numbe"
+    "r\030\005 \001(\r\022\023\n\013lose_number\030\006 \001(\r\022\021\n\ttotal_wi"
+    "n\030\007 \001(\003\022\014\n\004coin\030\010 \001(\003\022\014\n\004name\030\t \001(\014\022\020\n\010i"
+    "smaster\030\n \001(\r\"c\n&msg_brc_control_single_"
+    "player_bet_info\0229\n\017player_bet_info\030\001 \001(\013"
+    "2 .net.brc_control_player_bet_info\"`\n#ms"
+    "g_brc_control_all_player_bet_info\0229\n\017pla"
+    "yer_bet_list\030\001 \003(\0132 .net.brc_control_pla"
+    "yer_bet_info\"N\n\034brc_control_player_coin_"
+    "info\022\013\n\003uid\030\001 \001(\r\022\014\n\004coin\030\002 \001(\003\022\023\n\013playe"
+    "r_type\030\003 \001(\r\"\217\001\n!msg_brc_control_apple_b"
+    "anker_list\0224\n\tbank_info\030\001 \001(\0132!.net.brc_"
+    "control_player_coin_info\0224\n\tuser_info\030\002 "
+    "\003(\0132!.net.brc_control_player_coin_info\"\?"
+    "\n\035msg_brc_control_game_end_info\022\013\n\003uid\030\001"
+    " \001(\r\022\021\n\tarea_info\030\002 \003(\r\"@\n msg_brc_contr"
+    "ol_game_status_info\022\016\n\006status\030\001 \001(\r\022\014\n\004t"
+    "ime\030\002 \001(\r\">\n\037msg_brc_control_flush_area_"
+    "info\022\014\n\004area\030\001 \003(\r\022\r\n\005times\030\002 \001(\r", 10513);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "client_logic_msg.proto", &protobuf_RegisterTypes);
   msg_heart_test::default_instance_ = new msg_heart_test();
@@ -3804,6 +3828,7 @@ void protobuf_AddDesc_client_5flogic_5fmsg_2eproto() {
   msg_update_base_value::default_instance_ = new msg_update_base_value();
   msg_send_base_value::default_instance_ = new msg_send_base_value();
   msg_update_land_info::default_instance_ = new msg_update_land_info();
+  msg_get_game_info_req::default_instance_ = new msg_get_game_info_req();
   msg_update_game_info::default_instance_ = new msg_update_game_info();
   msg_svrs_info_req::default_instance_ = new msg_svrs_info_req();
   msg_svrs_info_rep::default_instance_ = new msg_svrs_info_rep();
@@ -3956,6 +3981,7 @@ void protobuf_AddDesc_client_5flogic_5fmsg_2eproto() {
   msg_update_base_value::default_instance_->InitAsDefaultInstance();
   msg_send_base_value::default_instance_->InitAsDefaultInstance();
   msg_update_land_info::default_instance_->InitAsDefaultInstance();
+  msg_get_game_info_req::default_instance_->InitAsDefaultInstance();
   msg_update_game_info::default_instance_->InitAsDefaultInstance();
   msg_svrs_info_req::default_instance_->InitAsDefaultInstance();
   msg_svrs_info_rep::default_instance_->InitAsDefaultInstance();
@@ -6874,6 +6900,214 @@ void msg_update_land_info::Swap(msg_update_land_info* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = msg_update_land_info_descriptor_;
   metadata.reflection = msg_update_land_info_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int msg_get_game_info_req::kGameTypeFieldNumber;
+#endif  // !_MSC_VER
+
+msg_get_game_info_req::msg_get_game_info_req()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void msg_get_game_info_req::InitAsDefaultInstance() {
+}
+
+msg_get_game_info_req::msg_get_game_info_req(const msg_get_game_info_req& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void msg_get_game_info_req::SharedCtor() {
+  _cached_size_ = 0;
+  game_type_ = 0u;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+msg_get_game_info_req::~msg_get_game_info_req() {
+  SharedDtor();
+}
+
+void msg_get_game_info_req::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void msg_get_game_info_req::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* msg_get_game_info_req::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return msg_get_game_info_req_descriptor_;
+}
+
+const msg_get_game_info_req& msg_get_game_info_req::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
+  return *default_instance_;
+}
+
+msg_get_game_info_req* msg_get_game_info_req::default_instance_ = NULL;
+
+msg_get_game_info_req* msg_get_game_info_req::New() const {
+  return new msg_get_game_info_req;
+}
+
+void msg_get_game_info_req::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    game_type_ = 0u;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool msg_get_game_info_req::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional uint32 game_type = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &game_type_)));
+          set_has_game_type();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void msg_get_game_info_req::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional uint32 game_type = 1;
+  if (has_game_type()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->game_type(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* msg_get_game_info_req::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional uint32 game_type = 1;
+  if (has_game_type()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->game_type(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int msg_get_game_info_req::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional uint32 game_type = 1;
+    if (has_game_type()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->game_type());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void msg_get_game_info_req::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const msg_get_game_info_req* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const msg_get_game_info_req*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void msg_get_game_info_req::MergeFrom(const msg_get_game_info_req& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_game_type()) {
+      set_game_type(from.game_type());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void msg_get_game_info_req::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void msg_get_game_info_req::CopyFrom(const msg_get_game_info_req& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool msg_get_game_info_req::IsInitialized() const {
+
+  return true;
+}
+
+void msg_get_game_info_req::Swap(msg_get_game_info_req* other) {
+  if (other != this) {
+    std::swap(game_type_, other->game_type_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata msg_get_game_info_req::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = msg_get_game_info_req_descriptor_;
+  metadata.reflection = msg_get_game_info_req_reflection_;
   return metadata;
 }
 
@@ -24396,6 +24630,7 @@ void msg_master_join_table_req::Swap(msg_master_join_table_req* other) {
 
 #ifndef _MSC_VER
 const int msg_master_join_table_rep::kResultFieldNumber;
+const int msg_master_join_table_rep::kTuidFieldNumber;
 #endif  // !_MSC_VER
 
 msg_master_join_table_rep::msg_master_join_table_rep()
@@ -24415,6 +24650,7 @@ msg_master_join_table_rep::msg_master_join_table_rep(const msg_master_join_table
 void msg_master_join_table_rep::SharedCtor() {
   _cached_size_ = 0;
   result_ = 0u;
+  tuid_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -24451,6 +24687,7 @@ msg_master_join_table_rep* msg_master_join_table_rep::New() const {
 void msg_master_join_table_rep::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     result_ = 0u;
+    tuid_ = 0u;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -24470,6 +24707,22 @@ bool msg_master_join_table_rep::MergePartialFromCodedStream(
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &result_)));
           set_has_result();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_tuid;
+        break;
+      }
+
+      // optional uint32 tuid = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_tuid:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &tuid_)));
+          set_has_tuid();
         } else {
           goto handle_uninterpreted;
         }
@@ -24500,6 +24753,11 @@ void msg_master_join_table_rep::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->result(), output);
   }
 
+  // optional uint32 tuid = 2;
+  if (has_tuid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->tuid(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -24511,6 +24769,11 @@ void msg_master_join_table_rep::SerializeWithCachedSizes(
   // optional uint32 result = 1;
   if (has_result()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->result(), target);
+  }
+
+  // optional uint32 tuid = 2;
+  if (has_tuid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->tuid(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -24529,6 +24792,13 @@ int msg_master_join_table_rep::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->result());
+    }
+
+    // optional uint32 tuid = 2;
+    if (has_tuid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->tuid());
     }
 
   }
@@ -24561,6 +24831,9 @@ void msg_master_join_table_rep::MergeFrom(const msg_master_join_table_rep& from)
     if (from.has_result()) {
       set_result(from.result());
     }
+    if (from.has_tuid()) {
+      set_tuid(from.tuid());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -24585,6 +24858,7 @@ bool msg_master_join_table_rep::IsInitialized() const {
 void msg_master_join_table_rep::Swap(msg_master_join_table_rep* other) {
   if (other != this) {
     std::swap(result_, other->result_);
+    std::swap(tuid_, other->tuid_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

@@ -48,6 +48,7 @@ int CHandleClientMsg::OnRecvClientMsg(NetworkObject* pNetObj, const uint8* pkt_b
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_TAKE_SAFEBOX, handle_msg_take_safebox);// 保险箱存取操作
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_GIVE_SAFEBOX, handle_msg_give_safebox);// 保险箱赠送
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_GET_MISSION_PRIZE_REQ, handle_msg_get_mission_prize);
+	HANDLE_CLIENT_FUNC(net::C2S_MSG_GET_GAME_INFO_REQ, handle_msg_get_game_data);
 
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_GET_LOGIN_VIP_REWARD_INFO_REQ, handle_msg_get_login_vip_reward_info);
 	HANDLE_CLIENT_FUNC(net::C2S_MSG_GET_LOGIN_VIP_REWARD_TOTAL_REQ, handle_msg_get_login_vip_reward_total);
@@ -471,6 +472,41 @@ int  CHandleClientMsg::handle_msg_get_mission_prize(NetworkObject* pNetObj, cons
 		return 0;
 	uint32 msid = msg.msid();
 	pPlayer->GetMissionMgr().GetMissionPrize(msid);
+	return 0;
+}
+
+//获得游戏数据
+int  CHandleClientMsg::handle_msg_get_game_data(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len)
+{	
+	net::msg_get_game_info_req msg;
+	PARSE_MSG_FROM_ARRAY(msg);
+	uint32 game_type = msg.game_type();
+	CPlayer* pPlayer = GetPlayer(pNetObj);
+	if (pPlayer == NULL || !pPlayer->IsInLobby())
+		return 0;
+	
+	LOG_DEBUG("获得游戏数据:uid:%d,game_type:%d", pPlayer->GetUID(), game_type);
+	/*for (uint32 i = 1; i < net::GAME_CATE_MAX_TYPE; ++i)
+	{
+		if (!CCommonLogic::IsOpenGame(i))
+		{
+			continue;
+		}
+		CDBMysqlMgr::Instance().AsyncLoadGameData(pPlayer->GetUID(), i);
+	}*/
+
+	if (CCommonLogic::IsOpenGame(game_type))
+	{
+		if (pPlayer->IsGameInfoLoad(game_type))
+		{
+			pPlayer->UpdateGameInfo2Client(game_type);
+		}
+		else
+		{
+			CDBMysqlMgr::Instance().AsyncLoadGameData(pPlayer->GetUID(), game_type);
+		}		
+	}
+	
 	return 0;
 }
 

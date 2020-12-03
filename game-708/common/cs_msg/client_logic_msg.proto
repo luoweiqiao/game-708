@@ -82,11 +82,19 @@ message msg_update_land_info
 {
 	optional land_info  land_data = 1;	// 斗地主数据	
 }
+
+// 获取游戏数据
+message msg_get_game_info_req
+{
+	optional uint32	game_type = 1;		// 游戏类型
+}
+
 // 更新游戏数据
 message msg_update_game_info
 {
 	optional game_data_info	data = 1; // 游戏数据
 }
+
 // 请求服务器信息
 message msg_svrs_info_req
 {
@@ -504,6 +512,7 @@ message msg_master_join_table_req
 message msg_master_join_table_rep
 {
 	optional uint32 result		= 1;// 超级权限进入桌子 	
+	optional uint32 tuid		= 2;// 跟踪玩家ID 
 }
 
 // 查看桌子信息

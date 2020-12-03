@@ -41,6 +41,8 @@ protected:
 	int  handle_msg_give_safebox(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);
 	// 获得任务奖励
 	int  handle_msg_get_mission_prize(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);
+	// 获得游戏数据
+	int  handle_msg_get_game_data(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);
 
 	// 获取用户对应VIP等级每天的登陆奖励
 	int  handle_msg_get_login_vip_reward_info(NetworkObject* pNetObj, const uint8* pkt_buf, uint16 buf_len);

@@ -271,16 +271,11 @@ void    CLobbyAsyncDBCallBack::OnLoadGameDataEvent(CDBEventRep* pRep)
             }
         }
 		
-		// ----------------------------------------------------------------------------------------
-
-        CPlayer* pPlayer = dynamic_cast<CPlayer*>(CPlayerMgr::Instance().GetPlayer(uid));
-        if(pPlayer != NULL && pPlayer->GetPlayerState() == PLAYER_STATE_LOAD_DATA)
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(CPlayerMgr::Instance().GetPlayer(uid));
+        if(pPlayer != NULL)
         {
             pPlayer->SetGameInfo(gameType,data);
-            if(pPlayer->IsLoadOver())
-			{
-                pPlayer->OnGetAllData();
-            }
+			pPlayer->UpdateGameInfo2Client(gameType);
         }
 		else
 		{

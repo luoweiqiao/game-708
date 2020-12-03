@@ -182,47 +182,64 @@ bool    CGameTable::EnterTable(CGamePlayer* pPlayer)
 			}
 		}
 	}
-    if(NeedSitDown())
-	{//需要手动坐下站起
-        pPlayer->SetTable(this);
-        LOG_DEBUG("IsNeedSitDown enter table - roomid:%d--tableid:%d,uid:%d,player_num:%d",
+
+	//判断超控玩家是否需要加入旁观列表
+	if (GetIsMasterUser(pPlayer) && IsCtrlPlayerNeedAddLook())
+	{
+		m_ctrlUserList[pPlayer->GetUID()] = pPlayer;
+		LOG_DEBUG("push ctrl player list success. table - roomid:%d--tableid:%d,uid:%d,player_num:%d",
 			m_pHostRoom->GetRoomID(), GetTableID(), pPlayer->GetUID(), GetPlayerNum());
-        
+
 		SendTableInfoToClient(pPlayer);
-        OnPlayerJoin(true,0,pPlayer);
-		
-		InitPlayerBairenCoint(pPlayer);
-		//CalculateDeity();
-        return true;
-    }
-	else
-	{//自动坐下
-        for(uint8 i=0;i<m_vecPlayers.size();++i)
-        {
-            if(m_vecPlayers[i].pPlayer == NULL)
-            {
-                m_vecPlayers[i].pPlayer    = pPlayer;
-                m_vecPlayers[i].readyState = 0;
-                m_vecPlayers[i].uid        = pPlayer->GetUID();
-                m_vecPlayers[i].readyTime  = getSysTime();
-                
-                pPlayer->SetTable(this);
-                LOG_DEBUG("AtNeedSitDown enter table：room_id:%d--table_id:%d,uid:%d,IsAutoReady:%d,player_num:%d",
-					m_pHostRoom->GetRoomID(), GetTableID(), pPlayer->GetUID(), pPlayer->IsAutoReady(), GetPlayerNum());
-                
-				SendTableInfoToClient(pPlayer);
-                OnPlayerJoin(true,i,pPlayer);
-				
-                if(pPlayer->IsAutoReady())
+		OnPlayerJoin(true, 0, pPlayer);
+		pPlayer->SetTable(this);
+
+		return true;
+	}
+	else 
+	{
+		if (NeedSitDown())
+		{
+			//需要手动坐下站起
+			pPlayer->SetTable(this);
+			LOG_DEBUG("IsNeedSitDown enter table - roomid:%d--tableid:%d,uid:%d,player_num:%d",
+				m_pHostRoom->GetRoomID(), GetTableID(), pPlayer->GetUID(), GetPlayerNum());
+
+			SendTableInfoToClient(pPlayer);
+			OnPlayerJoin(true, 0, pPlayer);
+
+			InitPlayerBairenCoint(pPlayer);
+			//CalculateDeity();
+			return true;
+		}
+		else
+		{
+			//自动坐下
+			for (uint8 i = 0; i < m_vecPlayers.size(); ++i)
+			{
+				if (m_vecPlayers[i].pPlayer == NULL)
 				{
-                    PlayerReady(pPlayer);
-                }
-				
-                return true;
-            }
-        }
-    }
-	
+					m_vecPlayers[i].pPlayer = pPlayer;
+					m_vecPlayers[i].readyState = 0;
+					m_vecPlayers[i].uid = pPlayer->GetUID();
+					m_vecPlayers[i].readyTime = getSysTime();
+
+					pPlayer->SetTable(this);
+					LOG_DEBUG("AtNeedSitDown enter table：room_id:%d--table_id:%d,uid:%d,IsAutoReady:%d,player_num:%d",
+						m_pHostRoom->GetRoomID(), GetTableID(), pPlayer->GetUID(), pPlayer->IsAutoReady(), GetPlayerNum());
+
+					SendTableInfoToClient(pPlayer);
+					OnPlayerJoin(true, i, pPlayer);
+
+					if (pPlayer->IsAutoReady())
+					{
+						PlayerReady(pPlayer);
+					}
+					return true;
+				}
+			}
+		}
+	}	
     return false;
 }
 
@@ -257,6 +274,17 @@ bool    CGameTable::LeaveTable(CGamePlayer* pPlayer,bool bNotify)
 	//增加对于百人场精准控制的处理
 	OnBrcControlPlayerLeaveTable(pPlayer);
 	LeaveMasterUser(pPlayer);
+
+	//超控玩家退出
+	if (GetIsMasterUser(pPlayer) && IsCtrlPlayerNeedAddLook())
+	{
+		//存在判断
+		map<uint32, CGamePlayer*>::iterator iter = m_ctrlUserList.find(pPlayer->GetUID());
+		if(iter != m_ctrlUserList.end())
+		{			
+			m_ctrlUserList.erase(iter);						
+		}		
+	}
 
     if(NeedSitDown())
     {   //需要手动坐下站起
@@ -503,6 +531,20 @@ bool    CGameTable::NeedSitDown()
         
     return false;
 }
+
+bool    CGameTable::IsCtrlPlayerNeedAddLook()
+{
+	uint16 gameType = m_pHostRoom->GetGameType();
+	switch (gameType)
+	{
+	case net::GAME_CATE_SHOWHAND:	
+		return true;
+	default:
+		return false;
+	}
+	return false;
+}
+
 bool    CGameTable::PlayerReady(CGamePlayer* pPlayer)
 {
 	if (GetGameState() != TABLE_STATE_FREE)
@@ -929,10 +971,10 @@ uint16  CGameTable::GetRandFreeChairID()
     }       
     return 0xFF;
 }
-void    CGameTable::SendMsgToLooker(const google::protobuf::Message* msg,uint16 msg_type)
+void    CGameTable::SendMsgToCtrlPlayer(const google::protobuf::Message* msg,uint16 msg_type)
 {
-    map<uint32,CGamePlayer*>::iterator it = m_mpLookers.begin();
-    for(;it != m_mpLookers.end();++it)
+    map<uint32,CGamePlayer*>::iterator it = m_ctrlUserList.begin();
+    for(;it != m_ctrlUserList.end();++it)
     {
         CGamePlayer* pPlayer = it->second;
 		if (pPlayer != NULL)
@@ -940,6 +982,18 @@ void    CGameTable::SendMsgToLooker(const google::protobuf::Message* msg,uint16 
 			pPlayer->SendMsgToClient(msg, msg_type);
 		}
     }
+}
+void    CGameTable::SendMsgToLooker(const google::protobuf::Message* msg, uint16 msg_type)
+{
+	map<uint32, CGamePlayer*>::iterator it = m_mpLookers.begin();
+	for (; it != m_mpLookers.end(); ++it)
+	{
+		CGamePlayer* pPlayer = it->second;
+		if (pPlayer != NULL)
+		{
+			pPlayer->SendMsgToClient(msg, msg_type);
+		}
+	}
 }
 void    CGameTable::SendMsgToPlayer(const google::protobuf::Message* msg,uint16 msg_type)
 {
@@ -955,6 +1009,7 @@ void    CGameTable::SendMsgToAll(const google::protobuf::Message* msg,uint16 msg
 {
     SendMsgToPlayer(msg,msg_type);
     SendMsgToLooker(msg,msg_type);
+	SendMsgToCtrlPlayer(msg, msg_type);
 }
 void    CGameTable::SendMsgToClient(uint16 chairID,const google::protobuf::Message* msg,uint16 msg_type)
 {
@@ -1967,13 +2022,20 @@ void    CGameTable::OnPlayerJoin(bool isJoin,uint16 chairID,CGamePlayer* pPlayer
 		if (isJoin)
 		{
 			m_tableCtrlPlayers.insert(pPlayer->GetUID());
+			m_ctrlUserList[pPlayer->GetUID()] = pPlayer;
+			LOG_DEBUG("add ctrl user list - roomid:%d,tableid:%d,uid:%d,size:%d", m_pHostRoom->GetRoomID(), GetTableID(), uid, m_ctrlUserList.size());
 		}
 		else
 		{
 			m_tableCtrlPlayers.erase(m_tableCtrlPlayers.find(pPlayer->GetUID()));
-		}
+			map<uint32, CGamePlayer*>::iterator iter = m_ctrlUserList.find(pPlayer->GetUID());
+			if (iter != m_ctrlUserList.end())
+			{
+				m_ctrlUserList.erase(iter);
+				LOG_DEBUG("delete ctrl user list - roomid:%d,tableid:%d,uid:%d,size:%d", m_pHostRoom->GetRoomID(), GetTableID(), uid, m_ctrlUserList.size());
+			}
+		}		
 	}
-
 }
 // 发送场景信息(断线重连)
 void    CGameTable::SendGameScene(CGamePlayer* pPlayer)
@@ -4019,7 +4081,11 @@ bool CGameTable::IsMasterGame()
 		case net::GAME_CATE_ZAJINHUA:
 		{
 			return true;
-		}		
+		}	
+		case net::GAME_CATE_SHOWHAND:
+		{
+			return true;
+		}
 		default:
 		{
 			return false;

@@ -53,6 +53,7 @@ class msg_update_acc_value;
 class msg_update_base_value;
 class msg_send_base_value;
 class msg_update_land_info;
+class msg_get_game_info_req;
 class msg_update_game_info;
 class msg_svrs_info_req;
 class msg_svrs_info_rep;
@@ -1202,6 +1203,88 @@ class msg_update_land_info : public ::google::protobuf::Message {
 
   void InitAsDefaultInstance();
   static msg_update_land_info* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class msg_get_game_info_req : public ::google::protobuf::Message {
+ public:
+  msg_get_game_info_req();
+  virtual ~msg_get_game_info_req();
+
+  msg_get_game_info_req(const msg_get_game_info_req& from);
+
+  inline msg_get_game_info_req& operator=(const msg_get_game_info_req& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const msg_get_game_info_req& default_instance();
+
+  void Swap(msg_get_game_info_req* other);
+
+  // implements Message ----------------------------------------------
+
+  msg_get_game_info_req* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const msg_get_game_info_req& from);
+  void MergeFrom(const msg_get_game_info_req& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint32 game_type = 1;
+  inline bool has_game_type() const;
+  inline void clear_game_type();
+  static const int kGameTypeFieldNumber = 1;
+  inline ::google::protobuf::uint32 game_type() const;
+  inline void set_game_type(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:net.msg_get_game_info_req)
+ private:
+  inline void set_has_game_type();
+  inline void clear_has_game_type();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 game_type_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+
+  friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_client_5flogic_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static msg_get_game_info_req* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -7947,17 +8030,27 @@ class msg_master_join_table_rep : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 result() const;
   inline void set_result(::google::protobuf::uint32 value);
 
+  // optional uint32 tuid = 2;
+  inline bool has_tuid() const;
+  inline void clear_tuid();
+  static const int kTuidFieldNumber = 2;
+  inline ::google::protobuf::uint32 tuid() const;
+  inline void set_tuid(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:net.msg_master_join_table_rep)
  private:
   inline void set_has_result();
   inline void clear_has_result();
+  inline void set_has_tuid();
+  inline void clear_has_tuid();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 result_;
+  ::google::protobuf::uint32 tuid_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
 
   friend void  protobuf_AddDesc_client_5flogic_5fmsg_2eproto();
   friend void protobuf_AssignDesc_client_5flogic_5fmsg_2eproto();
@@ -14975,6 +15068,32 @@ inline void msg_update_land_info::set_allocated_land_data(::net::land_info* land
 
 // -------------------------------------------------------------------
 
+// msg_get_game_info_req
+
+// optional uint32 game_type = 1;
+inline bool msg_get_game_info_req::has_game_type() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void msg_get_game_info_req::set_has_game_type() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void msg_get_game_info_req::clear_has_game_type() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void msg_get_game_info_req::clear_game_type() {
+  game_type_ = 0u;
+  clear_has_game_type();
+}
+inline ::google::protobuf::uint32 msg_get_game_info_req::game_type() const {
+  return game_type_;
+}
+inline void msg_get_game_info_req::set_game_type(::google::protobuf::uint32 value) {
+  set_has_game_type();
+  game_type_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // msg_update_game_info
 
 // optional .net.game_data_info data = 1;
@@ -18777,6 +18896,28 @@ inline ::google::protobuf::uint32 msg_master_join_table_rep::result() const {
 inline void msg_master_join_table_rep::set_result(::google::protobuf::uint32 value) {
   set_has_result();
   result_ = value;
+}
+
+// optional uint32 tuid = 2;
+inline bool msg_master_join_table_rep::has_tuid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void msg_master_join_table_rep::set_has_tuid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void msg_master_join_table_rep::clear_has_tuid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void msg_master_join_table_rep::clear_tuid() {
+  tuid_ = 0u;
+  clear_has_tuid();
+}
+inline ::google::protobuf::uint32 msg_master_join_table_rep::tuid() const {
+  return tuid_;
+}
+inline void msg_master_join_table_rep::set_tuid(::google::protobuf::uint32 value) {
+  set_has_tuid();
+  tuid_ = value;
 }
 
 // -------------------------------------------------------------------

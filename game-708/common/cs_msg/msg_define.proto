@@ -163,8 +163,9 @@ enum  CLIENT_MSG_ID
 	S2C_MSG_UPDATE_ACC_VALUE			= 1013;	// 更新玩家数值
 	S2C_MSG_UPDATA_LAND_INFO			= 1014; // 更新斗地主信息
 	S2C_MSG_UPDATA_BASE_VALUE			= 1015; // 更新基础数值	
+	C2S_MSG_GET_GAME_INFO_REQ			= 1016;	// 客户端请求游戏数据
 	S2C_MSG_UPDATA_GAME_INFO			= 1017; // 更新游戏数据
-	S2C_MSG_SEND_BASE_VALUE			= 1018; // 发送基础数值	
+	S2C_MSG_SEND_BASE_VALUE				= 1018; // 发送基础数值	
 
 	C2S_MSG_REQ_SVRS_INFO				= 1100;	// 请求服务器信息
 	S2C_MSG_SVRS_INFO					= 1101;	// 发送游戏服务器信息
@@ -392,6 +393,10 @@ enum  CLIENT_MSG_ID
 	S2C_MSG_SHOWHAND_GIVE_UP					= 3305;// 用户放弃
 	S2C_MSG_SHOWHAND_SEND_CARD					= 3306;// 发送扑克
 	S2C_MSG_SHOWHAND_GAME_END					= 3307;// 游戏结束
+	S2C_MSG_SHOWHAND_SEND_MASTER_CARD_REP		= 3310;// 发超级权限用户的牌---游戏开始时
+	S2C_MSG_SHOWHAND_FLUSH_MASTER_CARD_REP		= 3311;// 发超级权限用户的牌---游戏过程时
+	C2S_MSG_SHOWHAND_RECV_MASTER_CARD_REQ		= 3312;// 接收超级权限用户的修改请求
+	S2C_MSG_SHOWHAND_RECV_MASTER_CARD_REP		= 3313;// 返回超级权限用户的修改结果
 
 //--------------百牛游戏消息-----------------------------------------
 	S2C_MSG_BAINIU_GAME_FREE_INFO				= 3400;// 游戏信息
