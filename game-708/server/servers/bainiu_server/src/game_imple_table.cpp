@@ -555,6 +555,20 @@ int CGameBaiNiuTable::OnGameMessage(CGamePlayer* pPlayer,uint16 cmdID, const uin
 
 			return OnBrcControlPlayerBetArea(pPlayer, msg);
 		}break;
+	case net::C2S_MSG_BAINIU_CONTROL_CARDTYPE_REQ://
+		{
+			net::msg_bainiu_control_cardtype_req msg;
+			PARSE_MSG_FROM_ARRAY(msg);
+
+			return SetMultipleAreaCardTypeMsg(pPlayer, msg);
+		}break;
+	case net::C2S_MSG_BAINIU_CANCEL_CONTROL_CARDTYPE_REQ://
+		{
+			net::msg_bainiu_control_cardtype_req msg;
+			PARSE_MSG_FROM_ARRAY(msg);
+
+			return CancelMultipleAreaCardTypeMsg(pPlayer);
+		}break;
     default:
         return 0;
     }
@@ -910,6 +924,8 @@ bool CGameBaiNiuTable::OnGameEnd(uint16 chairID,uint8 reason)
 			OnBrcFlushSendAllPlayerInfo();
 			m_pHostRoom->UpdateStock(this, playerAllWinScore); // add by har
 			OnTableGameEnd();
+			
+			m_mpContralAreaCardTypeList.clear();
 
 			return true;
         }break;    
@@ -1040,8 +1056,9 @@ void    CGameBaiNiuTable::SendGameScene(CGamePlayer* pPlayer)
     }
     SendLookerListToClient(pPlayer);
     SendApplyUser(pPlayer);
-	SendFrontJettonInfo(pPlayer);
+	SendFrontJettonInfo(pPlayer);	
 }
+
 int64    CGameBaiNiuTable::CalcPlayerInfo(uint32 uid,int64 winScore, int64 OnlywinScore,bool isBanker)
 {
     //if(winScore == 0)
@@ -5135,6 +5152,12 @@ bool CGameBaiNiuTable::OnBrcControlEnterControlInterface(CGamePlayer* pPlayer)
 		//发送申请上庄玩家列表
 		OnBrcControlFlushAppleList();
 
+		//判断是否需要回放百人场多区域控制配置
+		if (m_mpContralAreaCardTypeList.size() > 0)
+		{
+			SendReplayMultipleAreaCardTypeMsg(pPlayer);
+		}
+
 		return true;
 	}
 	return false;
@@ -5168,6 +5191,12 @@ bool CGameBaiNiuTable::OnBrcAreaControl()
 	{
 		LOG_DEBUG("brc area control the control uid is zero.");
 		return false;
+	}
+
+	//先判断是否为多区域具体牌型控制
+	if (m_mpContralAreaCardTypeList.size() > 0)
+	{
+		return OnBrcMultipleAreaCardType();
 	}
 
 	//获取当前控制区域
@@ -5517,4 +5546,130 @@ bool CGameBaiNiuTable::SetStockWinLose() {
 
 	LOG_ERROR("SetStockWinLose fail! roomid:%d,tableid:%d,playerAllWinScore:%lld,stockChange:%lld,IsBankerRealPlayer:%d", GetRoomID(), GetTableID(), playerAllWinScore, stockChange, IsBankerRealPlayer());
 	return false;
+}
+
+//百人场精准控制---控制多区域具体牌型
+bool CGameBaiNiuTable::SetMultipleAreaCardTypeMsg(CGamePlayer *pPlayer, net::msg_bainiu_control_cardtype_req & msg)
+{
+	if (pPlayer == NULL)
+	{
+		LOG_ERROR("PLAYER IS NULL");
+		return false;
+	}
+
+	LOG_DEBUG("brc control Multiple area cardtype info. control uid:%d control_area_list_size:%d control_cardtype_list_size:%d", pPlayer->GetUID(), msg.control_area_list_size(), msg.control_cardtype_list_size());
+
+	uint8 result = RESULT_CODE_SUCCESS;
+
+	//判断是否有控制权限
+	if (!pPlayer->GetCtrlFlag())
+	{
+		LOG_DEBUG("brc control Multiple area cardtype the curr uid:%d is not allow operator info.", pPlayer->GetUID());
+		result = RESULT_CODE_FAIL;
+	}
+
+	//判断当前是否处于下注阶段
+	if (GetGameState() != TABLE_STATE_NIUNIU_PLACE_JETTON)
+	{
+		LOG_DEBUG("brc control Multiple area cardtype the table is not bet status. state:%d", GetGameState());
+		result = RESULT_CODE_FAIL;
+	}
+
+	if (msg.control_area_list_size() != msg.control_cardtype_list_size())
+	{
+		LOG_DEBUG("brc control Multiple area cardtype the size is error. area_size:%d cardtype_size:%d", msg.control_area_list_size(), msg.control_cardtype_list_size());
+		result = RESULT_CODE_FAIL;
+	}
+
+	if (result == RESULT_CODE_SUCCESS)
+	{
+		m_control_number = 1;
+		m_real_control_uid = pPlayer->GetUID();
+		memset(m_req_control_area, 0x0, sizeof(m_req_control_area));
+		m_mpContralAreaCardTypeList.clear();
+		for (int i = 0; i < msg.control_area_list_size(); i++)
+		{
+			uint32 area_id = msg.control_area_list(i);
+			uint32 cardtype_id = msg.control_cardtype_list(i);
+			m_mpContralAreaCardTypeList[area_id] = cardtype_id;
+			LOG_DEBUG("brc control Multiple area cardtype area_id:%d cardtype_id:%d.", area_id, cardtype_id);
+		}
+	}
+
+	//返回结果消息
+	net::msg_bainiu_control_cardtype_rep rep;
+	rep.set_result(result);
+	pPlayer->SendMsgToClient(&rep, net::S2C_MSG_BAINIU_CONTROL_CARDTYPE_REP);
+	return true;
+}
+
+bool CGameBaiNiuTable::OnBrcMultipleAreaCardType()
+{
+	uint8 area_size = m_mpContralAreaCardTypeList.size();
+	LOG_DEBUG("brc Multiple area control cardtype. area_size:%d", area_size);
+
+	bool ret = m_GameLogic.SetMultipleAreaCardType(m_cbTableCardArray, m_mpContralAreaCardTypeList);
+	for (int i = 0; i< MAX_SEAT_INDEX; i++)
+	{
+		LOG_DEBUG("card value:0x%02X 0x%02X 0x%02X 0x%02X 0x%02X", m_cbTableCardArray[i][0], m_cbTableCardArray[i][1], m_cbTableCardArray[i][2], m_cbTableCardArray[i][3], m_cbTableCardArray[i][4]);
+	}
+
+	LOG_DEBUG("set BrcMultipleAreaCardType ret:%d", ret);
+
+	return ret;
+}
+
+//百人场精准控制---取消控制多区域具体牌型
+bool CGameBaiNiuTable::CancelMultipleAreaCardTypeMsg(CGamePlayer *pPlayer)
+{
+	if (pPlayer == NULL)
+	{
+		LOG_ERROR("PLAYER IS NULL");
+		return false;
+	}
+
+	LOG_DEBUG("brc cancel control Multiple area cardtype info. control uid:%d ", pPlayer->GetUID());
+
+	uint8 result = RESULT_CODE_SUCCESS;
+
+	//判断是否有控制权限
+	if (!pPlayer->GetCtrlFlag())
+	{
+		LOG_DEBUG("brc cancel control Multiple area cardtype the curr uid:%d is not allow operator info.", pPlayer->GetUID());
+		result = RESULT_CODE_FAIL;
+	}
+
+	//判断当前是否处于下注阶段
+	if (GetGameState() != TABLE_STATE_NIUNIU_PLACE_JETTON)
+	{
+		LOG_DEBUG("brc cancel control Multiple area cardtype the table is not bet status. state:%d", GetGameState());
+	}
+
+	m_control_number = 0;
+	m_real_control_uid = pPlayer->GetUID();
+	memset(m_req_control_area, 0x0, sizeof(m_req_control_area));
+	m_mpContralAreaCardTypeList.clear();
+	
+	//返回结果消息
+	net::msg_bainiu_cancel_control_cardtype_rep rep;
+	rep.set_result(result);
+	pPlayer->SendMsgToClient(&rep, net::S2C_MSG_BAINIU_CANCEL_CONTROL_CARDTYPE_REP);
+	return true;
+}
+
+void CGameBaiNiuTable::SendReplayMultipleAreaCardTypeMsg(CGamePlayer* pPlayer)
+{
+	LOG_DEBUG("brc replay control Multiple area cardtype. size:%d", m_mpContralAreaCardTypeList.size());
+
+	//返回结果消息
+	net::msg_bainiu_replay_control_cardtype_req rep;
+	map<uint32, uint32>::iterator iter = m_mpContralAreaCardTypeList.begin();
+	for (; iter != m_mpContralAreaCardTypeList.end(); iter++)
+	{
+		BYTE cfg_area_id = iter->first;
+		BYTE cfg_card_type = iter->second;
+		rep.add_control_area_list(cfg_area_id);
+		rep.add_control_cardtype_list(cfg_card_type);
+	}	
+	pPlayer->SendMsgToClient(&rep, net::S2C_MSG_BAINIU_REPLAY_CONTROL_CARDTYPE_REP);
 }
